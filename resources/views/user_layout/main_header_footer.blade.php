@@ -18,25 +18,25 @@ $error_msg = Session::get('error');
 <body>
 
     @if (isset($error_msg))
-        {{-- {!!dd($login_error_msg)!!} --}}
-        <div class="alert alert-danger alt_area">
-            <span style="float: right " onclick="$(this).parent().remove();">X</span>
-            <ul>
-                {{-- @foreach (Session::get('login_error')->all() as $error) --}}
-                <li>{{ $error_msg }}</li>
-                {{-- @endforeach --}}
-            </ul>
-        </div>
+    {{-- {!!dd($login_error_msg)!!} --}}
+    <div class="alert alert-danger alt_area">
+        <span style="float: right " onclick="$(this).parent().remove();">X</span>
+        <ul>
+            {{-- @foreach (Session::get('login_error')->all() as $error) --}}
+            <li>{{ $error_msg }}</li>
+            {{-- @endforeach --}}
+        </ul>
+    </div>
     @endif
     @if (isset($success_message))
-        <div class="alert alert-success alt_area">
-            <span style="float: right" onclick="$(this).parent().remove();">X</span>
-            <ul>
-                {{-- @foreach (Session::get('success')->all() as $success) --}}
-                <li>{{ $success_message }}</li>
-                {{-- @endforeach --}}
-            </ul>
-        </div>
+    <div class="alert alert-success alt_area">
+        <span style="float: right" onclick="$(this).parent().remove();">X</span>
+        <ul>
+            {{-- @foreach (Session::get('success')->all() as $success) --}}
+            <li>{{ $success_message }}</li>
+            {{-- @endforeach --}}
+        </ul>
+    </div>
     @endif
 
 
@@ -62,8 +62,7 @@ $error_msg = Session::get('error');
                             <p>Planting a tree in memory of your loved one is a meaningful<br> and lasting tribute.
                                 It’s an opportunity to honor their life while contributing something positive to the
                                 environment.</p>
-                            <a href="{!! asset('/user/contactus') !!}"><button type="submit"
-                                    class="btn btn-primary contactclick">Contact
+                            <a href="{!! asset('/user/contactus') !!}"><button type="submit" class="btn btn-primary contactclick">Contact
                                     Us</button></a>
                         </div>
                     </div>
@@ -88,8 +87,7 @@ $error_msg = Session::get('error');
     </section>
 
     {{-- Sign in modal --}}
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header modhead">
@@ -101,13 +99,11 @@ $error_msg = Session::get('error');
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label for="email">Enter Your Email address :</label>
-                                <input type="email" name="email" class="form-control" id="email"
-                                    aria-describedby="email" placeholder="email address">
+                                <input type="email" name="email" class="form-control" id="email" aria-describedby="email" placeholder="email address">
                             </div>
                             <div class="form-group">
                                 <label for="password">Enter Your Password :</label>
-                                <input type="password" name="password" class="form-control" id="password"
-                                    aria-describedby="password" placeholder="password">
+                                <input type="password" name="password" class="form-control" id="password" aria-describedby="password" placeholder="password">
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary mosubclick">Submit</button>
@@ -122,8 +118,7 @@ $error_msg = Session::get('error');
     {{-- End Sign in modal --}}
 
     {{-- Register in modal --}}
-    <div class="modal fade" id="remodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="remodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header modhead">
@@ -135,18 +130,15 @@ $error_msg = Session::get('error');
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label for="email">Enter Name :</label>
-                                <input type="text" name="name" class="form-control" id="name"
-                                    aria-describedby="email" placeholder="Name">
+                                <input type="text" name="name" class="form-control" id="name" aria-describedby="email" placeholder="Name">
                             </div>
                             <div class="form-group">
                                 <label for="email">Enter Your Email address :</label>
-                                <input type="email" name="email" class="form-control" id="email"
-                                    aria-describedby="email" placeholder="email address">
+                                <input type="email" name="email" class="form-control" id="email" aria-describedby="email" placeholder="email address">
                             </div>
                             <div class="form-group">
                                 <label for="password">Enter Your Password :</label>
-                                <input type="password" name="password" class="form-control" id="password"
-                                    aria-describedby="password" placeholder="password">
+                                <input type="password" name="password" class="form-control" id="password" aria-describedby="password" placeholder="password">
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary mosubclick">Submit</button>
@@ -211,8 +203,7 @@ $error_msg = Session::get('error');
                             </div>
                         </div>
                         <div class="lastfooter">
-                            <p>Copyright © <?php echo date('Y'); ?> 4ever memory - Designed and Developed by <a
-                                    href="https://ibotoempire.com/" target="_blank" class="minename">Iboto-Empire</a>
+                            <p>Copyright © <?php echo date('Y'); ?> 4ever memory - Designed and Developed by <a href="https://ibotoempire.com/" target="_blank" class="minename">Iboto-Empire</a>
                             </p>
                         </div>
                     </div>
