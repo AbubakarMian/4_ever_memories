@@ -7,7 +7,8 @@
         });
 
     })
- $(document).ajaxError_show(
+//  $(document).ajaxError_show(
+ $(document).ajaxError(
         function(event, jqXHR, ajaxSettings, thrownError) {
             console.log('[event:' + event + '], [jqXHR:' + jqXHR + '], [ajaxSettings:' + ajaxSettings +
                 '], [thrownError:' + thrownError + '])');
@@ -63,7 +64,6 @@
             enctype: 'multipart/form-data',
 
             success: function(data) {
-                // call function by name and pass parameters eg sucess_function(form_by_id_or_class,data)
                 if (success_funtion != '') {
                     window[success_funtion](form_by_id_or_class, data);
                 }
@@ -95,23 +95,7 @@
   </div>
     `;
     $('#add_custom_modals').append(modal);
-//     <div class="modal fade" id="`+modal_param.id+`" role="dialog">
-//     <div class="modal-dialog">
-//       <div class="modal-content">
-//         <div class="modal-header">
-//           <button type="button" class="close" data-dismiss="modal">&times;</button>
-//           <h4 class="modal-title">Modal Header</h4>
-//         </div>
-//         <div class="modal-body">
-//           <p>Some text in the modal.</p>
-//         </div>
-//         <div class="modal-footer">
-//           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-//         </div>
-//       </div>
 
-//     </div>
-//   </div>
 }
 
     function send_ajax(ajax, success_fun = '') {
