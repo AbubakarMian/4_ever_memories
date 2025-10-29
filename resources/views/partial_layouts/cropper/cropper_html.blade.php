@@ -1,4 +1,7 @@
 <style>
+    .cke_notifications_area {
+        display: none !important;
+    }
     .vdvjib img {
         /* max-height: 80px; */
         max-width: 100px;
@@ -121,8 +124,8 @@ id="upload_image" style="display:block" /> --}}
 <!-- endbuild -->
 {{-- <script src="{{ asset('public/theme/vendor/parsleyjs/dist/parsley.min.js') }}"></script> --}}
 {{-- <link rel="stylesheet" href="https://unpkg.com/dropzone/dist/dropzone.css" /> --}}
-<link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet" />
-<script src="https://unpkg.com/cropperjs"></script>
+<link href="https://unpkg.com/cropperjs@1.5.12/dist/cropper.css" rel="stylesheet" />
+<script src="https://unpkg.com/cropperjs@1.5.12/dist/cropper.js"></script>
 <!-- cropper close -->
 
 <script>
