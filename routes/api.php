@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\User\CommonServicesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\PaymentController as Admin_PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,5 +40,5 @@ Route::group(['middleware' => 'auth.user_loggedin'], function () {
 });
 
 Route::post('all_memorials', [MemorialController::class, 'all_memorials']);
-Route::get('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
-Route::get('/payment/cancel', [PaymentController::class, 'paymentCancel'])->name('payment.cancel');
+Route::get('/payment/success', [Admin_PaymentController::class, 'paymentSuccess'])->name('payment.success');
+Route::get('/payment/cancel', [Admin_PaymentController::class, 'paymentCancel'])->name('payment.cancel');

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\UserController as Admin_UserController;
 use App\Http\Controllers\User\CommonServicesController;
 use App\Http\Controllers\User\UserController as User_UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\PaymentController as Admin_PaymentController;
 
 
 //////////////user
@@ -101,11 +102,11 @@ Route::get('user/testing2', [User_UserController::class, 'index2'])->name('admin
 Route::get('user/testing3', [User_UserController::class, 'index3'])->name('admin.user.add_user');
 
 Route::post('user/memorial/update_plan', [User_UserController::class, 'update_plan'])->name('user.plan.update');
-Route::get('/create-payment', [App\Http\Controllers\Admin\PaymentController::class, 'createPayment'])->name('create.payment');
-Route::get('/check-payment-status', [PaymentController::class, 'checkPaymentStatus'])->name('check.payment.status');
+Route::get('/create-payment', [Admin_PaymentController::class, 'createPayment'])->name('create.payment');
+Route::get('/check-payment-status', [Admin_PaymentController::class, 'checkPaymentStatus'])->name('check.payment.status');
 
 // For direct access (if needed)
-Route::get('/create-payment/{plan_id}', [App\Http\Controllers\Admin\PaymentController::class, 'createPayment'])->name('create.payment.get');
+Route::get('/create-payment/{plan_id}', [Admin_PaymentController::class, 'createPayment'])->name('create.payment.get');
 
 Route::post('user/memorial/privacy', [User_UserController::class, 'privacy'])->name('user.memorial.privacy');
 Route::post('user/memorial/save_css', [User_UserController::class, 'save_css'])->name('user.memorial.save_css');
@@ -132,4 +133,4 @@ Route::get('user/blog/death', [User_UserController::class, 'death'])->name('user
 Route::get('user/blog/our_story', [User_UserController::class, 'our_story'])->name('user.our_story');
 
 
-Route::post('/subscribe/{planId}', [PaymentController::class, 'createYearlySubscription'])->name('subscribe');
+Route::post('/subscribe/{planId}', [Admin_PaymentController::class, 'createYearlySubscription'])->name('subscribe');

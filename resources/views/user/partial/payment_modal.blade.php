@@ -1,4 +1,71 @@
-
+<style>
+    
+    /* Payment iframe styles */
+    .payment-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        display: none;
+    }
+    .payment-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        max-width: 800px;
+        height: 80%;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    }
+    .payment-header {
+        background: #3498db;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .payment-header h4 {
+        margin: 0;
+        font-size: 18px;
+    }
+    .close-payment {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+    }
+    .payment-iframe {
+        width: 100%;
+        height: calc(100% - 60px);
+        border: none;
+    }
+    .payment-loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: #3498db;
+    }
+    .payment-success {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: #27ae60;
+        display: none;
+    }
+</style>
 <!-- Payment iframe overlay -->
 <div class="payment-overlay" id="paymentOverlay">
     <div class="payment-container">
@@ -14,7 +81,7 @@
         <div class="payment-success" id="paymentSuccess">
             <i class="fa fa-check-circle fa-5x"></i>
             <h3>Payment Successful!</h3>
-            <p>Redirecting to memorial page...</p>
+            <p></p>
         </div>
     </div>
 </div>
@@ -48,35 +115,69 @@
     </div>
 </div>
 
-<script>
+<script>    let paymentInProgress = false;
+    let paymentCheckInterval = null;
+
 function submit_update_plan(selected_plan_id, price) {
     if (paymentInProgress) {
         return;
     }
     
     $('#plan_id').val(selected_plan_id);
-    showPaymentIframe();
     
-    // Submit form via AJAX to get the payment URL
-    $.ajax({
-        url: $('#update_plan_form').attr('action'),
-        method: 'POST',
-        data: $('#update_plan_form').serialize(),
-        success: function(response) {
-            if (response.redirect_url) {
-                // Try to load PayPal in iframe, but have fallback for new tab
-                loadPayPalInIframe(response.redirect_url);
-            } else {
-                openErrorModal('Failed to get payment URL');
-                closePayment();
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Payment initiation failed:', error);
-            openErrorModal('Failed to initialize payment. Please try again.');
-            closePayment();
-        }
-    });
+    // Show payment overlay
+    showPaymentOverlay();
+    
+    // Open a new tab for payment
+    var form = document.getElementById('update_plan_form');
+    var originalTarget = form.target;
+    
+    // Set target to open in new tab
+    form.target = '_blank';
+    
+    // Submit the form
+    form.submit();
+    
+    // Restore original target
+    form.target = originalTarget;
+    
+    paymentInProgress = true;
+    
+    // Start checking payment status periodically
+    startPaymentStatusCheck();
+}
+
+function showPaymentOverlay() {
+    $('#paymentOverlay').show();
+    $('#paymentLoading').show();
+    $('#paymentIframe').hide();
+    $('#paymentSuccess').hide();
+    
+    // Update loading message to show we're waiting for payment
+    $('#paymentLoading').html(`
+        <i class="fa fa-spinner fa-spin fa-3x"></i>
+        <p>Waiting for payment completion...</p>
+        <p><small>Please complete the payment in the new tab</small></p>
+    `);
+}
+
+function startPaymentStatusCheck() {
+    // Clear any existing interval
+    if (paymentCheckInterval) {
+        clearInterval(paymentCheckInterval);
+    }
+    
+    // Start checking every 3 seconds
+    paymentCheckInterval = setInterval(function() {
+        checkPaymentStatus();
+    }, 3000);
+}
+
+function stopPaymentStatusCheck() {
+    if (paymentCheckInterval) {
+        clearInterval(paymentCheckInterval);
+        paymentCheckInterval = null;
+    }
 }
 
 function loadPayPalInIframe(paypalUrl) {
@@ -130,7 +231,7 @@ function loadPayPalInIframe(paypalUrl) {
 }
 
 function handlePayPalNewTab(paypalUrl) {
-    // Close the modal
+    // Close the payment overlay
     closePayment();
     
     // Open PayPal in new tab
@@ -141,18 +242,23 @@ function handlePayPalNewTab(paypalUrl) {
         return;
     }
     
-    // Check for payment completion every 2 seconds
-    var paymentCheck = setInterval(function() {
+    // Show payment overlay again to indicate we're waiting
+    showPaymentOverlay();
+    
+    // Check if new tab is closed (user completed or cancelled payment)
+    var tabCheck = setInterval(function() {
         if (newTab.closed) {
-            clearInterval(paymentCheck);
-            checkPaymentStatus();
+            clearInterval(tabCheck);
+            // Start checking payment status when user returns
+            startPaymentStatusCheck();
         }
-    }, 2000);
+    }, 1000);
     
     // Also listen for focus event when user returns to tab
     window.addEventListener('focus', function checkFocus() {
         setTimeout(function() {
-            checkPaymentStatus();
+            // User returned to this tab, check payment status
+            startPaymentStatusCheck();
             window.removeEventListener('focus', checkFocus);
         }, 1000);
     });
@@ -169,39 +275,56 @@ function checkPaymentStatus() {
         },
         success: function(response) {
             if (response.payment_completed) {
+                // Payment successful - stop checking and show success
+                stopPaymentStatusCheck();
                 handlePaymentSuccess(response.memorial_id);
             } else {
-                // Payment not completed, user might have cancelled
-                openErrorModal('Payment was not completed. Please try again if you wish to proceed.');
+                // Payment not completed yet, update loading message
+                $('#paymentLoading').html(`
+                    <i class="fa fa-spinner fa-spin fa-3x"></i>
+                    <p>Waiting for payment completion...</p>
+                    <p><small>Status: Payment pending</small></p>
+                    <button class="btn btn-warning btn-sm" onclick="cancelPayment()" style="margin-top: 10px;">
+                        Cancel Payment
+                    </button>
+                `);
+                // Continue checking - don't show error modal
             }
         },
         error: function() {
-            openErrorModal('Unable to verify payment status. Please check your account or contact support.');
+            // Network error, but don't stop checking
+            $('#paymentLoading').html(`
+                <i class="fa fa-spinner fa-spin fa-3x"></i>
+                <p>Checking payment status...</p>
+                <p><small>Status: Unable to verify - retrying</small></p>
+                <button class="btn btn-warning btn-sm" onclick="cancelPayment()" style="margin-top: 10px;">
+                    Cancel Payment
+                </button>
+            `);
         }
     });
 }
 
-function showPaymentIframe() {
-    $('#paymentOverlay').show();
-    $('#paymentLoading').show();
-    $('#paymentIframe').hide();
-    paymentInProgress = true;
+function cancelPayment() {
+    // Stop checking payment status
+    stopPaymentStatusCheck();
+    
+    // Reset payment state
+    paymentInProgress = false;
+    
+    // Close payment overlay
+    closePayment();
+    
+    // Show cancellation message
+    openErrorModal('Payment process cancelled. You can try again anytime.');
 }
 
 function handlePaymentSuccess(memorialId) {
-    // Show success message
-    var successHtml = `
-        <div style="text-align: center; padding: 50px; background: #f8f9fa;">
-            <div style="color: #28a745; font-size: 48px; margin-bottom: 20px;">✓</div>
-            <h2 style="color: #155724; margin-bottom: 20px;">Payment Successful!</h2>
-            <p>Your plan has been activated successfully.</p>
-            <p>Redirecting to privacy settings...</p>
-        </div>
-    `;
-    
-    // Show success in modal
+    // Show success in the payment overlay
+    $('#paymentLoading').hide();
     $('#paymentIframe').hide();
-    $('#paymentLoading').html(successHtml).show();
+    $('#paymentSuccess').show();
+    $('#paymentSuccess p').text('Your plan has been activated successfully. Redirecting to privacy settings...');
     
     // Wait 3 seconds then close and navigate
     setTimeout(function() {
@@ -216,9 +339,20 @@ function handlePaymentSuccess(memorialId) {
 }
 
 function closePayment() {
+    // Stop any ongoing payment checks
+    stopPaymentStatusCheck();
+    
+    // Hide payment overlay
     $('#paymentOverlay').hide();
     $('#paymentIframe').attr('src', 'about:blank');
-    $('#paymentLoading').html('<i class="fa fa-spinner fa-spin fa-3x"></i><p>Loading payment form...</p>');
+    
+    // Reset loading message
+    $('#paymentLoading').html(`
+        <i class="fa fa-spinner fa-spin fa-3x"></i>
+        <p>Waiting for payment process...</p>
+    `);
+    
+    // Reset payment state
     paymentInProgress = false;
 }
 </script>

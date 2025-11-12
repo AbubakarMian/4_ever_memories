@@ -31,6 +31,7 @@
 
                         if (Auth::user()) {
                             $signin_buy = "href='".asset('#')."'";
+                            $signin_buy = "";
                         }
                         ?>
     <section>
@@ -46,7 +47,7 @@
                             <p>Flower Donation Page <span class="sidetick"><i class="fa fa-check" aria-hidden="true"></i></span></p>
                             <p>Image Gallery <span class="sidetick"><i class="fa fa-check" aria-hidden="true"></i></span></p>
                             <div class="inerpkgclick">
-                                <button type="submit" {!!$signin_buy!!} class="btn btn-primary banclick">Buy Now</button>
+                                <button type="submit" onclick="submit_update_plan(1,49.99)" {!!$signin_buy!!} class="btn btn-primary banclick">Buy Now</button>
                             </div>
                         </div>
                     </div>
@@ -58,7 +59,7 @@
                             <p>Virtual Anniversary Organize By 4Ever (Extra Cost) <span class="sidetick"><i class="fa fa-check" aria-hidden="true"></i></span></p>
                             <p>Tribute Notes And Letters By Friends <span class="sidetick"><i class="fa fa-check" aria-hidden="true"></i></span></p>
                             <div class="inerpkgclick">
-                                <button type="submit" {!!$signin_buy!!} class="btn btn-primary banclick">Buy Now</button>
+                                <button type="submit" onclick="submit_update_plan(2,99.99)" {!!$signin_buy!!} class="btn btn-primary banclick">Buy Now</button>
                             </div>
                         </div>
                     </div>
@@ -73,7 +74,7 @@
                             <p>A. Wife Page Link To Husband Or Husband Page Link Wife <span class="sidetick"><i class="fa fa-check" aria-hidden="true"></i></span></p>
                             <p>B. Husband Or Wife Memorials Merge Together <span class="sidetick"><i class="fa fa-check" aria-hidden="true"></i></span></p>
                             <div class="inerpkgclick">
-                                <button type="submit" {!!$signin_buy!!} class="btn btn-primary banclick">Buy Now</button>
+                                <button type="submit" onclick="submit_update_plan(3,149.99)" {!!$signin_buy!!} class="btn btn-primary banclick">Buy Now</button>
                             </div>
                         </div>
                     </div>
@@ -86,7 +87,7 @@
                             <p>And All in Premium Plus <span class="sidetick"><i class="fa fa-check" aria-hidden="true"></i></span></p>
                             <p>Search By Name For A Brief Information <span class="sidetick"><i class="fa fa-check" aria-hidden="true"></i></span></p>
                             <div class="inerpkgclick">
-                                <button type="submit" {!!$signin_buy!!} class="btn btn-primary banclick">Buy Now</button>
+                                <button type="submit" onclick="submit_update_plan(4,199.99)" {!!$signin_buy!!} class="btn btn-primary banclick">Buy Now</button>
                             </div>
                         </div>
                     </div>
@@ -94,11 +95,16 @@
             </div>
         </div>
     </section>
-    s
- 
+ @include('user.partial.payment_modal')
     @endsection
 
-
+<script>
+    
+function openErrorModal(errorMessage) {
+    $('#error-message').text(errorMessage);
+    $('#errorModal').modal('show');
+}
+</script>
 
 
 
