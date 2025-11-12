@@ -906,17 +906,17 @@
             var storyd = $('#story_details').val();
             var storyp = $('#upload-photo').val();
             if (storyt == "") {
-                alert('Plz Write A Title');
+                alert('Please Write A Title');
 
                 return;
             }
             if (storyd == "") {
-                alert('Plz Write A detail');
+                alert('Please Write A detail');
 
                 return;
             }
             if (storyp == "") {
-                alert('Plz Add A Picture');
+                alert('Please Add A Picture');
 
                 return;
             }
@@ -1003,7 +1003,7 @@
         $('#save_media_audio').on('click', function() {
             var aud = $('.upld_audio').val();
             if (aud == "") {
-                // alert('Plz Write A Tribute');
+                // alert('Please Write A Tribute');
 
                 return;
             }
@@ -1013,7 +1013,7 @@
         $('#save_media_image').on('click', function() {
             var img = $('#file_upload').val();
             if (img == "") {
-                // alert('Plz Write A Tribute');
+                // alert('Please Write A Tribute');
 
                 return;
             }
@@ -1023,7 +1023,7 @@
         $('#save_media_video').on('click', function() {
             var vid = $('.upld_video').val();
             if (vid == "") {
-                // alert('Plz Write A Tribute');
+                // alert('Please Write A Tribute');
 
                 return;
             }
@@ -1033,7 +1033,7 @@
         $('#save_trib').on('click', function() {
             var msg = $('#add_tibs').val();
             if (msg == "") {
-                // alert('Plz Write A Tribute');
+                // alert('Please Write A Tribute');
 
                 return;
             }
