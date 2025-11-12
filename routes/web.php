@@ -101,9 +101,14 @@ Route::get('user/testing2', [User_UserController::class, 'index2'])->name('admin
 Route::get('user/testing3', [User_UserController::class, 'index3'])->name('admin.user.add_user');
 
 Route::post('user/memorial/update_plan', [User_UserController::class, 'update_plan'])->name('user.plan.update');
+Route::get('/create-payment', [App\Http\Controllers\Admin\PaymentController::class, 'createPayment'])->name('create.payment');
+
+// For direct access (if needed)
+Route::get('/create-payment/{plan_id}', [App\Http\Controllers\Admin\PaymentController::class, 'createPayment'])->name('create.payment.get');
 
 Route::post('user/memorial/privacy', [User_UserController::class, 'privacy'])->name('user.memorial.privacy');
 Route::post('user/memorial/save_css', [User_UserController::class, 'save_css'])->name('user.memorial.save_css');
+Route::post('user/memorial/start-trial', [User_UserController::class, 'startTrial'])->name('user.memorial.start_trial');
 
 Route::group(['middleware' => 'login.access_token'], function () { //,'prefix'=>'admin'
     // saave_memorial_user *********
@@ -124,3 +129,6 @@ Route::get('search/memorialss', [User_UserController::class, 'search_memorial'])
 Route::get('user/blog/child_loss', [User_UserController::class, 'child_loss'])->name('user.child_loss');
 Route::get('user/blog/death', [User_UserController::class, 'death'])->name('user.death');
 Route::get('user/blog/our_story', [User_UserController::class, 'our_story'])->name('user.our_story');
+
+
+Route::post('/subscribe/{planId}', [PaymentController::class, 'createYearlySubscription'])->name('subscribe');

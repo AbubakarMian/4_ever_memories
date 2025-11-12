@@ -785,7 +785,7 @@ aria-labelledby="LoginModalCenterTitle" aria-hidden="true">
                                                     </div>
                                                     <div class="attach">
                                                         <div class="attch_hed">
-                                                            Attach a picture or video (optional):
+                                                            Attach a picture:
                                                         </div>
 
                                                         <div class="attch_icon_area">

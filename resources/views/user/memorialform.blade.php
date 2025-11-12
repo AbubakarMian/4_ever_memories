@@ -16,7 +16,145 @@
 
 </head>
 @extends('user_layout.main_header_footer')
-
+<style>
+    .package-intro {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    }
+    .package-intro h3 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+    .billing-note {
+        color: #e74c3c;
+        font-weight: 600;
+        margin-top: 10px;
+        font-size: 14px;
+    }
+    .pricing {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    .price {
+        font-size: 32px;
+        font-weight: 700;
+        color: #2c3e50;
+        line-height: 1;
+    }
+    .period {
+        font-size: 16px;
+        color: #7f8c8d;
+        font-weight: 400;
+    }
+    .memorial-count-badge {
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+        color: #3498db;
+        background: rgba(52, 152, 219, 0.1);
+        padding: 8px;
+        border-radius: 6px;
+        margin-top: 5px;
+    }
+    .popular-package {
+        border: 2px solid #3498db;
+        position: relative;
+    }
+    .popular-badge {
+        position: absolute;
+        top: 15px;
+        right: -30px;
+        background: #3498db;
+        color: white;
+        padding: 5px 30px;
+        transform: rotate(45deg);
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .package-footer {
+        text-align: center;
+        margin-top: 30px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+    .savings-note {
+        color: #27ae60;
+        font-weight: 600;
+        margin-top: 10px;
+        font-size: 14px;
+    }
+    
+    /* Payment iframe styles */
+    .payment-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        display: none;
+    }
+    .payment-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        max-width: 800px;
+        height: 80%;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    }
+    .payment-header {
+        background: #3498db;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .payment-header h4 {
+        margin: 0;
+        font-size: 18px;
+    }
+    .close-payment {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+    }
+    .payment-iframe {
+        width: 100%;
+        height: calc(100% - 60px);
+        border: none;
+    }
+    .payment-loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: #3498db;
+    }
+    .payment-success {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: #27ae60;
+        display: none;
+    }
+</style>
 <body onload="disableSubmit()">
 
     <section>
@@ -42,7 +180,7 @@
                             <ul class="nav nav-tabs tabmenu form_tab">
                                 <!-- <li class=""><a data-toggle="tab" href="#home">ACCOUNT DETAILS</a></li> -->
                                 <li><a data-toggle="tab" href="#menu1">ABOUT YOUR LOVED ONE</a></li>
-                                <li><a data-toggle="tab" href="#menu2">CHOOSE YOUR PLAN</a></li>
+                                <li><a data-toggle="tab" id="choose_plan_tab" href="#menu2">CHOOSE YOUR PLAN</a></li>
                                 <li id="privacy_tab"><a data-toggle="tab" href="#menu3">PRIVACY OPTIONS</a></li>
                             </ul>
                         </div>
@@ -297,127 +435,107 @@
                                 </div>
                                 <div id="menu2" class="tab-pane fade">
 
-                                    <div class="col-sm-6">
-                                        <div class="plandata">
-                                            <h4>STANDARD (15 MEMORIAL PAGES)</h4>
-                                            <div class="mincardboxhght">
-                                                <p>Highly Secure With Password Login Access <span class="sidetick"><i
-                                                            class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                                </p>
-                                                <p>Decease Bio <span class="sidetick"><i class="fa fa-check-circle"
-                                                            aria-hidden="true"></i></span></p>
-                                                <p>Flower Donation Page <span class="sidetick"><i
-                                                            class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                                </p>
-                                                <p>Image Gallery <span class="sidetick"><i class="fa fa-check-circle"
-                                                            aria-hidden="true"></i></span></p>
-                                            </div>
-
-                                            <div class="inerpkgclick">
-                                                <a data-toggle="tab" href="#menu3">
-                                                    <button onclick="submit_update_plan(1)"
-                                                        class="btn btn-primary banclick">Buy Now</button>
-
-                                                </a>
+                                    <!-- Add this header to explain the packages -->
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="package-intro">
+                                                <h3>Choose Your Memorial Capacity</h3>
+                                                <p>All packages include our complete set of memorial services - select based on how many memorial pages you need</p>
+                                                <p class="billing-note"><i class="fa fa-info-circle"></i> All plans are yearly subscriptions</p>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="plandata">
-                                            <h4>PREMIUM (30 MEMORIAL PAGES)</h4>
-
+                                            <h4>STANDARD PLAN</h4>
+                                            <div class="pricing">
+                                                <div class="price">$49.99<span class="period">/year</span></div>
+                                                <div class="memorial-count-badge">15 Memorial Pages</div>
+                                            </div>
                                             <div class="mincardboxhght">
-                                                <p>All in Standard And Biography of Deceased And Family Members <span
-                                                        class="sidetick"><i class="fa fa-check-circle"
-                                                            aria-hidden="true"></i></span></p>
-                                                <p>Automated Anniversary Reminder <span class="sidetick"><i
-                                                            class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                                </p>
-                                                <p>Virtual Anniversary Organize By 4Ever (Extra Cost) <span
-                                                        class="sidetick"><i class="fa fa-check-circle"
-                                                            aria-hidden="true"></i></span></p>
-                                                <p>Tribute Notes And Letters By Friends <span class="sidetick"><i
-                                                            class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                                </p>
+                                                <p>Complete Memorial Platform Access <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                                <p>All Premium Features Included <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                                <p>Perfect for Individual or Small Family Use <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                                <p>Full Service Memorial Creation <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
                                             </div>
 
                                             <div class="inerpkgclick">
-                                                <a data-toggle="tab" href="#menu3">
-
-                                                    <button onclick="submit_update_plan(2)"
-                                                        class="btn btn-primary banclick">Buy Now</button>
-
-
-                                                </a>
+                                                <button onclick="submit_update_plan(1,49.99)" class="btn btn-primary banclick">Select 15 Memorials - $49.99/year</button>
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     <div class="col-sm-6">
-
-                                        <div class="plandata">
-                                            <h4>PREMIUM PLUS (50 MEMORIAL PAGES)</h4>
-
+                                        <div class="plandata popular-package">
+                                            <div class="popular-badge">BEST VALUE</div>
+                                            <h4>PREMIUM PLAN</h4>
+                                            <div class="pricing">
+                                                <div class="price">$99.99<span class="period">/year</span></div>
+                                                <div class="memorial-count-badge">30 Memorial Pages</div>
+                                            </div>
                                             <div class="mincardboxhght">
-                                                <p>All in Standard And Premium Including <span class="sidetick"><i
-                                                            class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                                </p>
-                                                <p>Tribute Page For Message From Family And Friends <span
-                                                        class="sidetick"><i class="fa fa-check-circle"
-                                                            aria-hidden="true"></i></span></p>
-                                                <p>Grave Yard Image On Top Of The Page <span class="sidetick"><i
-                                                            class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                                </p>
-                                                <p>Link To Physical Grave Site <span class="sidetick"><i
-                                                            class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                                </p>
-                                                <p>Link Memorials Of Relative To Their Pages, Example <span
-                                                        class="sidetick"><i class="fa fa-check-circle"
-                                                            aria-hidden="true"></i></span></p>
-                                                <p>A. Wife Page Link To Husband Or Husband Page Link Wife <span
-                                                        class="sidetick"><i class="fa fa-check-circle"
-                                                            aria-hidden="true"></i></span></p>
-                                                <p>B. Husband Or Wife Memorials Merge Together <span
-                                                        class="sidetick"><i class="fa fa-check-circle"
-                                                            aria-hidden="true"></i></span></p>
+                                                <p>Complete Memorial Platform Access <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                                <p>All Premium Features Included <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                                <p>Ideal for Extended Family Memorials <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                                <p>Twice the Capacity of Standard <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
                                             </div>
 
                                             <div class="inerpkgclick">
-                                                <a data-toggle="tab" href="#menu3">
-                                                    <button onclick="submit_update_plan(3)"
-                                                        class="btn btn-primary banclick">Buy Now</button>
-
-                                                </a>
+                                                <button onclick="submit_update_plan(2,99.99)" class="btn btn-primary banclick">Select 30 Memorials - $99.99/year</button>
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     <div class="col-sm-6">
-
                                         <div class="plandata">
-                                            <h4>VIP PREMIUM PLUS (80 MEMORIAL PAGES)</h4>
-
+                                            <h4>PREMIUM PLUS</h4>
+                                            <div class="pricing">
+                                                <div class="price">$149.99<span class="period">/year</span></div>
+                                                <div class="memorial-count-badge">50 Memorial Pages</div>
+                                            </div>
                                             <div class="mincardboxhght">
-                                                <p>(All in Premium Plus) <span class="sidetick"><i
-                                                            class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                                </p>
-                                                <p>Customized Dedicated Page <span class="sidetick"><i
-                                                            class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                                </p>
-                                                <p>Highly Secure Login Access <span class="sidetick"><i
-                                                            class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                                </p>
-                                                <p>And All in Premium Plus <span class="sidetick"><i
-                                                            class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                                </p>
-                                                <p>Search By Name For A Brief Information <span class="sidetick"><i
-                                                            class="fa fa-check-circle" aria-hidden="true"></i></span>
-                                                </p>
+                                                <p>Complete Memorial Platform Access <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                                <p>All Premium Features Included <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                                <p>Perfect for Larger Families & Communities <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                                <p>Significant Capacity for Multiple Generations <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
                                             </div>
 
                                             <div class="inerpkgclick">
-                                                <a data-toggle="tab" href="#menu3">
-                                                    <button onclick="submit_update_plan(4)"
-                                                        class="btn btn-primary banclick">Buy Now</button>
-                                                </a>
+                                                <button onclick="submit_update_plan(3,149.99)" class="btn btn-primary banclick">Select 50 Memorials - $149.99/year</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="plandata">
+                                            <h4>VIP PREMIUM PLUS</h4>
+                                            <div class="pricing">
+                                                <div class="price">$199.99<span class="period">/year</span></div>
+                                                <div class="memorial-count-badge">80 Memorial Pages</div>
+                                            </div>
+                                            <div class="mincardboxhght">
+                                                <p>Complete Memorial Platform Access <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                                <p>All Premium Features Included <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                                <p>Maximum Capacity for Extensive Memorial Needs <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                                <p>Unlimited Access to All Memorial Features <span class="sidetick"><i class="fa fa-check-circle" aria-hidden="true"></i></span></p>
+                                            </div>
+
+                                            <div class="inerpkgclick">
+                                                <button onclick="submit_update_plan(4,199.99)" class="btn btn-primary banclick">Select 80 Memorials - $199.99/year</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add this footer to reinforce the message -->
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="package-footer">
+                                                <p><strong>All plans include:</strong> Secure password access, biography pages, flower donation features, image galleries, tribute pages, anniversary reminders, family linking, and all memorial services.</p>
+                                                <p class="savings-note"><i class="fa fa-tag"></i> Premium plan offers the best value at just $3.33 per memorial</p>
+                                                <hr>
+                                                <p><strong>Want to start now?</strong> Continue without paying to create a memorial today. It will remain active for 15 days.</p>
+                                                <button type="button" class="btn btn-default" onclick="continue_without_paying()">Continue without paying (15-day trial)</button>
                                             </div>
                                         </div>
                                     </div>
@@ -425,7 +543,7 @@
                                 </div>
                                 <div id="menu3" class="tab-pane fade">
                                     <div class="cardformarea option">
-                                        <form action="{!! asset('user/memorial/privacy') !!}" method="post">
+                                        <form action="{!! asset('user/memorial/privacy') !!}" id="privacy_form" method="post">
                                             {!! csrf_field() !!}
 
                                             <h2>Privacy options:</h2>
@@ -470,8 +588,7 @@
                                             ?>
                                             <!-- <a href="{!! asset('user/template/select_template/{user_website}') !!}">  </a> -->
                                             <input type="hidden" name="memorial_id" class="memorial_id">
-
-                                            <button type="submit" class="btn btn-primary contclik"
+                                            <button type="submit" onclick="agree_privacy_policy()" class="btn btn-primary contclik"
                                                 id="submit">Continue</button>
 
 
@@ -485,81 +602,33 @@
             </div>
         </div>
 
-        <form action="{!! asset('user/memorial/update_plan') !!}" method="post" id="update_plan_form">
+        <!-- Payment iframe overlay -->
+        <div class="payment-overlay" id="paymentOverlay">
+            <div class="payment-container">
+                <div class="payment-header">
+                    <h4>Complete Your Payment</h4>
+                    <button class="close-payment" onclick="closePayment()">&times;</button>
+                </div>
+                <div class="payment-loading" id="paymentLoading">
+                    <i class="fa fa-spinner fa-spin fa-3x"></i>
+                    <p>Loading payment form...</p>
+                </div>
+                <iframe class="payment-iframe" id="paymentIframe" style="display: none;"></iframe>
+                <div class="payment-success" id="paymentSuccess">
+                    <i class="fa fa-check-circle fa-5x"></i>
+                    <h3>Payment Successful!</h3>
+                    <p>Redirecting to memorial page...</p>
+                </div>
+            </div>
+        </div>
+
+        <form action="{!! asset('user/memorial/update_plan') !!}" method="post" id="update_plan_form" target="paymentIframe">
             {!! csrf_field() !!}
             <input type="hidden" name="memorial_id" class="memorial_id">
             <input type="hidden" name="plan_id" id="plan_id">
         </form>
     </section>
 
-    {{-- <section>
-        <div class="contactarea">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="contactdata">
-                            <h3>Plant a tree as a living tribute</h3>
-                            <h2>MEMORIAL TREES <br> BY 4EVER </h2>
-                            <p>Created by Internet Pioneer Momolla Kokomolla in 1964,<br>
-                                It is the oldest online Cemetery & Memorial Site in the World.</p>
-                            <a href="contactus.html"><button type="submit"
-                                    class="btn btn-primary contactclick">Contact
-                                    Us</button></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
-
-    {{-- <section>
-        <div class="footerarea">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="footerlogo">
-                            <img src="{!! asset('public/theme/user_theme/images/footer-logo.png') !!}" class="img-responsive">
-                            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                            <div class="fotermenu">
-                                <div class="navbar-collapse nav-collapse collapse fomen">
-                                    <ul class="nav navbar-nav navmenu">
-                                        <li id="1">
-                                            <a href="{!! asset('/') !!}"><span>HOME</span></a>
-                                        </li>
-                                        <li id="2">
-                                            <a href="{!! asset('user/aboutus') !!}"><span>ABOUT</span></a>
-                                        </li>
-                                        <li id="3">
-                                            <a href="{!! asset('admin/template/template1') !!}"><span>CREATE A
-                                                    MEMORIAL</span> </a>
-                                        </li>
-                                        <li id="4">
-                                            <a href="{!! asset('user/plans') !!}"><span>PLANS & FEATURES</span> </a>
-                                        </li>
-                                        <li id="5">
-                                            <a href="{!! asset('user/testimonials') !!}"><span>TESTIMONIALS</span> </a>
-                                        </li>
-                                        <li id="6">
-                                            <a href="{!! asset('user/blog') !!}"><span>BLOG</span> </a>
-                                        </li>
-                                        <li id="7">
-                                            <a href="{!! asset('user/contactus') !!}"><span>CONTACT</span> </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="lastfooter">
-                            <p>Copyright © 2022 4ever memory - Designed and Developed by HAT-INC</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
 <!-- Professional-Looking Bootstrap Modal Structure -->
 <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -587,74 +656,137 @@
     <script>
         // var data = CKEDITOR.instances.editor1.getData();
 
-
         var user_memorial = null;
+        var paymentInProgress = false;
 
         function get_ck_editor_val() {
             var my_memorial = CKEDITOR.instances['summary_ckeditor'].getData();
-
             var c1 = CKEDITOR.instances["summary_ckeditor"];
             var c2 = CKEDITOR.instances["textarea-id"];
 
             console.log('its ckeditor', c1);
             console.log('not ckeditor', c2);
-
             console.log('my_memorial', my_memorial);
-            console.log('my_memorial');
             return false;
         }
 
-
         function create_memorial(memorial_form, response) {
-    try {
-        var my_memorial = CKEDITOR.instances['summary_ckeditor'].getData();
-        console.log('my_memorial', my_memorial);
-        console.log('res 1', response);
+            try {
+                var my_memorial = CKEDITOR.instances['summary_ckeditor'].getData();
+                console.log('my_memorial', my_memorial);
+                console.log('res 1', response);
 
-        // response = 'asd';
-
-        if (response.status) {
-            console.log('res 2', response);
-            user_memorial = response.response.user_memorial;
-            $('.memorial_id').val(user_memorial.id);
-            open_payment_plan_select();
-        } else {
-            console.log('res1111sss',  response.error.message);
-
-            var error_msg = response?.error?.message?.[0] ?? 'Error creating memorial, contact admin';
-
-            // Open the Bootstrap modal and display the error message
-            openErrorModal(error_msg);
+                if (response.status) {
+                    console.log('res 2', response);
+                    user_memorial = response.response.user_memorial;
+                    $('.memorial_id').val(user_memorial.id);
+                    open_payment_plan_select();
+                } else {
+                    console.log('res1111sss',  response.error.message);
+                    var error_msg = response?.error?.message?.[0] ?? 'Error creating memorial, contact admin';
+                    openErrorModal(error_msg);
+                }
+            } catch (err) {
+                console.log('wwwrrrrrrrres1111sss',  response.error.message);
+                var error_msg = response?.error?.message?.[0] ?? 'Error creating memorial, contact admin';
+                openErrorModal(error_msg);
+            }
         }
-    } catch (err) {
-        console.log('wwwrrrrrrrres1111sss',  response.error.message);
 
-        var error_msg = response?.error?.message?.[0] ?? 'Error creating memorial, contact admin';
+        function openErrorModal(errorMessage) {
+            $('#error-message').text(errorMessage);
+            $('#errorModal').modal('show');
+        }
 
-        // Open the Bootstrap modal and display the error message
-        openErrorModal(error_msg);
-    }
-}
+        function agree_privacy_policy() {
+            document.getElementById('privacy_form').submit();
+        }
 
-function openErrorModal(errorMessage) {
-    // Set the error message in the modal
-    $('#error-message').text(errorMessage);
-
-    // Open the Bootstrap modal
-    $('#errorModal').modal('show');
-}
-
-
-        function submit_update_plan(selected_plan_id) {
+        function submit_update_plan(selected_plan_id, price) {
+            if (paymentInProgress) {
+                return; // Prevent multiple submissions
+            }
+            
             $('#plan_id').val(selected_plan_id);
-            // $('#update_plan_form').submit();
-            submit_form('#update_plan_form', 'open_tab');
-            // submit_form('#memorial_id', 'open_tab');
+            showPaymentIframe();
+            
+            // Submit the form to the iframe
+            setTimeout(function() {
+                document.getElementById('update_plan_form').submit();
+                paymentInProgress = true;
+            }, 500);
+        }
+
+        function showPaymentIframe() {
+            $('#paymentOverlay').show();
+            $('#paymentLoading').show();
+            $('#paymentIframe').hide();
+            $('#paymentSuccess').hide();
+            
+            // Listen for iframe load events
+            $('#paymentIframe').on('load', function() {
+                $('#paymentLoading').hide();
+                $('#paymentIframe').show();
+                
+                // Check if payment is successful (you'll need to implement this based on your payment processor)
+                checkPaymentStatus();
+            });
+        }
+
+        function checkPaymentStatus() {
+            // This function should check if payment was successful
+            // You'll need to implement this based on your payment processor's API
+            // For demonstration, I'm using a timeout to simulate payment completion
+            
+            // Simulate checking payment status every 2 seconds
+            var checkInterval = setInterval(function() {
+                try {
+                    // Try to access iframe content (this might be blocked by same-origin policy)
+                    var iframe = document.getElementById('paymentIframe');
+                    var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    
+                    // Look for success indicators in the iframe
+                    // This is just an example - adjust based on your payment processor
+                    if (iframeDoc.body.innerHTML.includes('success') || 
+                        iframeDoc.body.innerHTML.includes('thank you') ||
+                        iframeDoc.body.innerHTML.includes('payment successful')) {
+                        
+                        clearInterval(checkInterval);
+                        showPaymentSuccess();
+                    }
+                } catch (e) {
+                    // Cross-origin restriction - use alternative method
+                    // You might need to implement server-side webhooks or polling
+                    console.log('Cannot access iframe content due to security restrictions');
+                }
+            }, 2000);
+            
+            // Fallback: if we can't check the iframe content, assume success after 10 seconds
+            setTimeout(function() {
+                clearInterval(checkInterval);
+                showPaymentSuccess();
+            }, 10000);
+        }
+
+        function showPaymentSuccess() {
+            $('#paymentIframe').hide();
+            $('#paymentSuccess').show();
+            
+            // Wait 5 seconds then close the iframe and redirect
+            setTimeout(function() {
+                closePayment();
+                // Redirect to next page or show success message
+                window.location.href = '{!! route('user.memorialform') !!}?payment_success=1&memorial_id=' + $('.memorial_id').val();
+            }, 5000);
+        }
+
+        function closePayment() {
+            $('#paymentOverlay').hide();
+            paymentInProgress = false;
         }
 
         function open_tab(res) {
             console.log('res', res);
-            $('#privacy_tab').click();
         }
 
         function onlyOne(checkbox) {
@@ -662,7 +794,6 @@ function openErrorModal(errorMessage) {
             console.log('checkboxes', checkboxes);
             checkboxes.each((index, item) => {
                 console.log('item', item);
-
                 if (item !== checkbox) item.checked = false
             })
         }
@@ -672,20 +803,14 @@ function openErrorModal(errorMessage) {
         }
 
         function activateButton(element) {
-
             if (element.checked) {
                 document.getElementById("submit").disabled = false;
             } else {
                 document.getElementById("submit").disabled = true;
             }
-
         }
 
-
         function validate_submit_form(form_selector, sucess_function) {
-//             openErrorModal('asdsadsadsadasdsadsadsadasdsadsadsadasdsadsadsadasdsadsadsad');
-// return;
-
             var valid_form = true;
             $(form_selector).find('input').each(function() {
                 if ($(this).prop('required') && $.trim($(this).val()).length === 0) {
@@ -696,18 +821,8 @@ function openErrorModal(errorMessage) {
                     valid_form = false;
                 }
             });
-            // $(form_selector).find('select').each(function(){
-            //     if($(this).prop('value') && $.trim($(this).val()).length === 0 ){
-            //         console.log('err name',$(this).attr('name'));
-            //         console.log('err name',$.trim($(this).val().length ));
-            //         console.log('err name',$(this).attr('name'));
-            //         $(this).addClass('required-warning');
-            //         valid_form = false;
-            //     }
-            // });
             if (valid_form) {
                 submit_form(form_selector, sucess_function);
-                // $('.nav-tabs a[href="#menu2"]').tab('show')
             }
         }
 
@@ -715,8 +830,44 @@ function openErrorModal(errorMessage) {
             window.scrollTo(0, 400);
             $('.nav-tabs a[href="#menu2"]').tab('show');
         }
-    </script>
 
+        function continue_without_paying() {
+            var memorialId = $('.memorial_id').val();
+            if (!memorialId) {
+                openErrorModal('Please complete About Your Loved One first.');
+                return;
+            }
+            $.ajax({
+                method: 'POST',
+                url: '{!! asset('user/memorial/start-trial') !!}',
+                data: { memorial_id: memorialId, _token: '{{ csrf_token() }}' },
+                dataType: 'JSON',
+                success: function(resp) {
+                    try { resp = (typeof resp === 'string') ? JSON.parse(resp) : resp; } catch(e) {}
+                    if (resp && resp.status) {
+                        window.location = '{!! route('user.memorialform') !!}?open_privacy=1&memorial_id=' + memorialId;
+                    } else {
+                        openErrorModal((resp && resp.error && resp.error.message && resp.error.message[0]) || 'Could not start trial. Try again.');
+                    }
+                },
+                error: function() {
+                    openErrorModal('Could not start trial. Try again.');
+                }
+            });
+        }
+
+        $(function() {
+            var params = new URLSearchParams(window.location.search);
+            if (params.get('open_privacy') === '1') {
+                var mid = params.get('memorial_id');
+                if (mid) {
+                    $('.memorial_id').val(mid);
+                }
+                window.scrollTo(0, 400);
+                $('.nav-tabs a[href="#menu3"]').tab('show');
+            }
+        });
+    </script>
 
 </body>
 

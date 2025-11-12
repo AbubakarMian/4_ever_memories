@@ -13,7 +13,11 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
-
+    'paypal'=>[
+        'client_id'=>env('PAYPAL_CLIENT_ID','ATRfZbdrzt_XA384VaIxKV7us12xwoA3fFVVC320QY4vGhJLsNrzh9sUEZjQjqwbFhVGmi_ZfJQdRDWv'),
+        'secret'=>env('PAYPAL_SECRET','EBlDcwCOkiiD6WxfLC9iESNt_R9bl0myGA-mMGXZ12MOxNK_9o8sgKBknl5Y0ZAJ40FpCQrUbZIfNCBD'),
+        'mode'=>env('PAYPAL_MODE','sandbox')
+    ],
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

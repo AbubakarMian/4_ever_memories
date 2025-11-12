@@ -18,9 +18,6 @@ return new class extends Migration
             $table->string('name')->nullable()->default(null);
             $table->text('details')->nullable()->default(null);
             $table->boolean('tribute_page')->nullable()->default(1);
-
-            
-
             $table->boolean('secure_access')->nullable()->default(1);
             $table->boolean('decease_bio')->nullable()->default(1);
             $table->boolean('flower_donation')->nullable()->default(1);

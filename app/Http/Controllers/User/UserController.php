@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Helpers\UserTemplateHelper;
 use App\Models\Gallery;
 use App\Models\Life_Tab_Arr;
@@ -159,9 +160,19 @@ class UserController extends Controller {
         }
     }
     public function update_plan(Request $request) {
-        $plan = UserWebsite::find($request->memorial_id);
-        $plan->plan_id = $request->plan_id;
-        $plan->save();
+        // $plan = UserWebsite::find($request->memorial_id);
+        // $plan->plan_id = $request->plan_id;
+        // $plan->save();
+        // $user = Auth::user();
+        // $user->plan_id = $request->subscription_id;
+        // $user->save();
+        
+        // $payment_controller->createYearlySubscription($request);
+        // $payment_controller = new PaymentController();
+        // $payment_controller->createPayment($request);
+        return redirect()->route('create.payment', ['plan_id' => $request->plan_id, 'memorial_id' => $request->memorial_id]);
+        // return redirect()->route('create.payment', ['plan_id' => $request->plan_id]);
+        // return $this->sendResponse(200, $payment_controller);
     }
     public function privacy(Request $request) {
         $memorial_id = $request->memorial_id;
@@ -180,6 +191,27 @@ class UserController extends Controller {
         $user_helper = new UserTemplateHelper();
         $res = $user_helper->change_template($request, $request->user_website_id, $request->css_style_id);
         return $this->sendResponse(200, $res);
+    }
+
+    public function startTrial(Request $request)
+    {
+        $memorialId = $request->memorial_id;
+        if (!$memorialId) {
+            return $this->sendResponse(500, null, ['Memorial ID is required']);
+        }
+        $user_web = UserWebsite::find($memorialId);
+        if (!$user_web) {
+            return $this->sendResponse(500, null, ['Memorial not found']);
+        }
+        if (Auth::check() && $user_web->user_id && $user_web->user_id !== Auth::id()) {
+            return $this->sendResponse(500, null, ['Unauthorized']);
+        }
+        $user_web->is_trial = true;
+        $user_web->next_billing_date = now()->addDays(15)->toDateTimeString();
+        $user_web->is_active = true;
+        $user_web->save();
+
+        return $this->sendResponse(200, ['memorial_id' => $user_web->id]);
     }
 
     public function get_memorial(Request $request, $user_email) {

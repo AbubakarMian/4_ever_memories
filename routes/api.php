@@ -39,3 +39,5 @@ Route::group(['middleware' => 'auth.user_loggedin'], function () {
 });
 
 Route::post('all_memorials', [MemorialController::class, 'all_memorials']);
+Route::get('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+Route::get('/payment/cancel', [PaymentController::class, 'paymentCancel'])->name('payment.cancel');
