@@ -601,55 +601,9 @@
                 </div>
             </div>
         </div>
-
-        <!-- Payment iframe overlay -->
-        <div class="payment-overlay" id="paymentOverlay">
-            <div class="payment-container">
-                <div class="payment-header">
-                    <h4>Complete Your Payment</h4>
-                    <button class="close-payment" onclick="closePayment()">&times;</button>
-                </div>
-                <div class="payment-loading" id="paymentLoading">
-                    <i class="fa fa-spinner fa-spin fa-3x"></i>
-                    <p>Loading payment form...</p>
-                </div>
-                <iframe class="payment-iframe" id="paymentIframe" style="display: none;"></iframe>
-                <div class="payment-success" id="paymentSuccess">
-                    <i class="fa fa-check-circle fa-5x"></i>
-                    <h3>Payment Successful!</h3>
-                    <p>Redirecting to memorial page...</p>
-                </div>
-            </div>
-        </div>
-
-        <form action="{!! asset('user/memorial/update_plan') !!}" method="post" id="update_plan_form" target="paymentIframe">
-            {!! csrf_field() !!}
-            <input type="hidden" name="memorial_id" class="memorial_id">
-            <input type="hidden" name="plan_id" id="plan_id">
-        </form>
+    @include('user.partial.payment_modal')
     </section>
 
-<!-- Professional-Looking Bootstrap Modal Structure -->
-<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content error_content">
-            <div class="modal-header error_header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title" id="errorModalLabel"><i class="fa fa-times cross_icn" aria-hidden="true"></i></h5>
-                
-            </div>
-            <div class="modal-body error_body">
-                <h3></h3>
-                <div id="error-message" class="alert alert-danger custom_alt" role="alert"></div>
-            </div>
-            <div class="modal-footer error-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
     @include('layouts.myapp_js')
     <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>

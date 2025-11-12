@@ -102,6 +102,7 @@ Route::get('user/testing3', [User_UserController::class, 'index3'])->name('admin
 
 Route::post('user/memorial/update_plan', [User_UserController::class, 'update_plan'])->name('user.plan.update');
 Route::get('/create-payment', [App\Http\Controllers\Admin\PaymentController::class, 'createPayment'])->name('create.payment');
+Route::get('/check-payment-status', [PaymentController::class, 'checkPaymentStatus'])->name('check.payment.status');
 
 // For direct access (if needed)
 Route::get('/create-payment/{plan_id}', [App\Http\Controllers\Admin\PaymentController::class, 'createPayment'])->name('create.payment.get');

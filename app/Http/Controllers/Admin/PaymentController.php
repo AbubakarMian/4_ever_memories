@@ -15,7 +15,7 @@ class PaymentController extends Controller
         4 => ['memorials' => 80, 'name' => 'VIP Premium Plus', 'amount' => 199.99]
     ];
 
-    public function createPayment(Request $request)
+    public function createPayment_del(Request $request)
     {
         try {
             $planId = $request->plan_id;
@@ -62,6 +62,54 @@ class PaymentController extends Controller
         }
     }
 
+    public function createPayment(Request $request)
+    {
+        try {
+            $planId = $request->plan_id;
+            $memorialId = $request->get('memorial_id');
+            
+            if (!isset($this->planConfigs[$planId])) {
+                return response()->json(['error' => 'Invalid plan selected'], 400);
+            }
+
+            $planConfig = $this->planConfigs[$planId];
+            
+            // Get access token
+            $accessToken = $this->getPayPalAccessToken();
+            if (!$accessToken) {
+                return response()->json(['error' => 'Could not connect to PayPal'], 500);
+            }
+            
+            // Create payment
+            $payment = $this->createPayPalPaymentDirect($planConfig, $planId, $accessToken);
+            
+            if ($payment && isset($payment['id'])) {
+                // Store temporary payment data in session
+                session([
+                    'pending_payment' => [
+                        'payment_id' => $payment['id'],
+                        'plan_id' => $planId,
+                        'amount' => $planConfig['amount'],
+                        'memorial_id' => $memorialId,
+                    ]
+                ]);
+                
+                // Find approval URL
+                foreach ($payment['links'] as $link) {
+                    if ($link['rel'] === 'approval_url') {
+                        return redirect($link['href']);
+                        // return response()->json(['redirect_url' => $link['href']]);
+                    }
+                }
+            }
+            
+            return response()->json(['error' => 'Failed to create PayPal payment'], 500);
+            
+        } catch (\Exception $ex) {
+            \Log::error('Payment Error: ' . $ex->getMessage());
+            return response()->json(['error' => 'Error creating payment: ' . $ex->getMessage()], 500);
+        }
+    }
     private function getPayPalAccessToken()
     {
         $clientId = config('services.paypal.client_id');
@@ -165,7 +213,7 @@ class PaymentController extends Controller
         return null;
     }
 
-    public function paymentSuccess(Request $request)
+    public function paymentSuccess_del(Request $request)
     {
         $paymentId = $request->get('paymentId');
         $payerId = $request->get('PayerID');
@@ -198,7 +246,124 @@ class PaymentController extends Controller
         
         return json_encode(['success' => false, 'message' => 'Payment Execution Error: ' . $ex->getMessage()]);
     }
+    public function paymentSuccess(Request $request)
+    {
+        $paymentId = $request->get('paymentId');
+        $payerId = $request->get('PayerID');
+        $pendingPayment = session('pending_payment');
+        
+        if (!$paymentId || !$payerId || !$pendingPayment) {
+            return $this->showPaymentResult('cancel');
+        }
 
+        try {
+            // Execute the payment
+            $executionResult = $this->executePayPalPayment($paymentId, $payerId);
+            
+            if ($executionResult && $executionResult['state'] === 'approved') {
+                // Store subscription in database
+                $this->storeSubscription($executionResult, $pendingPayment);
+                
+                // Clear session
+                session()->forget('pending_payment');
+                
+                $memorialId = $pendingPayment['memorial_id'] ?? null;
+                return $this->showPaymentResult('success', $memorialId);
+            }
+            
+        } catch (\Exception $ex) {
+            \Log::error('Payment Execution Error: ' . $ex->getMessage());
+            return $this->showPaymentResult('error', null, $ex->getMessage());
+        }
+        
+        return $this->showPaymentResult('error');
+    }
+
+    private function showPaymentResult($type, $memorialId = null, $errorMessage = null)
+    {
+        $html = '';
+        
+        switch ($type) {
+            case 'success':
+                $html = "
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <script>
+                        // Notify parent window of payment success
+                        window.parent.postMessage({
+                            type: 'payment_success',
+                            memorial_id: '" . ($memorialId ?? '') . "'
+                        }, '" . url('/') . "');
+                    </script>
+                    <style>
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            text-align: center; 
+                            padding: 50px; 
+                            background: #f8f9fa;
+                        }
+                        .success-icon { 
+                            color: #28a745; 
+                            font-size: 48px; 
+                            margin-bottom: 20px;
+                        }
+                        .success-message { 
+                            color: #155724; 
+                            margin-bottom: 20px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class=\"success-icon\">✓</div>
+                    <h2 class=\"success-message\">Payment Successful!</h2>
+                    <p>Your plan has been activated successfully.</p>
+                    <p>Redirecting to privacy settings...</p>
+                </body>
+                </html>
+                ";
+                break;
+                
+            case 'cancel':
+                $html = "
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <script>
+                        window.parent.postMessage({
+                            type: 'payment_cancel'
+                        }, '" . url('/') . "');
+                    </script>
+                </head>
+                <body>
+                    <p>Payment was cancelled.</p>
+                </body>
+                </html>
+                ";
+                break;
+                
+            case 'error':
+                $html = "
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <script>
+                        window.parent.postMessage({
+                            type: 'payment_cancel',
+                            message: '" . ($errorMessage ?? 'Payment failed') . "'
+                        }, '" . url('/') . "');
+                    </script>
+                </head>
+                <body>
+                    <p>Payment failed: " . ($errorMessage ?? 'Unknown error') . "</p>
+                </body>
+                </html>
+                ";
+                break;
+        }
+        
+        return response($html);
+    }
     private function executePayPalPayment($paymentId, $payerId)
     {
         $accessToken = $this->getPayPalAccessToken();
@@ -240,11 +405,33 @@ class PaymentController extends Controller
         \Log::error('PayPal Payment Execution Error: ' . $result);
         return null;
     }
-
+    public function checkPaymentStatus(Request $request)
+    {
+        $memorialId = $request->memorial_id;
+        $userId = auth()->id();
+        
+        // Check if user has an active subscription
+        $activeSubscription = Subscription::where('user_id', $userId)
+            ->where('status', 'active')
+            ->first();
+        
+        if ($activeSubscription) {
+            return response()->json([
+                'payment_completed' => true,
+                'memorial_id' => $memorialId,
+                'subscription' => $activeSubscription
+            ]);
+        }
+        
+        return response()->json([
+            'payment_completed' => false
+        ]);
+    }
     public function paymentCancel()
     {
         session()->forget('pending_payment');
-        return json_encode(['success' => false, 'message' => 'Payment Cancled: ']);
+        return $this->showPaymentResult('cancel');
+        // return json_encode(['success' => false, 'message' => 'Payment Cancled: ']);
 
         // return view('admin.payment.cancel');
     }
