@@ -203,7 +203,7 @@ class UserController extends Controller {
         if (!$user_web) {
             return $this->sendResponse(500, null, ['Memorial not found']);
         }
-        if (Auth::check() && $user_web->user_id && $user_web->user_id !== Auth::id()) {
+        if (Auth::check() && $user_web->user_id ) {//&& $user_web->user_id !== Auth::id()
             return $this->sendResponse(500, null, ['Unauthorized']);
         }
         $user_web->is_trial = true;
