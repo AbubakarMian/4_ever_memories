@@ -23,3 +23,5 @@ yarn-error.log
 /.idea
 /.vscode
 /4evermemorial
+.git.zip
+error_log
