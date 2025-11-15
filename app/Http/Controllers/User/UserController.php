@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Mail\InviteEmail;
 use DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 
 class UserController extends Controller {
@@ -203,7 +204,9 @@ class UserController extends Controller {
         if (!$user_web) {
             return $this->sendResponse(500, null, ['Memorial not found']);
         }
-        
+        Log::info('User ID: ' . Auth::id());
+        Log::info('Auth::check(): ' . Auth::check());
+        Log::info('User ID: ' . $user_web->user_id);
         if (!Auth::check() || $user_web->user_id !== Auth::id() ) {//&& $user_web->user_id !== Auth::id()
             return $this->sendResponse(500, null, ['Unauthorized']);
         }
