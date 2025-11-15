@@ -204,10 +204,12 @@ class UserController extends Controller {
         if (!$user_web) {
             return $this->sendResponse(500, null, ['Memorial not found']);
         }
+        $authId = (int)Auth::id();
+        $webUserId = (int)$user_web->user_id;
         Log::info('User ID: ' . Auth::id());
         Log::info('Auth::check(): ' . Auth::check());
         Log::info('User ID: ' . $user_web->user_id);
-        if (!Auth::check() || $user_web->user_id !== Auth::id() ) {//&& $user_web->user_id !== Auth::id()
+        if (!Auth::check() || $authId !== $webUserId ) {//&& $user_web->user_id !== Auth::id()
             return $this->sendResponse(500, null, ['Login user or Memorial user not match Unauthorized']);
         }
         $user_web->is_trial = true;
