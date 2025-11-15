@@ -727,13 +727,13 @@
             }
             $.ajax({
                 method: 'POST',
-                url: '{!! asset('user/memorial/start-trial') !!}',
+                url: '{!! asset("user/memorial/start-trial") !!}',
                 data: { memorial_id: memorialId, _token: '{{ csrf_token() }}' },
                 dataType: 'JSON',
                 success: function(resp) {
                     try { resp = (typeof resp === 'string') ? JSON.parse(resp) : resp; } catch(e) {}
                     if (resp && resp.status) {
-                        window.location = '{!! route('user.memorialform') !!}?open_privacy=1&memorial_id=' + memorialId;
+                        window.location = '{!! route("user.memorialform") !!}?open_privacy=1&memorial_id=' + memorialId;
                     } else {
                         openErrorModal((resp && resp.error && resp.error.message && resp.error.message[0]) || 'Could not start trial. Try again.');
                     }

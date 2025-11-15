@@ -95,7 +95,7 @@ Route::get('user/template/select_template', [TemplateController::class, 'select_
 Route::get('user/template/select_template/{user_website}', [TemplateController::class, 'select_template']); //testing
 
 
-Route::post('user/adduser', [User_UserController::class, 'add_user'])->name('admin.user.add_user');
+// Route::post('user/adduser', [User_UserController::class, 'add_user'])->name('admin.user.add_user');
 
 Route::get('user/testing', [User_UserController::class, 'index1111'])->name('admin.user.add_user');
 Route::get('user/testing2', [User_UserController::class, 'index2'])->name('admin.user.add_user');

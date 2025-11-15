@@ -154,7 +154,7 @@ class UserController extends Controller {
             $user_memorial->id = $user_web->id;
             $response = new \stdClass();
             $response->status = true;
-            $response->user_memorial = $user_memorial;
+            $response->user_memorial = $user_web;
             $response->all_request = $request->all();
             return $this->sendResponse(200,$response);
         }
