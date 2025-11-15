@@ -208,7 +208,7 @@ class UserController extends Controller {
         Log::info('Auth::check(): ' . Auth::check());
         Log::info('User ID: ' . $user_web->user_id);
         if (!Auth::check() || $user_web->user_id !== Auth::id() ) {//&& $user_web->user_id !== Auth::id()
-            return $this->sendResponse(500, null, ['Unauthorized']);
+            return $this->sendResponse(500, null, ['Login user or Memorial user not match Unauthorized']);
         }
         $user_web->is_trial = true;
         $user_web->next_billing_date = now()->addDays(15)->toDateTimeString();
