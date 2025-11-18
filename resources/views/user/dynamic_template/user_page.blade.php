@@ -30,11 +30,8 @@ aria-labelledby="LoginModalCenterTitle" aria-hidden="true">
                         <button type="submit" class="btn btn-primary mosubclick">Submit</button>
                     </div>
                 </form>
-                {{-- <i  aria-hidden="true" data-toggle="modal" data-target="#remodal"> Registration</i> --}}
-
             </div>
         </div>
-
     </div>
 </div>
 </div>
@@ -78,11 +75,18 @@ aria-hidden="true">
                 </form>
             </div>
         </div>
-
     </div>
 </div>
 </div>
 {{-- End Register in modal --}}
+
+<!-- Audio Control Button -->
+<div id="audioControl" style="position: fixed; top: 50px; right: 20px; z-index: 10000; background: rgba(255,255,255,0.9); padding: 10px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+    <button id="playAudioBtn" style="padding: 8px 12px; background: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 5px;">
+        <span id="audioIcon">🔇</span>
+        <span id="audioText">Play Music</span>
+    </button>
+</div>
 
 <input type="hidden" name="sndng_mail" value="{!! $user_website->id !!}">
 @include('partial_layouts.cropper.cropper_html')
@@ -91,7 +95,165 @@ aria-hidden="true">
     $picture_count = $gal_side->where('type', 'photo')->count();
     $audio_count = $gal_side->where('type', 'audio')->count();
 @endphp
+
 <script>
+    // Global audio variables
+    var backgroundAudio = null;
+    var isAudioPlaying = false;
+    var audioInitialized = false;
+
+    // Initialize audio system
+    function initAudioSystem() {
+        var audioUrl = '{!! $user_website->background_voice ?? '' !!}';
+        
+        if (!audioUrl || audioUrl.trim() === '') {
+            console.warn('No valid audio URL found');
+            document.getElementById('audioControl').style.display = 'none';
+            return;
+        }
+
+        console.log('Initializing audio:', audioUrl);
+        
+        // Create audio element
+        backgroundAudio = new Audio(audioUrl);
+        backgroundAudio.preload = 'auto';
+        backgroundAudio.volume = 0.7;
+        backgroundAudio.loop = true;
+        
+        // Add event listeners for audio
+        backgroundAudio.addEventListener('loadeddata', function() {
+            console.log('Audio loaded successfully');
+            audioInitialized = true;
+            updateAudioButton();
+        });
+        
+        backgroundAudio.addEventListener('error', function(e) {
+            console.error('Audio loading error:', e);
+            document.getElementById('audioControl').style.display = 'none';
+        });
+        
+        backgroundAudio.addEventListener('ended', function() {
+            isAudioPlaying = false;
+            updateAudioButton();
+        });
+        
+        // Try autoplay (will likely fail due to browser restrictions)
+        attemptAutoplay();
+    }
+
+    function attemptAutoplay() {
+        if (!backgroundAudio || !audioInitialized) return;
+        
+        console.log('Attempting autoplay...');
+        var playPromise = backgroundAudio.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log('🎵 Autoplay successful!');
+                isAudioPlaying = true;
+                updateAudioButton();
+            }).catch(error => {
+                console.log('🔇 Autoplay blocked:', error.name);
+                isAudioPlaying = false;
+                updateAudioButton();
+                // Show user that audio is ready but needs interaction
+                showAudioReadyPrompt();
+            });
+        }
+    }
+
+    function toggleAudio() {
+        if (!backgroundAudio || !audioInitialized) {
+            console.log('Audio not ready yet');
+            return;
+        }
+        
+        if (isAudioPlaying) {
+            pauseAudio();
+        } else {
+            playAudio();
+        }
+    }
+
+    function playAudio() {
+        if (!backgroundAudio) return;
+        
+        console.log('Attempting to play audio...');
+        var playPromise = backgroundAudio.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log('🎵 Audio started successfully!');
+                isAudioPlaying = true;
+                updateAudioButton();
+                hideAudioPrompt();
+            }).catch(error => {
+                console.error('❌ Audio playback failed:', error);
+                alert('Unable to play audio. Please check your browser permissions or try clicking the page first.');
+            });
+        }
+    }
+
+    function pauseAudio() {
+        if (!backgroundAudio) return;
+        
+        backgroundAudio.pause();
+        isAudioPlaying = false;
+        updateAudioButton();
+        console.log('⏸️ Audio paused');
+    }
+
+    function updateAudioButton() {
+        var audioIcon = document.getElementById('audioIcon');
+        var audioText = document.getElementById('audioText');
+        var playButton = document.getElementById('playAudioBtn');
+        
+        if (isAudioPlaying) {
+            audioIcon.textContent = '🔊';
+            audioText.textContent = 'Playing';
+            playButton.style.background = '#2196F3';
+        } else {
+            audioIcon.textContent = '🔇';
+            audioText.textContent = 'Play Music';
+            playButton.style.background = '#4CAF50';
+        }
+    }
+
+    function showAudioReadyPrompt() {
+        // Create a subtle notification that audio is ready
+        setTimeout(() => {
+            if (!isAudioPlaying) {
+                console.log('💡 Audio ready - click the play button or anywhere on page to start');
+            }
+        }, 1000);
+    }
+
+    function hideAudioPrompt() {
+        // Remove any audio prompts if needed
+        const prompt = document.getElementById('audioPrompt');
+        if (prompt) prompt.remove();
+    }
+
+    // Setup click handlers
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize audio system
+        initAudioSystem();
+        
+        // Audio control button click
+        document.getElementById('playAudioBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleAudio();
+        });
+        
+        // Global click to enable audio (backup method)
+        document.addEventListener('click', function globalClickHandler() {
+            // This helps unlock audio on first user interaction
+            if (!isAudioPlaying && audioInitialized) {
+                console.log('User interaction detected - audio system unlocked');
+            }
+        });
+    });
+
     $(document).ready(function () {
         var isAuthenticated = {!! Auth::check() ? 'true' : 'false' !!};
 
@@ -119,51 +281,38 @@ aria-hidden="true">
     function hide_initially() {
         $('.face_share').hide();
     }
+    
     $(document).ready(function() {
-        // $("#btn1").click(function() {
-        //     $(".add_tribute_append").append(review);
-        // });
-
         set_dynamic_values();
 
         function set_dynamic_values() {
             initial_values();
             hide_initially();
             set_dynamic_tribute_images();
-            
-            initAudio();
-            play_music();
         }
 
-        // $('#save_trib').on('click', function() {
-
         $('.sumit_email').on('click', function() {
-            // VAR url = '{!! asset('user/invite') !!}';
             console.log('email sent');
             var formData = new FormData();
             formData.append('memorial_id', '{!! $user_website->id !!}');
             formData.append('to_emails', $('.share_inveite_emails').val());
             console.log('share email', $('.share_inveite_emails').val());
 
-
-
-            //   ajax
             $.ajax({
                 url: "{{ asset('user/invite') }}",
                 type: 'POST',
                 dataType: 'json',
-                data: formData, // Send the FormData object directly
-                contentType: false, // Set contentType to false to prevent jQuery from processing the data
-                processData: false, // Set processData to false to prevent jQuery from converting the data to a query string
+                data: formData,
+                contentType: false,
+                processData: false,
                 headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Use headers to set the CSRF token
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function(response) {
                     console.log(response);
                     if (response.status) {
                         console.log('email sent');
                         $('#success_Modal').modal('toggle');
-                        // $('#success_Modal').modal('show');
                     } else {
                         show_error_modal_with_msg(response);
                     }
@@ -175,68 +324,6 @@ aria-hidden="true">
             });
         });
 
-        function play_music() {
-            return;
-            var audioUrl = '{!! $user_website->background_voice ?? '' !!}';
-            
-            // Comprehensive check
-            if (audioUrl && 
-                audioUrl.trim() !== '') {
-                
-                console.log('Attempting to play:', audioUrl);
-                var audio = new Audio(audioUrl);
-                
-                // Modern play with promise handling
-                var playPromise = audio.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.then(_ => {
-                        console.log('Audio started successfully');
-                    }).catch(error => {
-                        console.log('Playback failed:', error);
-                        // Handle browsers that block autoplay
-                        if (error.name === 'NotAllowedError') {
-                            alert('Please click anywhere on the page to enable audio playback, then try again.');
-                        }
-                    });
-                }
-            } else {
-                console.warn('No valid audio URL found');
-            }
-        }
-
-        function initAudio() {
-    var audioUrl = '{!! $user_website->background_voice ?? '' !!}';
-    
-    if (audioUrl && audioUrl.trim() !== '') {
-        console.log('Audio ready:', audioUrl);
-        var audio = new Audio(audioUrl);
-        
-        // Store audio globally for later use
-        window.backgroundAudio = audio;
-        
-        // Add click event listener to entire document
-        document.addEventListener('click', function playOnFirstClick() {
-            if (window.backgroundAudio) {
-                var playPromise = window.backgroundAudio.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.then(_ => {
-                        console.log('Audio started successfully');
-                    }).catch(error => {
-                        console.log('Playback failed:', error);
-                    });
-                }
-                
-                // Remove listener after first click
-                document.removeEventListener('click', playOnFirstClick);
-            }
-        });
-    } else {
-        console.warn('No valid audio URL found');
-    }
-}
-
         function initial_values() {
             $('.contentLi').html('added {!! $trib_side !!} tribute(s)');
             $('.viw_para').html('{!! $user_website->total_views !!} Views');
@@ -247,12 +334,10 @@ aria-hidden="true">
             $('.uploaded_audio_area').html(get_auds(gallery_audio));
             $('.recent_area').html(get_recent(recent_show));
             $('.profile_img').html(prof_img(`{!!$user_website->image_show_var!!}`));
-            // $('.ban_img').html(banner_img(recent_show));
   
             $('.ban_img').css(' background-image',`{!!asset("public/user_templates/template_1/images/cover1.png")!!}`);
-            $('.facebook-share').attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' +
-                window.location
-                .href);
+            $('.facebook-share').attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + window.location.href);
+            
             var images = '';
             if (!gallery_images.length) {
                 images = images + image_crousal(`{!! asset('public/theme/images/logo_change.jpg') !!}`, 0);
@@ -264,136 +349,75 @@ aria-hidden="true">
         }
 
         function get_imges(images_arr) {
-
             var images_html = '';
             for (let index = 0; index < images_arr.length; index++) {
-
                 images_html = images_html + `
                     <div class=\"col-md-4 pic_gal_img remove_imgae` + images_arr[index].id + `\"><div class=\"image-area_pic\">
-                        <img src=\"` + images_arr[index].image_show_var +
-                    `\"   alt=\"\"><a class=\"remove-image_pic\" onclick=\"delete_request( '` +
-                    images_arr[
-                        index].id + `' )\" style=\"display: inline;\">&#215;</a></div></div>
-
-                
+                        <img src=\"` + images_arr[index].image_show_var + `\"   alt=\"\"><a class=\"remove-image_pic\" onclick=\"delete_request( '` + images_arr[index].id + `' )\" style=\"display: inline;\">&#215;</a></div></div>
                 `;
-
             }
             return images_html;
         }
 
         function get_vids(video_arr) {
-
             var images_html = '';
             for (let index = 0; index < video_arr.length; index++) {
-
                 images_html = images_html + `
                     <div class=\"col-md-4 pic_gal_vid remove_imgae` + video_arr[index].id + `\"><div class=\"image-area_pic\">
                         <video width=\"200\" height=\"200\" controls=\"\">
-                        <source src=\"` + video_arr[index].image_show_var +
-                    `\"   alt=\"\"></video>
-                                    <a class=\"remove-image_pic\" onclick=\"delete_request( '` + video_arr[
-                        index].id + `' )\" style=\"display: inline;\">&#215;</a></div></div>
-
-                    
-
-                
+                        <source src=\"` + video_arr[index].image_show_var + `\"   alt=\"\"></video>
+                                    <a class=\"remove-image_pic\" onclick=\"delete_request( '` + video_arr[index].id + `' )\" style=\"display: inline;\">&#215;</a></div></div>
                 `;
-
             }
             return images_html;
         }
 
         function get_auds(audio_arr) {
-
             var images_html = '';
             for (let index = 0; index < audio_arr.length; index++) {
-
                 images_html = images_html + `
-                    
-
-                                            <div class=\"uploaded_audio_box remove_imgae` + audio_arr[index].id + `\"><div class=\"image-area_pic\">
-
+                    <div class=\"uploaded_audio_box remove_imgae` + audio_arr[index].id + `\"><div class=\"image-area_pic\">
                             <p>ssss` + audio_arr[index].date_show_var + ` .by ` + audio_arr[index].name_show_var + `</p>
-
                             <audio autostart=\"0\" autostart=\"false\" preload =\"none\" controls >
-
                             <source src=\"` + audio_arr[index].image_show_var + `\" type=\"audio/mpeg\" />
-
-                            </audio><a class=\"remove-image_pic\"  onclick=\"delete_request( '` + audio_arr[
-                    index].id + `' )\"  style=\"display: inline;\">&#215;</a></div></div>
-
-                
+                            </audio><a class=\"remove-image_pic\"  onclick=\"delete_request( '` + audio_arr[index].id + `' )\"  style=\"display: inline;\">&#215;</a></div></div>
                 `;
-
             }
             return images_html;
         }
 
         function get_recent(recent_arr) {
-
             var images_html = '';
-
             images_html = images_html + `
-                    
-
-                        <ul>
-                            <li class="no-img"><i class="fa fa-pencil-square" aria-hidden="true"></i></li><li class="contentLi"> {!! $trib_side !!} tribute{!! $trib_side > 1 ? 's' : '' !!} added </li>
-                            </ul>
-                        <ul>
-                            <li class="no-img"><i class="fa fa-video-camera" aria-hidden="true"></i></li><li class="contentLi"> {!! $video_count !!} video{!! $video_count > 1 ? 's' : '' !!} added </li>
-                            </ul>
-                        <ul>
-                            <li class="no-img"><i class="fa fa-picture-o" aria-hidden="true"></i></li><li class="contentLi"> {!! $picture_count !!} photo{!! $picture_count > 1 ? 's' : '' !!} added </li>
-                            </ul>
-                        <ul>
-                            <li class="no-img"><i class="fa fa-headphones" aria-hidden="true"></i></li><li class="contentLi"> {!! $audio_count !!} audio{!! $audio_count > 1 ? 's' : '' !!} added </li>
-                            </ul>
-                        
-
-                `;
-
+                <ul>
+                    <li class="no-img"><i class="fa fa-pencil-square" aria-hidden="true"></i></li><li class="contentLi"> {!! $trib_side !!} tribute{!! $trib_side > 1 ? 's' : '' !!} added </li>
+                </ul>
+                <ul>
+                    <li class="no-img"><i class="fa fa-video-camera" aria-hidden="true"></i></li><li class="contentLi"> {!! $video_count !!} video{!! $video_count > 1 ? 's' : '' !!} added </li>
+                </ul>
+                <ul>
+                    <li class="no-img"><i class="fa fa-picture-o" aria-hidden="true"></i></li><li class="contentLi"> {!! $picture_count !!} photo{!! $picture_count > 1 ? 's' : '' !!} added </li>
+                </ul>
+                <ul>
+                    <li class="no-img"><i class="fa fa-headphones" aria-hidden="true"></i></li><li class="contentLi"> {!! $audio_count !!} audio{!! $audio_count > 1 ? 's' : '' !!} added </li>
+                </ul>
+            `;
             return images_html;
         }
 
         function prof_img(img) {
-
             var images_html = '';
             console.log('asdasdas img ',img);
-
-            images_html = images_html + `
-                    
-
-                            <img class="asdasdasdas" src="`+img+`" alt="relative" />
-
-                `;
-
+            images_html = images_html + `<img class="asdasdasdas" src="`+img+`" alt="relative" />`;
             return images_html;
         }
-
-        function banner_img(recent_arr) {
-
-            var images_html = '';
-
-            images_html = images_html + `
-                    
-            <style>
-                .nav_back {
-                    background-image: url(' . $public_path . 'user_templates/template_1/images/cover1.png);
-                            }
-            </style>
-
-                `;
-
-            return images_html;
-        }
-
 
         function set_dynamic_tribute_images() {
             var dynamic_images = true;
             var candles_html = '';
             var flowers_html = '';
             var notes_html = '';
+            
             if (dynamic_images) {
                 candles_html = `                
                 <button class="bt_no dropbtn">
@@ -429,7 +453,6 @@ aria-hidden="true">
                 flowers_html = add_flowers_list() + flowers_html;
                 notes_html = add_notes_feather_list() + notes_html;
             } else {
-
                 candles_html = `                
                 <button onclick="set_tribute('candle','{!! asset('public/user_templates/images/candles/1.png') !!}"',this)" class="bt_no ">
                     <div class="cand same">
@@ -440,7 +463,6 @@ aria-hidden="true">
                     </div>
                 </button>
                 `;
-
                 flowers_html = `                
                 <button onclick="set_tribute('flower','{!! asset('public/user_templates/images/flowers/1.png') !!}"',this)" class="bt_no ">
                     <div class="cand same">
@@ -451,7 +473,6 @@ aria-hidden="true">
                     </div>
                 </button>
                 `;
-
                 notes_html = `                
                 <button onclick="set_tribute('feather','{!! asset('public/user_templates/images/notes/1.png') !!}"',this)" class="bt_no ">
                     <div class="cand same">
@@ -489,13 +510,11 @@ aria-hidden="true">
                 "{!! asset('public/user_templates/images/candles/12.png') !!}",
                 "{!! asset('public/user_templates/images/candles/13.png') !!}",
                 "{!! asset('public/user_templates/images/candles/14.png') !!}",
-                // "{!! asset('public/user_templates/images/candles/candle.png') !!}"
             ];
 
             $(candle_arr).each(function(index, candle) {
                 console.log('candles image', candle);
                 candle_list = candle_list + `                
-                
                     <div class="cand same" onclick="set_tribute('candle','` + candle + `',this)">
                         <div class="ico_wri icon_select">
                             <img src="` + candle + `" alt="relative">
@@ -531,13 +550,11 @@ aria-hidden="true">
                 "{!! asset('public/user_templates/images/flowers/17.png') !!}",
                 "{!! asset('public/user_templates/images/flowers/18.png') !!}",
                 "{!! asset('public/user_templates/images/flowers/19.png') !!}",
-                // "{!! asset('public/user_templates/images/flowers/flower.png') !!}"
             ];
 
             $(flowers_arr).each(function(index, flower) {
                 console.log('flower image', flower);
                 flower_list = flower_list + `                
-                
                     <div class="cand same" onclick="set_tribute('flower','` + flower + `',this)">
                         <div class="ico_wri">
                             <img src="` + flower + `" alt="relative">
@@ -548,23 +565,25 @@ aria-hidden="true">
             flower_list = flower_list + `</div></div>`;
             return flower_list;
         }
-        function toggleDropdown() {
-    var dropdownContent = document.querySelector('.dropdown-content');
-    dropdownContent.classList.toggle('show');
-}
 
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-    if (!event.target.matches('.dropdown-btn')) {
-        var dropdowns = document.getElementsByClassName('dropdown-content');
-        for (var i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
+        function toggleDropdown() {
+            var dropdownContent = document.querySelector('.dropdown-content');
+            dropdownContent.classList.toggle('show');
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-btn')) {
+                var dropdowns = document.getElementsByClassName('dropdown-content');
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
             }
         }
-    }
-}
+
         function add_notes_feather_list() {
             note_list = `
             <div class="dropdown-content">
@@ -575,13 +594,11 @@ window.onclick = function(event) {
                 "{!! asset('public/user_templates/images/notes/3.png') !!}",
                 "{!! asset('public/user_templates/images/notes/4.png') !!}",
                 "{!! asset('public/user_templates/images/notes/5.png') !!}",
-                // "{!! asset('public/user_templates/images/notes/feather.png') !!}"
             ];
 
             $(notes_arr).each(function(index, note) {
                 console.log('note image', note);
                 note_list = note_list + `                
-                
                     <div class="cand same not_icn_c" onclick="set_tribute('feather','` + note + `',this)">
                         <div class="ico_wri">
                             <img src="` + note + `" alt="relative">
@@ -603,29 +620,24 @@ window.onclick = function(event) {
             `;
         }
 
-
         $('#save_story').on('click', function() {
             var storyt = $('#story_title').val();
             var storyd = $('#story_details').val();
             var storyp = $('#upload-photo').val();
             if (storyt == "") {
                 alert('Please Write A Title');
-
                 return;
             }
             if (storyd == "") {
                 alert('Please Write A detail');
-
                 return;
             }
             if (storyp == "") {
                 alert('Please Add A Picture');
-
                 return;
             }
             var formData = new FormData();
             formData.append('memorial_id', memorial_id);
-            // formData.append('memorial_id', '{!! $user_website->id !!}');
             formData.append('story_title_n', $('input[name="story_title_n"]').val());
             formData.append('story_details_n', $('#story_details').val());
             formData.append('story_image', $('input[name="story_image"]').val());
@@ -657,11 +669,6 @@ window.onclick = function(event) {
         });
 
         function upload_file(file) {
-
-            // if($('input[name="media_type"]').val() == ''){
-            //     return;
-            // }
-
             var formData = new FormData();
             formData.append('media_type', $('input[name="media_type"]').val());
             formData.append('upload_file', file);
@@ -673,7 +680,6 @@ window.onclick = function(event) {
                 method: 'POST',
                 data: formData,
                 dataType: 'JSON',
-                // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 processData: false,
                 contentType: false,
                 cache: false,
@@ -689,8 +695,7 @@ window.onclick = function(event) {
                     } else if (res.response.type == 'photo') {
                         $(".gall_row").append(get_gallery_img_html(res.response));
                     } else {
-                        $(".uploaded_audio_area").append(get_gallery_audio_html(res
-                            .response));
+                        $(".uploaded_audio_area").append(get_gallery_audio_html(res.response));
                     }
                     $('input[type="file"],textarea').val('');
                 },
@@ -704,8 +709,6 @@ window.onclick = function(event) {
         $('#save_media_audio').on('click', function() {
             var aud = $('.upld_audio').val();
             if (aud == "") {
-                // alert('Please Write A Tribute');
-
                 return;
             }
             upload_file($('input[name="upld_aud"]')[0].files[0]);
@@ -714,8 +717,6 @@ window.onclick = function(event) {
         $('#save_media_image').on('click', function() {
             var img = $('#file_upload').val();
             if (img == "") {
-                // alert('Please Write A Tribute');
-
                 return;
             }
             upload_file($('input[name="upld_file_hid"]').val());
@@ -724,8 +725,6 @@ window.onclick = function(event) {
         $('#save_media_video').on('click', function() {
             var vid = $('.upld_video').val();
             if (vid == "") {
-                // alert('Please Write A Tribute');
-
                 return;
             }
             upload_file($('input[name="upld_vid"]')[0].files[0]);
@@ -734,14 +733,11 @@ window.onclick = function(event) {
         $('#save_trib').on('click', function() {
             var msg = $('#add_tibs').val();
             if (msg == "") {
-                // alert('Please Write A Tribute');
-
                 return;
             }
             var formData = new FormData();
             formData.append('memorial_id', memorial_id);
             formData.append('details_show_var', msg);
-            // formData.append('details_show_var', $('textarea[name="tribute"]').val());
             if ($('#type_tribute').val() == '') {
                 set_tribute('candle', `{!! asset('public/user_templates/images/candles/1.png') !!}`, this);
             }
@@ -760,8 +756,7 @@ window.onclick = function(event) {
                 success: function(res) {
                     console.log('res', res)
                     if (res.status) {
-                        $(".add_tribute_append").append(get_review_html(res
-                            .response));
+                        $(".add_tribute_append").append(get_review_html(res.response));
                         $('input[type="text"],textarea').val('');
                         $('input[type="hidden"],textarea').val('');
                     } else {
@@ -795,45 +790,37 @@ window.onclick = function(event) {
     }
 
     function set_tribute(type_tribute, tribute_image, e) {
-
         console.log('type tribute', type_tribute);
         console.log('tribute_image tribute', tribute_image);
 
         $(e).parent('.flx_mob').find('.ico_wri').removeClass('icon_selected');
         $(e).find('.ico_wri').addClass('icon_selected');
 
-        // $('.dropdown-content').css('display','none');
-        // $('.dropdown:hover .dropdown-content').css('display','block');
-
-
         $('.same').removeClass('selected_tribute');
         var select_class = '';
-        // selected_tribute
+        
         if (type_tribute == 'candle') {
             select_class = 'cand';
             $('.candle-select-icon-img').attr('src', tribute_image);
         } else if (type_tribute == 'flower') {
             select_class = 'flower';
             $('.flower-select-icon-img').attr('src', tribute_image);
-
-        } else { // feather
+        } else {
             select_class = 'feather';
             $('.feather-select-icon-img').attr('src', tribute_image);
-
         }
         $('.' + select_class).addClass('selected_tribute');
         $('#type_tribute').val(type_tribute);
         $('#image_tribute').val(tribute_image);
     }
 
-
     function set_media(media_type) {
         $('#media_type').val(media_type);
     }
+    
     $(document).ajaxError(
         function(event, jqXHR, ajaxSettings, thrownError) {
-            console.log('[event:' + event + '], [jqXHR:' + jqXHR + '], [ajaxSettings:' + ajaxSettings +
-                '], [thrownError:' + thrownError + '])');
+            console.log('[event:' + event + '], [jqXHR:' + jqXHR + '], [ajaxSettings:' + ajaxSettings + '], [thrownError:' + thrownError + '])');
         });
 
     function get_review_html(response) {
@@ -842,14 +829,11 @@ window.onclick = function(event) {
         var details_show_var = response.details_show_var;
         var type_var = response.type_var;
         if (type_var == 'flower') {
-            type_var =
-                '<img src="' + $('#image_tribute').val() + '">';
+            type_var = '<img src="' + $('#image_tribute').val() + '">';
         } else if (type_var == 'candle') {
-            type_var =
-                '<img src="' + $('#image_tribute').val() + '">';
+            type_var = '<img src="' + $('#image_tribute').val() + '">';
         } else {
-            type_var =
-                '<img src="' + $('#image_tribute').val() + '">';
+            type_var = '<img src="' + $('#image_tribute').val() + '">';
         }
         var review = `
                     <div class="reviewBox">
@@ -872,7 +856,6 @@ window.onclick = function(event) {
     }
 
     function get_story_html(response) {
-
         var user_name_show_var = response.user_name_show_var;
         var date_show_var = response.date_show_var;
         var details_show_var = response.details_show_var;
@@ -922,9 +905,7 @@ window.onclick = function(event) {
     }
 
     function get_gallery_video_html(response) {
-        var image_show_var = `<video width="200" height="200" controls=""><source src="` + response
-            .image_show_var +
-            `" alt=""></video>`;
+        var image_show_var = `<video width="200" height="200" controls=""><source src="` + response.image_show_var + `" alt=""></video>`;
         var gallery_id = response.id;
 
         console.log(image_show_var, 'image');
@@ -932,7 +913,6 @@ window.onclick = function(event) {
         var review = `
                     <div class="col-md-4 pic_gal_vid remove_imgae` + gallery_id + `">
                         <div class="image-area_pic">
-
                             ` + image_show_var + ` 
                             <a class="remove-image_pic" onclick="delete_request(` + gallery_id + `)" style="display: inline;">&#215;</a>
                         </div>
@@ -951,9 +931,7 @@ window.onclick = function(event) {
         var review = `
                                         <div class="uploaded_audio_box remove_imgae` + gallery_id + `">
                                             <div class="image-area_pic">
-                                            
-                                            <h4><div class="new_tag">new</div>` + date_show_var + ` .by  ` +
-            name_show_var + `</h4>
+                                            <h4><div class="new_tag">new</div>` + date_show_var + ` .by  ` + name_show_var + `</h4>
                                             <audio controls autostart="0" autostart="false" preload ="none" >
                                                 <source src="` + image_show_var + `" type="audio/mpeg">
                                               </audio>
@@ -962,7 +940,6 @@ window.onclick = function(event) {
                                         </div>
         `;
         return review;
-
     }
 
     function delete_request(gallery_id) {
@@ -976,9 +953,7 @@ window.onclick = function(event) {
             success: function(response) {
                 console.log(response);
                 if (response.status) {
-
                     $('.remove_imgae' + gallery_id).remove();
-
                 } else {
                     show_error_modal_with_msg(response);
                 }
