@@ -54,6 +54,8 @@ class UserTemplateHelper
         $user_website->user_id = $user->id;
         $user_website->website_user_id = $user_memorial->id;
         $user_website->ad_lastname = $request->ad_lastname;
+        // $user_website->background_audio = $this->move_audio_get_path($request->background_audio, 'background_audio');
+        $user_website->background_voice = $this->move_img_get_path($request->background_audio, url('/'), 'background_audio');
         $user_website->ad_email = $request->ad_email;
         $user_website->ad_pwd = $request->ad_pwd;
         $user_website->full_name = $request->f_name ?? '' . ' ' . $request->m_name ?? '' . ' ' . $request->l_name ?? '';

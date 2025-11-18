@@ -178,6 +178,21 @@
 
                                             </div>
 
+                                            <!-- NEW MP3 UPLOAD FIELD -->
+                                            <div class="form-group">
+                                                <label for="background_audio">Background Music<i class="fa fa-asterisk staring" aria-hidden="true"></i></label>
+                                                <div class="audio-upload-info">
+                                                    <p class="help-text">Upload an MP3 file to play as background audio on this memorial page. This could be recorded message, or a tribute speech.</p>
+                                                </div>
+                                                <input type="file" id="background_audio" name="background_audio" class="form-control" accept="audio/mp3,audio/*" required>
+                                                <!-- <div class="audio-preview" id="audio-preview" style="display: none;">
+                                                    <audio controls class="preview-audio">
+                                                        <source src="" type="audio/mp3">
+                                                        Your browser does not support the audio element.
+                                                    </audio>
+                                                    <p class="audio-file-name"></p>
+                                                </div> -->
+                                            </div>
                                             <div class="form-group">
                                                 <label name="gender" for="exampleFormControlSelect1">Gender</i></label>
                                                 <select class="form-control" name="gender" required
@@ -257,8 +272,6 @@
                                                     image_height="226" aspect_ratio_width="16"
                                                     aspect_ratio_height="9" upload_input_by_name="life_image"
                                                     required>
-
-
                                             </div>
 
 

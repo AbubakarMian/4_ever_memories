@@ -13,9 +13,9 @@
                     <div class="col-sm-12">
                         <div class="bannerdata">
                             <img src="{!! asset('public/theme/user_theme/images/icon.png') !!}" class="img-responsive">
-                            <h1>4 EVER MEMORY</h1>
+                            <h1>4EverMemorial</h1>
                             <h2>Beautiful, Free Online Memorials & Tributes</h2>
-                            <h3>4Ever Virtual Cemetery online tributes are a simple way <br>
+                            <h3>A simple way to preserve, celebrate, and share a loved one’s legacy <br>
                                 to preserve, celebrate and share a loved one's legacy.</h3>
                             <a class="btn btn-primary banclick" href="{!! asset('user/memorialform') !!}">
                                 Create a memorial

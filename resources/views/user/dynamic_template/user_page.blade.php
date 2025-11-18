@@ -84,6 +84,13 @@ aria-hidden="true">
 </div>
 {{-- End Register in modal --}}
 
+<input type="hidden" name="sndng_mail" value="{!! $user_website->id !!}">
+@include('partial_layouts.cropper.cropper_html')
+@php
+    $video_count = $gal_side->where('type', 'video')->count();
+    $picture_count = $gal_side->where('type', 'photo')->count();
+    $audio_count = $gal_side->where('type', 'audio')->count();
+@endphp
 <script>
     $(document).ready(function () {
         var isAuthenticated = {!! Auth::check() ? 'true' : 'false' !!};
@@ -96,19 +103,7 @@ aria-hidden="true">
             $('.signin').css('display', 'inline-flex');
         }
     });
-</script>
-<input type="hidden" name="sndng_mail" value="{!! $user_website->id !!}">
-@include('partial_layouts.cropper.cropper_html')
-{{-- {!!dd($user_website->id);!!} --}}
-@php
-    $video_count = $gal_side->where('type', 'video')->count();
-    $picture_count = $gal_side->where('type', 'photo')->count();
-    $audio_count = $gal_side->where('type', 'audio')->count();
-    // $count = $counted->count();
-    // $count->where('type','video')
-    // dd( $counted);
-@endphp
-<script>
+    
     var memorial_id = '{!! $user_website->id !!}';
     var global_path = `{!! asset('/') !!}`;
     var jsonString = `{!! json_encode($web_variable['gallery_photo_arr']) !!}`;
@@ -135,6 +130,9 @@ aria-hidden="true">
             initial_values();
             hide_initially();
             set_dynamic_tribute_images();
+            
+            initAudio();
+            play_music();
         }
 
         // $('#save_trib').on('click', function() {
@@ -177,12 +175,69 @@ aria-hidden="true">
             });
         });
 
+        function play_music() {
+            return;
+            var audioUrl = '{!! $user_website->background_voice ?? '' !!}';
+            
+            // Comprehensive check
+            if (audioUrl && 
+                audioUrl.trim() !== '') {
+                
+                console.log('Attempting to play:', audioUrl);
+                var audio = new Audio(audioUrl);
+                
+                // Modern play with promise handling
+                var playPromise = audio.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        console.log('Audio started successfully');
+                    }).catch(error => {
+                        console.log('Playback failed:', error);
+                        // Handle browsers that block autoplay
+                        if (error.name === 'NotAllowedError') {
+                            alert('Please click anywhere on the page to enable audio playback, then try again.');
+                        }
+                    });
+                }
+            } else {
+                console.warn('No valid audio URL found');
+            }
+        }
 
+        function initAudio() {
+    var audioUrl = '{!! $user_website->background_voice ?? '' !!}';
+    
+    if (audioUrl && audioUrl.trim() !== '') {
+        console.log('Audio ready:', audioUrl);
+        var audio = new Audio(audioUrl);
+        
+        // Store audio globally for later use
+        window.backgroundAudio = audio;
+        
+        // Add click event listener to entire document
+        document.addEventListener('click', function playOnFirstClick() {
+            if (window.backgroundAudio) {
+                var playPromise = window.backgroundAudio.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        console.log('Audio started successfully');
+                    }).catch(error => {
+                        console.log('Playback failed:', error);
+                    });
+                }
+                
+                // Remove listener after first click
+                document.removeEventListener('click', playOnFirstClick);
+            }
+        });
+    } else {
+        console.warn('No valid audio URL found');
+    }
+}
 
         function initial_values() {
-            // $('.contentLi_vid').html('added {!! $video_count !!} video(s)');
-            // $('.contentLi_Pic').html('added {!! $picture_count !!} photo(s)');
-            // $('.contentLi_aud').html('added {!! $audio_count !!} audio(s)');
             $('.contentLi').html('added {!! $trib_side !!} tribute(s)');
             $('.viw_para').html('{!! $user_website->total_views !!} Views');
 

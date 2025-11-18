@@ -118,6 +118,26 @@ trait Common
         $remove_index = str_replace("index.php", "", $root);
         return $remove_index . '/public/images/' . $type . '/' . $name;
     }
+    public function move_audio_get_path($audio, $root, $type, $audio_name = '')
+    {
+        $uniqid = time();
+        $extension = mb_strtolower($audio->getClientOriginalExtension());
+        $name = $uniqid . $audio_name . '.' . $extension;
+        
+        // Changed from '/images/' to '/audio/'
+        $audioPath = public_path() . '/audio/' . $type;
+        
+        // Create directory if it doesn't exist
+        if (!File::exists($audioPath)) {
+            File::makeDirectory($audioPath, 0755, true);
+        }
+        
+        $audio->move($audioPath, $name);
+        $remove_index = str_replace("index.php", "", $root);
+        
+        // Return path to audio file (not images)
+        return $remove_index . '/audio/' . $type . '/' . $name;
+    }
 
     function get_embeddedyoutube_url($url)
     {
