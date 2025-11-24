@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\TemplateController;
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\StylingsController;
 use App\Http\Controllers\Admin\MemorialFormController;
 use App\Http\Controllers\reports\MemorialController;
@@ -11,6 +11,7 @@ use App\Http\Controllers\User\CommonServicesController;
 use App\Http\Controllers\User\UserController as User_UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PaymentController as Admin_PaymentController;
+use App\Http\Controllers\Admin\TestimaonialController;
 use App\Http\Controllers\Api\UserController;
 
 //////////////user
@@ -24,9 +25,10 @@ Route::get('/', [User_UserController::class, 'index'])->name('user.index');
 Route::get('/user/aboutus', [User_UserController::class, 'aboutus'])->name('user.aboutus');
 Route::get('/user/privacy_policy', [User_UserController::class, 'privacy_policy'])->name('user.privacy_policy');
 Route::get('/user/service_term', [User_UserController::class, 'service_term'])->name('user.service_term');
-Route::get('/user/testimonials', [User_UserController::class, 'testimonials'])->name('user.testimonials');
+Route::get('/user/testimonials', [TestimaonialController::class, 'compact_testimonial'])->name('user.compact_testimonial');
 Route::get('/user/plans', [User_UserController::class, 'plans'])->name('user.plans');
 Route::get('/user/contactus', [User_UserController::class, 'contactus'])->name('user.contactus');
+Route::get('/user/blog', [BlogController::class, 'compact_blog'])->name('user.get_blog');
 Route::post('/user/contactus/submit', [User_UserController::class, 'contactus_update'])->name('user.contactus_update');
 Route::get('/user/profile', [User_UserController::class, 'profile'])->name('user.profile');
 Route::post('/user/profile/update', [User_UserController::class, 'profile_update'])->name('user.profile_update');
@@ -90,7 +92,7 @@ Route::get('admin/template/template2', [TemplateController::class, 'template_2']
 Route::get('admin/template/template3', [TemplateController::class, 'template_3']);
 Route::get('admin/template/template4', [TemplateController::class, 'template_4']);
 /////////category
-Route::get('admin/category', [CategoryController::class, 'index']);
+Route::get('admin/category', [BlogController::class, 'index']);
 
 /////////stylings
 Route::get('admin/stylings', [StylingsController::class, 'index']);
@@ -138,3 +140,28 @@ Route::get('user/blog/our_story', [User_UserController::class, 'our_story'])->na
 
 
 Route::post('/subscribe/{planId}', [Admin_PaymentController::class, 'createYearlySubscription'])->name('subscribe');
+
+
+Route::group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function () {
+
+    //  =================================  BLOG ==========================
+    Route::group(['prefix' => 'blog'], function () {
+        Route::get('/', [BlogController::class, 'index'])->name('blog.index');
+        Route::get('get_blog', [BlogController::class, 'get_blog'])->name('blog.index');
+        Route::get('create', [BlogController::class, 'create'])->name('blog.create'); //add
+        Route::post('save', [BlogController::class, 'save'])->name('blog.save');
+        Route::get('edit/{id}', [BlogController::class, 'edit'])->name('blog.edit');
+        Route::post('update/{id}', [BlogController::class, 'update'])->name('blog.update');
+        Route::post('delete/{id}', [BlogController::class, 'destroy_undestroy'])->name('blog.delete');
+    });
+     //  =================================  testimonial ==========================
+    Route::group(['prefix' => 'testimonial'], function () {
+        Route::get('/', [TestimaonialController::class, 'index'])->name('testimonial.index');
+        Route::get('get_testimonial', [TestimaonialController::class, 'get_testimonial'])->name('testimonial.index');
+        Route::get('create', [TestimaonialController::class, 'create'])->name('testimonial.create'); //add
+        Route::post('save', [TestimaonialController::class, 'save'])->name('testimonial.save');
+        Route::get('edit/{id}', [TestimaonialController::class, 'edit'])->name('testimonial.edit');
+        Route::post('update/{id}', [TestimaonialController::class, 'update'])->name('testimonial.update');
+        Route::post('delete/{id}', [TestimaonialController::class, 'destroy_undestroy'])->name('testimonial.delete');
+    });
+});

@@ -67,6 +67,9 @@ class UserController extends Controller {
     public function contactus() {
         return view('user.contactus');
     }
+    // public function blog() {
+    //     return view('user.blog');
+    // }
     public function contactus_update(Request $request) {
         $contact_us = $request->all();
 

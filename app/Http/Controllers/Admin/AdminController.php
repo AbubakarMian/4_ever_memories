@@ -31,22 +31,19 @@ class AdminController extends Controller
             // 'role_id' => 1
         );
 
-        if(Auth::attempt($user_data))
-        {
+        if (Auth::attempt($user_data)) {
             session(['my_timezone' => $request->my_timezone]);
             return redirect('admin/dashboard');
         }
-        
+
         // elseif()
         // {
         //     return back()->with('error', 'Wrong Login Details');
         // }
 
-        else
-        {
+        else {
             return back()->with('error', 'Wrong Login Details');
         }
-
     }
 
 
@@ -58,7 +55,8 @@ class AdminController extends Controller
     }
 
 
-    function dashboard (){
+    function dashboard()
+    {
 
         $admin_common = new \stdClass();
         $admin_dashboard = $this->admin_dashboard();
@@ -73,8 +71,9 @@ class AdminController extends Controller
         $chart = $admin_dashboard['chart'];
 
         session(['admin_common' => $admin_common]);
-        return view('layouts.default_dashboard',compact(
-            'chart'));
+        return view('layouts.default_dashboard', compact(
+            'chart'
+        ));
     }
     public function admin_dashboard()
     {
@@ -90,6 +89,16 @@ class AdminController extends Controller
             'title' => 'Template ',
 
         ];
+        $modules[] = [
+
+            'url' => 'admin/blog',
+            'title' => 'Blogs'
+        ];
+        $modules[] = [
+
+            'url' => 'admin/testimonial',
+            'title' => 'testimonials'
+        ];
         // $modules[] = [
 
         //     'url' => 'admin/category',
@@ -102,7 +111,7 @@ class AdminController extends Controller
         //     'title' => 'Styling ',
 
         // ];
-        
+
 
         $reports[] = [
 
@@ -110,17 +119,16 @@ class AdminController extends Controller
             'title' => 'Memorials ',
 
         ];
-        
-        
+
+
 
         $myvar = [];
         $myvar['modules'] = $modules;
-        $myvar['reports'] = $reports ;
+        $myvar['reports'] = $reports;
         $myvar['chart'] = [];
 
-        
+
 
         return $myvar;
     }
-
 }
