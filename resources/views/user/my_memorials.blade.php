@@ -11,7 +11,7 @@
 <style>
     .contacttopbanner {
         border-bottom: 5px none #2dafc3;
-        background-image: url(../images/headerimage.jpg);
+        background-image: url(../public/images/headerimage.jpg);
         background-position: 100%;
         background-size: cover;
         background-repeat: no-repeat;

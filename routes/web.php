@@ -12,6 +12,7 @@ use App\Http\Controllers\User\UserController as User_UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PaymentController as Admin_PaymentController;
 use App\Http\Controllers\Admin\TestimaonialController;
+use App\Http\Controllers\Api\UserController;
 
 //////////////user
 Route::post('cropper/crop_image', [CommonServicesController::class, 'crop_image'])->name('crop.image');
@@ -28,6 +29,11 @@ Route::get('/user/testimonials', [TestimaonialController::class, 'compact_testim
 Route::get('/user/plans', [User_UserController::class, 'plans'])->name('user.plans');
 Route::get('/user/contactus', [User_UserController::class, 'contactus'])->name('user.contactus');
 Route::get('/user/blog', [BlogController::class, 'compact_blog'])->name('user.get_blog');
+Route::post('/user/contactus/submit', [User_UserController::class, 'contactus_update'])->name('user.contactus_update');
+Route::get('/user/profile', [User_UserController::class, 'profile'])->name('user.profile');
+Route::post('/user/profile/update', [User_UserController::class, 'profile_update'])->name('user.profile_update');
+Route::get('/user/blog', [User_UserController::class, 'blog'])->name('user.blog');
+Route::get('/user/forgetpassword', [UserController::class, 'sendForgetEmail'])->name('user.forgetpassword');
 Route::get('/user/my_memorials', [User_UserController::class, 'my_memorials'])->name('user.my_memorials');
 Route::get('template', [Admin_UserController::class, 'template']);
 

@@ -24,10 +24,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\InviteEmail;
+use App\Mail\GeneralEmail;
 use DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller {
     public function index() {
@@ -69,6 +70,61 @@ class UserController extends Controller {
     // public function blog() {
     //     return view('user.blog');
     // }
+    public function contactus_update(Request $request) {
+        $contact_us = $request->all();
+
+        if (!$request->email) {
+            return $this->sendResponse(500, null, ['Enter Email address']);
+        }
+    
+    
+        $details = [
+            // 'to' => $request->email,
+            'to' => 'abubakarhere90@gmail.com',//'info@4evermemorial.com',
+            'from' => 'info@4evermemorial.com',
+            'title' => '4Ever',
+            'subject' => 'Contact Us Message ',
+            "dated" => date('d F, Y (l)'),
+            'base_url' => Config::get('app.url'),
+            'contact_us' => $contact_us
+        ];
+    
+        Mail::to($details['to'])->send(new GeneralEmail('user.templates.contactus_email', $details));
+    
+        return back()->with('success', 'Your message has been sent successfully!');
+    }
+    public function profile() {
+        $user = Auth::user();
+        // return view('user.profile', compact('user'))->with('success', 'Profile updated successfully!');
+
+        // dd($user);
+        return view('user.profile', compact('user'));
+    }
+    public function profile_update(Request $request) {
+        $user_auth = Auth::user();
+        $user = User::find($user_auth->id);
+        if(!Hash::check($request->current_password, $user->password)) {
+            return back()->with('error', 'Incorrect Current Password!');
+        }
+        if($request->new_password != $request->confirm_password) {
+            return back()->with('error', 'New Password and Confirm Password do not match!');
+        }
+        
+        $user->password = Hash::make($request->new_password);
+            
+        $user->first_name = $request->first_name;
+        if($request->hasFile('avatar')) {
+            $avatar = $request->avatar;
+            $root = $request->root();
+            $user->avatar = $this->move_img_get_path($avatar, $root, 'avatar');
+        }
+        $user->save();
+        
+        return back()->with('success', 'Profile updated successfully!');
+    }
+    public function blog() {
+        return view('user.blog');
+    }
     public function child_loss() {
         return view('user.child_loss');
     }
@@ -324,9 +380,6 @@ class UserController extends Controller {
         // $search_memorial = UserWebsite::where('email', 'like', '%' . $email . '%@4evermemorial.com')->get();
         return view('user.view_memorial', compact('memorials'));
     }
-
-   
-
 
     public function upload_gallery(Request $request) {
         $user = Auth::user();

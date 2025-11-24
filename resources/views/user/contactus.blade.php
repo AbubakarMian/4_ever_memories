@@ -65,41 +65,31 @@
                 <div class="col-sm-8">
                     <div class="contactform">
                         <h2>Get In Touch With Us</h2>
-                        <form>
-                            <!-- <div class="form-group">
-                                    <label for="exampleFormControlSelect1">Type of inquiry*</label>
-                                    <select class="form-control" id="exampleFormControlSelect1">
-                                        <option>Make a Selection...</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div> -->
+                        <form action="{!! asset('user/contactus/submit') !!}" method="post">
+                            {!! csrf_field() !!}
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Enter Name*</label>
-                                <input type="text" class="form-control" id="text" aria-describedby="text"
-                                    placeholder="Enter Name">
+                                <input type="text" name="name" class="form-control" id="text" aria-describedby="text"
+                                    placeholder="Enter Name" required>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Email address*</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" placeholder="Enter email">
+                                <input type="email" name="email" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp" placeholder="Enter email" required>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Memorial Name*</label>
-                                <input type="text" class="form-control" id="text" aria-describedby="text"
+                                <label for="exampleInputEmail1">Memorial Name</label>
+                                <input type="text" name="memorial_name" class="form-control" id="text" aria-describedby="text"
                                     placeholder="(if applies)">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Your message*</label>
-                                <input type="text" class="form-control" id="text" aria-describedby="text"
-                                    placeholder="Please add your subject here">
+                                <input type="text" name="title" class="form-control" id="text" aria-describedby="text"
+                                    placeholder="Please add your subject here" required>
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"
-                                    placeholder="Please enter the specific details of your request. Please provide as much information as possible so we can help you quickly"></textarea>
+                                <textarea name="message" class="form-control" id="exampleFormControlTextarea1" rows="5"
+                                    placeholder="Please enter the specific details of your request. Please provide as much information as possible so we can help you quickly" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary contactclick">Submit</button>
                         </form>

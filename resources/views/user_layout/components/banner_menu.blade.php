@@ -52,7 +52,7 @@
                 <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
                 <i class="fa fa-user-plus" style="{!!$signout!!}" aria-hidden="true" data-toggle="modal" data-target="#remodal"> Registration</i>
-                <i class="fa fa-sign-in"  style="{!!$signout!!}"aria-hidden="true" data-toggle="modal" data-target="#LoginModalCenter"> Sign</i>
+                <i class="fa fa-sign-in"  style="{!!$signout!!}"aria-hidden="true" data-toggle="modal" data-target="#LoginModalCenter"> SignIn</i>
                 <i class="fa fa-user-circle-o"  style="{!!$signin!!}"aria-hidden="true"data-target="#LoginModalCenter"><a href="{!!asset('user/logout')!!}"> LogOut </a></i>
             </div>
         </div>
@@ -78,13 +78,11 @@
                 </div>
                 <?php
                             $signin = "data-toggle='modal' data-target='#LoginModalCenter'";
-
+                            $profile_url = $signin;
                         if (Auth::user()) {
                             $signin = "href='".asset('user/memorialform')."'";
+                            $profile_url = "href='".asset('user/profile')."'";
                         }
-
-
-
                             $signin_mymemorial = "data-toggle='modal' data-target='#LoginModalCenter'";
 
                         if (Auth::user()) {
@@ -119,6 +117,9 @@
                                 <li id="8">
                                   <a {!!$signin_mymemorial!!}><span>MY MEMORIALS</span> </a>
                                 </li>
+                                <li id="9">
+                                  <a {!!$profile_url!!}><span>Profile</span> </a>
+                                </li>
                               </ul>
                         </div>
                     </div>
@@ -147,18 +148,19 @@
                 <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
                 <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
                 <i class="fa fa-user-plus" style="{!!$signout!!}" aria-hidden="true" data-toggle="modal" data-target="#remodal"> Registration</i>
-                <i class="fa fa-sign-in"  style="{!!$signout!!}"aria-hidden="true" data-toggle="modal" data-target="#LoginModalCenter"> Sign</i>
+                <i class="fa fa-sign-in"  style="{!!$signout!!}"aria-hidden="true" data-toggle="modal" data-target="#LoginModalCenter"> SignIn</i>
                 <i class="fa fa-user-circle-o"  style="{!!$signin!!}"aria-hidden="true"data-target="#LoginModalCenter"><a href="{!!asset('user/logout')!!}"> LogOut </a></i>
             </div>
         </div>
 
-{{-- Sign in modal --}}
+    {{-- Sign in modal --}}
     <div class="modal fade" id="LoginModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="LoginModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header modhead">
                     <h5 class="modal-title" id="loginModalLongTitle">Sign in With Your Email</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="signmodaldata">
@@ -174,13 +176,19 @@
                                 <input type="password" name="password" class="form-control" id="password"
                                     aria-describedby="password" placeholder="password">
                             </div>
+                            
+                            <div class="mb-3">
+                                <!-- Fixed: Use data-bs-toggle and data-bs-dismiss with proper Bootstrap 5 syntax -->
+                            <a class="forgot-password-link" data-toggle="modal" data-target="#forgotPasswordModal" data-dismiss="modal">
+                                Forgot Password?
+                            </a>
+                            </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary mosubclick">Submit</button>
                             </div>
                         </form>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -229,3 +237,34 @@
         </div>
     </div>
     {{-- End Register in modal --}}
+    
+{{-- Forgot Password Modal --}}
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header modhead">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="forgotPasswordModalTitle">Reset Your Password</h5>
+            </div>
+            <div class="modal-body">
+                <div class="forgotpasswordmodaldata">
+                    <p>Enter your email address and we'll send you a link to reset your password.</p>
+                    <form action="{!! asset('api/forget_password') !!}" method="POST">
+                        {{ csrf_field() }}
+                        <div class="form-group mb-3">
+                            <label for="forgotEmail">Enter Your Email address:</label>
+                            <input type="email" name="email" class="form-control" id="forgotEmail" aria-describedby="forgotEmail" placeholder="email address" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Send Reset Link</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End Forgot Password modal --}}
