@@ -25,6 +25,12 @@ aria-labelledby="LoginModalCenterTitle" aria-hidden="true">
                         <input type="password" name="password" class="form-control" id="password"
                             aria-describedby="password" placeholder="password">
                     </div>
+                    
+                    <div class="mb-3">
+                        <a class="forgot-password-link" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" data-bs-dismiss="modal">
+                            Forgot Password?
+                        </a>
+                    </div>
                     <p class="reg_md">Dont have an account? <a aria-hidden="true" data-toggle="modal" data-target="#remodal">Register Now</a></p>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary mosubclick">Submit</button>
@@ -79,6 +85,37 @@ aria-hidden="true">
 </div>
 </div>
 {{-- End Register in modal --}}
+
+    {{-- Forgot Password Modal --}}
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header modhead">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title" id="forgotPasswordModalTitle">Reset Your Password</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="forgotpasswordmodaldata">
+                        <p>Enter your email address and we'll send you a link to reset your password.</p>
+                        <form action="{!! asset('api/forget_password') !!}" method="POST">
+                            {{ csrf_field() }}
+                            <div class="form-group mb-3">
+                                <label for="forgotEmail">Enter Your Email address:</label>
+                                <input type="email" name="email" class="form-control" id="forgotEmail" aria-describedby="forgotEmail" placeholder="email address" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Send Reset Link</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- End Forgot Password modal --}}
 
 <!-- Audio Control Button -->
 <div id="audioControl" style="position: fixed; top: 50px; right: 20px; z-index: 10000; background: rgba(255,255,255,0.9); padding: 10px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">

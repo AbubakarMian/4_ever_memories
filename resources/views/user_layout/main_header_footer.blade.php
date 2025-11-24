@@ -1,6 +1,6 @@
 <?php
 $success_message = Session::get('success');
-//   $success_message='asdsad';
+
 $error_msg = Session::get('error');
 ?>
 @yield('title')
@@ -18,7 +18,6 @@ $error_msg = Session::get('error');
 <body>
 
     @if (isset($error_msg))
-    {{-- {!!dd($login_error_msg)!!} --}}
     <div class="alert alert-danger alt_area">
         <span style="float: right " onclick="$(this).parent().remove();">X</span>
         <ul>
@@ -39,17 +38,11 @@ $error_msg = Session::get('error');
     </div>
     @endif
 
-
-
-
-
     @yield('body')
 
     {{-- Cropper Modal --}}
     @include('partial_layouts.cropper.cropper_html')
     {{-- End Cropper Modal --}}
-
-
 
     <section>
         <div class="contactarea onlymymemo">
@@ -105,6 +98,12 @@ $error_msg = Session::get('error');
                                 <label for="password">Enter Your Password :</label>
                                 <input type="password" name="password" class="form-control" id="password" aria-describedby="password" placeholder="password">
                             </div>
+                            
+                            <div class="mb-3">
+                                <a class="forgot-password-link" data-toggle="modal" data-target="#forgotPasswordModal" data-dismiss="modal">
+                                    Forgot Password?
+                                </a>
+                            </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary mosubclick">Submit</button>
                             </div>
@@ -151,6 +150,55 @@ $error_msg = Session::get('error');
         </div>
     </div>
     {{-- End Register in modal --}}
+    
+    
+    {{-- Forgot Password Modal --}}
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header modhead">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title" id="forgotPasswordModalTitle">Reset Your Password</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="forgotpasswordmodaldata">
+                        <p>Enter your email address and we'll send you a link to reset your password.</p>
+                        <form action="{!! asset('api/forget_password') !!}" method="POST">
+                            {{ csrf_field() }}
+                            <div class="form-group mb-3">
+                                <label for="forgotEmail">Enter Your Email address:</label>
+                                <input type="email" name="email" class="form-control" id="forgotEmail" aria-describedby="forgotEmail" placeholder="email address" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Send Reset Link</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- End Forgot Password modal --}}
+
+    {{-- ... your existing sign in modal code ... --}}
+
+    {{-- Loader Modal --}}
+    <div class="modal fade" id="loaderModal" tabindex="-1" role="dialog" aria-labelledby="loaderModalLabel" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="background: transparent; border: none;">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <p class="text-white mt-2">Please Wait...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- End Loader Modal --}}
 
 
     <style>
@@ -159,6 +207,11 @@ $error_msg = Session::get('error');
             justify-content: center !important;
             float: none;
         }
+    #loaderModal .modal-content {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
     </style>
     <section>
         <div class="footerarea">
@@ -213,5 +266,5 @@ $error_msg = Session::get('error');
     </section>
 
 </body>
-
+@yield('jqueryscript')
 </html>

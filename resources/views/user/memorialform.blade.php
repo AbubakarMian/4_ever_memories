@@ -144,10 +144,10 @@
 
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Middle Name<i
-                                                            class="fa fa-asterisk staring"
+                                                            class="fa "
                                                             aria-hidden="true"></i></label>
                                                     <input type="text" name="m_name" class="form-control"
-                                                        placeholder="Middle Name" required>
+                                                        placeholder="Middle Name" >
                                                 </div>
 
 

@@ -40,7 +40,7 @@ class UserTemplateHelper
 
 
         $web_variable['memorial_user_var']['name_var'] = $request->f_name;
-        $web_variable['memorial_user_var']['full_name_var'] = $request->f_name . ' ' . $request->m_name . ' ' . $request->l_name;
+        $web_variable['memorial_user_var']['full_name_var'] = $request->f_name . ' ' . ($request->m_name ?? '') . ' ' . $request->l_name;
         $web_variable['memorial_user_var']['birth_var'] = $request->b_year;
         $web_variable['memorial_user_var']['death_var'] = $request->p_year;
         $web_variable['memorial_user_var']['father_name_var'] = $request->l_name;
