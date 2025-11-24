@@ -14,6 +14,7 @@ h3,
 h4 {
     font-family: 'Raleway', sans-serif;
 }
+
 .blogtopbanner {
     border-bottom: 5px none #2dafc3;
     background-image: url(../images/headerblog.jpg);
@@ -21,44 +22,82 @@ h4 {
     background-size: cover;
     background-repeat: no-repeat;
 }
+
 .aboutheading {
     padding: 100px;
 }
+
 .blogarea {
     padding: 50px;
 }
-.blogareadata img {
-    margin: 0 auto;
-    width: 100%;
-    height: 500px;
-}
-.blogareadataa img {
-    margin: 0 auto;
-    width: 100%;
-    height: 250px;
-}
-.blogareadata {
+
+/* Image Container Structure */
+.blogareadata,
+.blogareadataa,
+.sideblog {
+    position: relative;
     background: #f4f4f4;
     margin-bottom: 30px;
+    overflow: hidden;
 }
-.blogareadataa {
-    background: #f4f4f4;
-    margin-bottom: 30px;
+
+/* Image Wrapper for Consistent Aspect Ratio */
+.image-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
 }
+
+.blogareadata .image-container {
+    aspect-ratio: 16 / 9; /* Main blog image ratio */
+    max-height: 500px;
+}
+
+.blogareadataa .image-container {
+    aspect-ratio: 16 / 9; /* Secondary blog image ratio */
+    max-height: 250px;
+}
+
+.sideblog .image-container {
+    aspect-ratio: 1 / 1; /* Square ratio for sidebar */
+    max-height: 200px;
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+/* Universal Image Styling */
+.responsive-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+/* Optional: Add hover effect */
+.blogareadata:hover .responsive-image,
+.blogareadataa:hover .responsive-image {
+    transform: scale(1.05);
+}
+
 .blogertext {
     padding: 25px;
 }
+
 .blogertext h5 {
     color: #d6bd8e;
     font-size: 17px;
     font-weight: 500;
     margin-bottom: -10px;
 }
+
 .blogertext h2 {
     color: #465863;
     font-size: 25px;
     font-weight: 700;
 }
+
 .blogertext h3 {
     color: #465863;
     font-size: 19px;
@@ -66,7 +105,10 @@ h4 {
     line-height: 25px;
     margin-top: 0px;
     margin-bottom: 35px;
+    max-height: 200px;
+    overflow: scroll;
 }
+
 .blogclick {
     background: transparent;
     color: #d6bd8e;
@@ -75,6 +117,7 @@ h4 {
     font-weight: 600;
     text-decoration: underline;
 }
+
 .blogclickk {
     background: transparent;
     color: #d6bd8e;
@@ -84,34 +127,30 @@ h4 {
     text-decoration: underline;
     margin-top: -15px;
 }
+
 .blogclickk:hover {
     background: transparent;
     color: #46587a;
 }
+
 .blogclick:hover {
     background: transparent;
     color: #46587a;
 }
+
 .sideblogdata input {
     height: 42px;
     border-radius: 100px;
     color: #465863;
     margin-bottom: 20px;
 }
+
 .sideblog {
     background: #f4f4f4;
     padding: 20px;
-}
-.populardata {
-    background: #f4f4f4;
-    padding: 20px;
-    margin-top: 25px;
-}
-.sideblog {
-    background: #f4f4f4;
-    padding: 25px;
     text-align: center;
 }
+
 .sideblog p {
     color: #465863;
     font-size: 19px;
@@ -121,15 +160,13 @@ h4 {
     margin-bottom: 10px;
     text-align: center;
 }
-.sideblogdata img {
-    height: 200px;
-    margin: 0 auto;
-}
+
 .catagedata {
     background: #f4f4f4;
     padding: 20px;
     margin-top: 25px;
 }
+
 .catagedata h3 {
     color: #465863;
     font-size: 26px;
@@ -138,6 +175,7 @@ h4 {
     margin-bottom: 20px;
     text-align: center;
 }
+
 .catclick {
     background: transparent;
     color: #545454;
@@ -146,6 +184,7 @@ h4 {
     font-weight: 500;
     margin: 2px;
 }
+
 .catclick:hover {
     background: transparent;
     color: #545454;
@@ -154,6 +193,13 @@ h4 {
     font-weight: 500;
     margin: 2px;
 }
+
+.populardata {
+    background: #f4f4f4;
+    padding: 20px;
+    margin-top: 25px;
+}
+
 .populardata h3 {
     color: #465863;
     font-size: 26px;
@@ -162,6 +208,7 @@ h4 {
     margin-bottom: 20px;
     text-align: center;
 }
+
 .populardata h5 {
     color: #d6bd8e;
     font-size: 15px;
@@ -169,44 +216,81 @@ h4 {
     margin-bottom: -10px;
     margin-top: 30px;
 }
+
 .populardata h2 {
     color: #465863;
     font-size: 17px;
     font-weight: 600;
 }
+
 .pagidata {
     text-align: center;
 }
+
 .backnext a {
     background: #465863!important;
     color: white !important;
 }
+
 .pgnumb {
     color: #465863 !important;
 }
 
-
+/* Fallback for older browsers that don't support aspect-ratio */
+@supports not (aspect-ratio: 16 / 9) {
+    .blogareadata .image-container {
+        height: 0;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    }
+    
+    .blogareadataa .image-container {
+        height: 0;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    }
+    
+    .sideblog .image-container {
+        height: 0;
+        padding-bottom: 100%; /* 1:1 aspect ratio */
+        width: 200px;
+        margin: 0 auto;
+    }
+    
+    .responsive-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
 
 @media only screen and (max-width : 480px) {
     .aboutheading {
         padding: 50px;
     }
+    
     .aboutheading h1 {
         margin-bottom: 20px !important;
     }
-    .blogareadata img {
-        margin: 0 auto;
-        width: 100%;
-        height: 150px;
-    }
+    
     .blogarea {
         padding: 25px;
     }
+    
+    .blogareadata .image-container {
+        max-height: 200px;
+    }
+    
+    .blogareadataa .image-container {
+        max-height: 180px;
+    }
+    
     .blogertext h2 {
         color: #465863;
         font-size: 21px;
         font-weight: 700;
     }
+    
     .blogertext h3 {
         color: #465863;
         font-size: 19px;
@@ -215,6 +299,7 @@ h4 {
         margin-top: 0px;
         margin-bottom: 25px;
     }
+    
     .catagedata h3 {
         color: #465863;
         font-size: 26px;
@@ -223,6 +308,7 @@ h4 {
         margin-bottom: 20px;
         text-align: start;
     }
+    
     .populardata h3 {
         color: #465863;
         font-size: 26px;
@@ -231,8 +317,14 @@ h4 {
         margin-bottom: 20px;
         text-align: start;
     }
+    
     .pagidata {
         text-align: center;
         margin-top: 20px;
+    }
+    
+    .sideblog .image-container {
+        max-width: 150px;
+        max-height: 150px;
     }
 }

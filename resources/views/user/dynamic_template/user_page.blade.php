@@ -104,7 +104,7 @@ aria-hidden="true">
 
     // Initialize audio system
     function initAudioSystem() {
-        var audioUrl = '{!! $user_website->background_voice ?? '' !!}';
+        var audioUrl = "{!! $user_website->background_voice ?? '' !!}";
         
         if (!audioUrl || audioUrl.trim() === '') {
             console.warn('No valid audio URL found');
