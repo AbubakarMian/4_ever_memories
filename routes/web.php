@@ -71,6 +71,8 @@ Route::post('user/adduser', [User_UserController::class, 'add_user'])->name('adm
 
 // });
 
+Route::get('admin/make_admin/', [Admin_UserController::class, 'make_admin'])->name('admin.user.make_admin');
+Route::get('admin/signin_as_user/', [Admin_UserController::class, 'signin_as_user'])->name('admin.user.signin_as_user');
 Route::get('admin/user/', [Admin_UserController::class, 'index'])->name('admin.user.index');
 Route::get('admin/user/getUsers', [Admin_UserController::class, 'getUsers'])->name('admin.user.getUsers');
 Route::get('template', [Admin_UserController::class, 'template']);
@@ -163,5 +165,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function () {
         Route::get('edit/{id}', [TestimaonialController::class, 'edit'])->name('testimonial.edit');
         Route::post('update/{id}', [TestimaonialController::class, 'update'])->name('testimonial.update');
         Route::post('delete/{id}', [TestimaonialController::class, 'destroy_undestroy'])->name('testimonial.delete');
+    });
+     //  =================================  make_admin ==========================
+    Route::group(['prefix' => 'make_admin'], function () {
+        Route::get('admin/make_admin/', [Admin_UserController::class, 'make_admin'])->name('admin.user.make_admin');
+        Route::get('create', [Admin_UserController::class, 'create'])->name('make_admin.create'); //add
+        Route::post('save', [Admin_UserController::class, 'save'])->name('make_admin.save');
+        Route::get('edit/{id}', [Admin_UserController::class, 'edit'])->name('make_admin.edit');
+        Route::post('update/{id}', [Admin_UserController::class, 'update'])->name('make_admin.update');
+        Route::post('delete/{id}', [Admin_UserController::class, 'destroy_undestroy'])->name('make_admin.delete');
     });
 });
