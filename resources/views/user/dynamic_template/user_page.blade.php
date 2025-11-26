@@ -116,6 +116,67 @@ aria-hidden="true">
         </div>
     </div>
     {{-- End Forgot Password modal --}}
+    {{-- Share ModalBackup --}}
+    <div class="modal fade" id="desktopShareModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Share</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body text-center">
+
+                <!-- WhatsApp -->
+                <a class="btn btn-success btn-block" 
+                href="https://wa.me/?text=Check this link: {{ url()->current() }}" 
+                target="_blank">
+                <i class="fa fa-whatsapp"></i> WhatsApp
+                </a>
+
+                <!-- Facebook -->
+                <a class="btn btn-primary btn-block" 
+                href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}" 
+                target="_blank">
+                <i class="fa fa-facebook"></i> Facebook
+                </a>
+
+                <!-- Email -->
+                <a class="btn btn-info btn-block" 
+                href="mailto:?subject=Check this&body={{ url()->current() }}">
+                <i class="fa fa-envelope"></i> Email
+                </a>
+
+                <!-- Copy Link -->
+                <button class="btn btn-secondary btn-block copy_link_btn">
+                <i class="fa fa-copy"></i> Copy Link
+                </button>
+
+            </div>
+
+            </div>
+        </div>
+        </div>
+    {{-- End Share ModalBackup --}}
+    
+    {{-- Loader Modal --}}
+    <div class="modal fade" id="loaderModal" tabindex="-1" role="dialog" aria-labelledby="loaderModalLabel" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="background: transparent; border: none;">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <p class="text-white mt-2">Please Wait...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- End Loader Modal --}}
+    
+
+
 
 <!-- Audio Control Button -->
 <div id="audioControl" style="position: fixed; top: 50px; right: 20px; z-index: 10000; background: rgba(255,255,255,0.9); padding: 10px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
@@ -290,9 +351,13 @@ aria-hidden="true">
             }
         });
     });
-
+    $(document).on("click", ".copy_link_btn", function () {
+        navigator.clipboard.writeText(window.location.href)
+            .then(() => alert("Link copied!"))
+            .catch(() => alert("Copy failed"));
+    });
     $(document).ready(function () {
-        var isAuthenticated = {!! Auth::check() ? 'true' : 'false' !!};
+        var isAuthenticated = "{!! Auth::check() ? 'true' : 'false' !!}";
 
         if (isAuthenticated) {
             $('.signin').css('display', 'none');
@@ -313,7 +378,7 @@ aria-hidden="true">
     var gallery_video_ = JSON.parse(jsonString_vid);
     var gallery_audio = JSON.parse(jsonString_aud);
     var recent_show = JSON.parse(jsonString_recent);
-    console.log(gallery_images);
+    console.log('gallery_images',gallery_images);
 
     function hide_initially() {
         $('.face_share').hide();
@@ -328,7 +393,36 @@ aria-hidden="true">
             set_dynamic_tribute_images();
         }
 
+        function share_memorial() {
+
+            // $('#inviteModal').modal('toggle');
+            const shareData = {
+                title: document.title,
+                text: "Check this page",
+                url: window.location.href
+            };
+
+            // 👉 If browser supports native share:
+            if (navigator.share) {
+                navigator.share(shareData)
+                    .then(() => console.log("Shared"))
+                    .catch((err) => console.log("Share canceled", err));
+            }
+            else {
+                // 👉 Show fallback modal for desktop
+                $("#desktopShareModal").modal("show");
+            }
+        }
+
+        $(document).on("click", ".btn.btn-primary.btnInvite", function(){
+            share_memorial();
+        });
+        $(document).on("click", ".shr_btn_md", function(){
+            share_memorial();
+        });
+
         $('.sumit_email').on('click', function() {
+            $('#loaderModal').modal('toggle');
             console.log('email sent');
             var formData = new FormData();
             formData.append('memorial_id', '{!! $user_website->id !!}');
@@ -353,8 +447,10 @@ aria-hidden="true">
                     } else {
                         show_error_modal_with_msg(response);
                     }
+                    $('#loaderModal').modal('toggle');
                 },
                 error: function(err) {
+                    $('#loaderModal').modal('toggle');
                     console.log('form failed', err);
                     show_error_modal_with_msg(null, 'Can not proceed now please try later');
                 }
@@ -427,16 +523,16 @@ aria-hidden="true">
             var images_html = '';
             images_html = images_html + `
                 <ul>
-                    <li class="no-img"><i class="fa fa-pencil-square" aria-hidden="true"></i></li><li class="contentLi"> {!! $trib_side !!} tribute{!! $trib_side > 1 ? 's' : '' !!} added </li>
+                    <li class="no-img"><i class="fa fa-pencil-square" aria-hidden="true"></i></li><li class="contentLi trib_side_number"> {!! $trib_side !!} tribute{!! $trib_side > 1 ? 's' : '' !!} added </li>
                 </ul>
                 <ul>
-                    <li class="no-img"><i class="fa fa-video-camera" aria-hidden="true"></i></li><li class="contentLi"> {!! $video_count !!} video{!! $video_count > 1 ? 's' : '' !!} added </li>
+                    <li class="no-img"><i class="fa fa-video-camera" aria-hidden="true"></i></li><li class="contentLi video_count_number"> {!! $video_count !!} video{!! $video_count > 1 ? 's' : '' !!} added </li>
                 </ul>
                 <ul>
-                    <li class="no-img"><i class="fa fa-picture-o" aria-hidden="true"></i></li><li class="contentLi"> {!! $picture_count !!} photo{!! $picture_count > 1 ? 's' : '' !!} added </li>
+                    <li class="no-img"><i class="fa fa-picture-o" aria-hidden="true"></i></li><li class="contentLi images_count_number"> {!! $picture_count !!} photo{!! $picture_count > 1 ? 's' : '' !!} added </li>
                 </ul>
                 <ul>
-                    <li class="no-img"><i class="fa fa-headphones" aria-hidden="true"></i></li><li class="contentLi"> {!! $audio_count !!} audio{!! $audio_count > 1 ? 's' : '' !!} added </li>
+                    <li class="no-img"><i class="fa fa-headphones" aria-hidden="true"></i></li><li class="contentLi audios_count_number"> {!! $audio_count !!} audio{!! $audio_count > 1 ? 's' : '' !!} added </li>
                 </ul>
             `;
             return images_html;
@@ -444,7 +540,6 @@ aria-hidden="true">
 
         function prof_img(img) {
             var images_html = '';
-            console.log('asdasdas img ',img);
             images_html = images_html + `<img class="asdasdasdas" src="`+img+`" alt="relative" />`;
             return images_html;
         }
@@ -522,7 +617,6 @@ aria-hidden="true">
                 `;
             }
 
-            console.log('candles_html', candles_html);
             $('.candle-select').html(candles_html);
             $('.flower-select').html(flowers_html);
             $('.feather-select').html(notes_html);
@@ -550,7 +644,6 @@ aria-hidden="true">
             ];
 
             $(candle_arr).each(function(index, candle) {
-                console.log('candles image', candle);
                 candle_list = candle_list + `                
                     <div class="cand same" onclick="set_tribute('candle','` + candle + `',this)">
                         <div class="ico_wri icon_select">
@@ -590,7 +683,6 @@ aria-hidden="true">
             ];
 
             $(flowers_arr).each(function(index, flower) {
-                console.log('flower image', flower);
                 flower_list = flower_list + `                
                     <div class="cand same" onclick="set_tribute('flower','` + flower + `',this)">
                         <div class="ico_wri">
@@ -634,7 +726,6 @@ aria-hidden="true">
             ];
 
             $(notes_arr).each(function(index, note) {
-                console.log('note image', note);
                 note_list = note_list + `                
                     <div class="cand same not_icn_c" onclick="set_tribute('feather','` + note + `',this)">
                         <div class="ico_wri">
@@ -657,6 +748,8 @@ aria-hidden="true">
             `;
         }
 
+
+
         $('#save_story').on('click', function() {
             var storyt = $('#story_title').val();
             var storyd = $('#story_details').val();
@@ -673,6 +766,7 @@ aria-hidden="true">
                 alert('Please Add A Picture');
                 return;
             }
+            $('#loaderModal').modal('toggle');
             var formData = new FormData();
             formData.append('memorial_id', memorial_id);
             formData.append('story_title_n', $('input[name="story_title_n"]').val());
@@ -697,8 +791,10 @@ aria-hidden="true">
                     } else {
                         show_error_modal_with_msg(res);
                     }
+                    $('#loaderModal').modal('toggle');
                 },
                 error: function(err) {
+                    $('#loaderModal').modal('toggle');
                     console.log('form failed', err);
                     show_error_modal_with_msg(null, 'Can not proceed now please try later');
                 }
@@ -706,6 +802,7 @@ aria-hidden="true">
         });
 
         function upload_file(file) {
+            $('#loaderModal').modal('toggle');
             var formData = new FormData();
             formData.append('media_type', $('input[name="media_type"]').val());
             formData.append('upload_file', file);
@@ -729,19 +826,27 @@ aria-hidden="true">
                     }
                     if (res.response.type == 'video') {
                         $(".vid_row").append(get_gallery_video_html(res.response));
+                        setVideoCount();
                     } else if (res.response.type == 'photo') {
                         $(".gall_row").append(get_gallery_img_html(res.response));
+                        var total_pics = $('.carousel-inner div img').length+1;
+                        $('.carousel-inner').append(image_crousal(res.response.image_show_var, total_pics));
+                        update_img_count(total_pics);
                     } else {
                         $(".uploaded_audio_area").append(get_gallery_audio_html(res.response));
+                        var audios_count = setAudioCount();
                     }
                     $('input[type="file"],textarea').val('');
+                    $('#loaderModal').modal('toggle');
                 },
                 error: function(err) {
+                    $('#loaderModal').modal('toggle');
                     console.log('form failed', err);
                     show_error_modal_with_msg(null, 'Can not proceed now please try later');
                 }
             })
         }
+
 
         $('#save_media_audio').on('click', function() {
             var aud = $('.upld_audio').val();
@@ -780,6 +885,7 @@ aria-hidden="true">
             }
             formData.append('type_var', $('#type_tribute').val());
             formData.append('image_tribute', $('#image_tribute').val());
+            $('#loaderModal').modal('toggle');
 
             $.ajax({
                 url: `{!! asset('user/tributeform') !!}`,
@@ -802,8 +908,10 @@ aria-hidden="true">
                     for (const value of formData.values()) {
                         console.log(value);
                     }
+                    $('#loaderModal').modal('toggle');
                 },
                 error: function(err) {
+                    $('#loaderModal').modal('toggle');
                     console.log('form failed', err);
                     show_error_modal_with_msg(null, 'Can not proceed now please try later');
                 }
@@ -813,7 +921,7 @@ aria-hidden="true">
     });
 
     function show_error_modal_with_msg(res, custom_error) {
-        var error_msg = 'Can not submit now. Please Login again';
+        var error_msg = 'Can not submit now. Please Login again or try later';
         if (!res) {
             error_msg = custom_error;
         } else {
@@ -966,20 +1074,21 @@ aria-hidden="true">
         console.log(image_show_var, 'image');
 
         var review = `
-                                        <div class="uploaded_audio_box remove_imgae` + gallery_id + `">
-                                            <div class="image-area_pic">
-                                            <h4><div class="new_tag">new</div>` + date_show_var + ` .by  ` + name_show_var + `</h4>
-                                            <audio controls autostart="0" autostart="false" preload ="none" >
-                                                <source src="` + image_show_var + `" type="audio/mpeg">
-                                              </audio>
-                                              <a class="remove-image_pic" onclick="delete_request(` + gallery_id + `)" style="display: inline;">&#215;</a>
-                                        </div>
-                                        </div>
+            <div class="uploaded_audio_box remove_imgae` + gallery_id + `">
+                <div class="image-area_pic">
+                <h4><div class="new_tag">new</div>` + date_show_var + ` .by  ` + name_show_var + `</h4>
+                <audio controls autostart="0" autostart="false" preload ="none" >
+                    <source src="` + image_show_var + `" type="audio/mpeg">
+                    </audio>
+                    <a class="remove-image_pic" onclick="delete_request(` + gallery_id + `)" style="display: inline;">&#215;</a>
+            </div>
+            </div>
         `;
         return review;
     }
 
     function delete_request(gallery_id) {
+            $('#loaderModal').modal('toggle');
         $.ajax({
             url: "{!! asset('user/delete') !!}/" + gallery_id,
             type: 'POST',
@@ -991,14 +1100,92 @@ aria-hidden="true">
                 console.log(response);
                 if (response.status) {
                     $('.remove_imgae' + gallery_id).remove();
+                    if (response.type == 'photo') {
+                        var total_pics = update_img_count();
+                        console.log('total photos ',total_pics);
+                    }
+                    else if (response.type == 'audio'){
+                        var total_audios = setAudioCount();
+                        console.log('total audios ',total_audios);
+                    }
+                    else if (response.type == 'video'){
+                        var total_videos = setVideoCount();
+                        console.log('total videos ',total_videos);
+                    }
+                    removeCarouselItemBySrc(response.image_show_var);
                 } else {
                     show_error_modal_with_msg(response);
                 }
+                $('#loaderModal').modal('toggle');
+                
             },
             error: function(err) {
+                $('#loaderModal').modal('toggle');
                 console.log('form failed', err);
                 show_error_modal_with_msg(null, 'Can not proceed now please try later');
             }
         });
     }
+
+    async function setAudioCount(){
+        var audioCount = 0;
+        await setTimeout(() => {
+            audioCount = $('#Audio .uploaded_audio_area audio').length;
+            $('.audios_count_number').text(audioCount + ' audio' + (audioCount > 1 ? 's' : '') + ' added ');
+        }, 1999);
+        return audioCount;
+    }
+
+    async function setVideoCount(){
+        var videoCount = 0;
+        await setTimeout(() => {
+            videoCount = $('.gallery_video .vid_row .pic_gal_vid video').length;
+            console.log('video count ',videoCount);
+            $('.video_count_number').text(videoCount + ' video' + (videoCount > 1 ? 's' : '') + ' added ');
+        }, 1999);
+        return videoCount;
+    }
+
+    function removeCarouselItemBySrc(imageSrc) {
+        // Find the first carousel item with matching image source
+        console.log('carousal selector ',".carousel-inner .item img[src='" + imageSrc + "']");
+        var $targetItem = $('.carousel-inner .item img[src="' + imageSrc + '"]').closest('.item');
+        console.log('target item .length : ',$targetItem.length);
+        if ($targetItem.length > 0) {
+            var isActive = $targetItem.hasClass('active');
+            
+            // Remove the item
+            $targetItem.remove();
+            
+            // If we removed the active item, activate the next one
+            if (isActive) {
+                var $firstItem = $('.carousel-inner .item').first();
+                if ($firstItem.length > 0) {
+                    $firstItem.addClass('active');
+                }
+            }
+            
+            // Update carousel indicators if they exist
+            updateCarouselIndicators();
+            
+            return true; // Successfully removed
+        }
+        
+        return false; // Item not found
+    }
+            // Helper function to update carousel indicators
+        function updateCarouselIndicators() {
+            $('.carousel-indicators li').removeClass('active');
+            $('.carousel-indicators li:first').addClass('active');
+        }        
+        async function update_img_count(){  
+            let total_pics = 0;  
+            await setTimeout(() => {
+                total_pics = $('.gall_row .pic_gal_img img').length;        
+                $('.images_count_number').text(total_pics + ' Photo' + (total_pics > 1 ? 's' : '') + ' added ');
+                $('.pht_para').html(total_pics + ') Photo' + (total_pics > 1 ? 's' : ''));
+                
+            }, 1999);
+            return total_pics;
+        }
 </script>
