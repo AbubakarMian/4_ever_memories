@@ -99,6 +99,16 @@ class AdminController extends Controller
             'url' => 'admin/testimonial',
             'title' => 'testimonials'
         ];
+        $modules[] = [
+
+            'url' => 'admin/signin_as_user',
+            'title' => 'SignIn As User'
+        ];
+        $modules[] = [
+
+            'url' => 'admin/make_admin',
+            'title' => 'Make Admin'
+        ];
         // $modules[] = [
 
         //     'url' => 'admin/category',
