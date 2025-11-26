@@ -1,5 +1,6 @@
 .nav_back {
-    background-image: url('https://4evermemorial.com/public/user_templates/template_2/images/cover.jpg');
+    /* background-image: url('https://4evermemorial.com/public/user_templates/template_2/images/cover.jpg'); */
+    background-image: url(../images/banner2.jpeg);
 }
 .nav_back {
     background-repeat: no-repeat;

@@ -95,6 +95,9 @@ class UserController extends Controller {
     }
     public function profile() {
         $user = Auth::user();
+        if(!$user){
+            return back()->with('error', 'Login required!');
+        }
         // return view('user.profile', compact('user'))->with('success', 'Profile updated successfully!');
 
         // dd($user);
@@ -402,17 +405,26 @@ class UserController extends Controller {
 
     public function destroy_undestroy($id) {
         $category = Gallery::find($id);
+        $image_show_var = '';
         if($category) {
             Gallery::destroy($id);
             $new_value = 'Activate';
+            $image_show_var = $category->image_show_var;
+            $type = $category->type;
+            
         } else {
-            Gallery::withTrashed()->find($id)->restore();
+            $category = Gallery::withTrashed()->find($id);
+            $image_show_var = $category->image_show_var;
+            $type = $category->type;
+            $category->restore();
             $new_value = 'Delete';
         }
         $response = Response::json([
             "status" => true,
             'action' => Config::get('constants.ajax_action.delete'),
-            'new_value' => $new_value
+            'new_value' => $new_value,
+            'image_show_var' => $image_show_var,
+            'type' => $type
         ]);
         return $response;
     }
