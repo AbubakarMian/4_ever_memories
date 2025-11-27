@@ -401,6 +401,7 @@ aria-hidden="true">
 
         function share_memorial() {
 
+            
             // $('#inviteModal').modal('toggle');
             const shareData = {
                 title: document.title,

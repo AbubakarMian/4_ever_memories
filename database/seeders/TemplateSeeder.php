@@ -253,7 +253,7 @@ class TemplateSeeder extends Seeder
                 </a>
      
   <!-- The Modal -->
-  <div class="modal fade" id="inviteModal">
+  <div class="modal fade" id1="inviteModal">
     <div class="modal-dialog">
       <div class="modal-content">
       
