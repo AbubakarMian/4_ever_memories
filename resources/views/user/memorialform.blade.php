@@ -185,13 +185,6 @@
                                                     <p class="help-text">Upload an MP3 file to play as background audio on this memorial page. This could be recorded message, or a tribute speech.</p>
                                                 </div>
                                                 <input type="file" id="background_audio" name="background_audio" class="form-control" accept="audio/mp3,audio/*" required>
-                                                <!-- <div class="audio-preview" id="audio-preview" style="display: none;">
-                                                    <audio controls class="preview-audio">
-                                                        <source src="" type="audio/mp3">
-                                                        Your browser does not support the audio element.
-                                                    </audio>
-                                                    <p class="audio-file-name"></p>
-                                                </div> -->
                                             </div>
                                             <div class="form-group">
                                                 <label name="gender" for="exampleFormControlSelect1">Gender</i></label>
@@ -603,88 +596,6 @@
             document.getElementById('privacy_form').submit();
         }
 
-        // function submit_update_plan(selected_plan_id, price) {
-        //     if (paymentInProgress) {
-        //         return; // Prevent multiple submissions
-        //     }
-            
-        //     $('#plan_id').val(selected_plan_id);
-        //     showPaymentIframe();
-            
-        //     // Submit the form to the iframe
-        //     setTimeout(function() {
-        //         document.getElementById('update_plan_form').submit();
-        //         paymentInProgress = true;
-        //     }, 500);
-        // }
-
-        // function showPaymentIframe() {
-        //     $('#paymentOverlay').show();
-        //     $('#paymentLoading').show();
-        //     $('#paymentIframe').hide();
-        //     $('#paymentSuccess').hide();
-            
-        //     // Listen for iframe load events
-        //     $('#paymentIframe').on('load', function() {
-        //         $('#paymentLoading').hide();
-        //         $('#paymentIframe').show();
-                
-        //         // Check if payment is successful (you'll need to implement this based on your payment processor)
-        //         checkPaymentStatus();
-        //     });
-        // }
-
-        // function checkPaymentStatus() {
-        //     // This function should check if payment was successful
-        //     // You'll need to implement this based on your payment processor's API
-        //     // For demonstration, I'm using a timeout to simulate payment completion
-            
-        //     // Simulate checking payment status every 2 seconds
-        //     var checkInterval = setInterval(function() {
-        //         try {
-        //             // Try to access iframe content (this might be blocked by same-origin policy)
-        //             var iframe = document.getElementById('paymentIframe');
-        //             var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                    
-        //             // Look for success indicators in the iframe
-        //             // This is just an example - adjust based on your payment processor
-        //             if (iframeDoc.body.innerHTML.includes('success') || 
-        //                 iframeDoc.body.innerHTML.includes('thank you') ||
-        //                 iframeDoc.body.innerHTML.includes('payment successful')) {
-                        
-        //                 clearInterval(checkInterval);
-        //                 showPaymentSuccess();
-        //             }
-        //         } catch (e) {
-        //             // Cross-origin restriction - use alternative method
-        //             // You might need to implement server-side webhooks or polling
-        //             console.log('Cannot access iframe content due to security restrictions');
-        //         }
-        //     }, 2000);
-            
-        //     // Fallback: if we can't check the iframe content, assume success after 10 seconds
-        //     setTimeout(function() {
-        //         clearInterval(checkInterval);
-        //         showPaymentSuccess();
-        //     }, 10000);
-        // }
-
-        // function showPaymentSuccess() {
-        //     $('#paymentIframe').hide();
-        //     $('#paymentSuccess').show();
-            
-        //     // Wait 5 seconds then close the iframe and redirect
-        //     setTimeout(function() {
-        //         closePayment();
-        //         // Redirect to next page or show success message
-        //         window.location.href = '{!! route('user.memorialform') !!}?payment_success=1&memorial_id=' + $('.memorial_id').val();
-        //     }, 5000);
-        // }
-
-        // function closePayment() {
-        //     $('#paymentOverlay').hide();
-        //     paymentInProgress = false;
-        // }
 
         function open_tab(res) {
             console.log('res', res);
@@ -767,6 +678,15 @@
                 window.scrollTo(0, 400);
                 $('.nav-tabs a[href="#menu3"]').tab('show');
             }
+            $('#background_audio').on('change', function() {
+                const file = this.files[0];
+                const maxSize = 3 * 1024 * 1024; // 3MB
+                
+                if (file && file.size > maxSize) {
+                    openErrorModal('File size must be less than 3MB');
+                    $(this).val(''); // Clear the file input
+                }
+            });
         });
     </script>
 
