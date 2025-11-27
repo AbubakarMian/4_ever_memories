@@ -147,6 +147,7 @@ class UserController extends Controller
 
                 'name' => $user->first_name,
                 'user_email' => $request->email,
+                'email' => $request->email,
                 'new_password' => $new_password,
                 'from' => 'info@4evermemorial.com',
                 'title' => '4evermemorial',

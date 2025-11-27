@@ -132,6 +132,8 @@ Route::group(['middleware' => 'login.access_token'], function () { //,'prefix'=>
     Route::post('user/upload_gallery', [User_UserController::class, 'upload_gallery'])->name('user.upload_gallery_audio'); //search
     Route::post('user/delete/{id}', [User_UserController::class, 'destroy_undestroy'])->name('user.delete');
 });
+    Route::post('user/forget_password', [User_UserController::class, 'sendForgetEmail']);
+
 ///blog
 Route::post('search/memorial', [User_UserController::class, 'search_memorial'])->name('user.search_memorial'); //search
 Route::get('search/memorialss', [User_UserController::class, 'search_memorial'])->name('user.search_memorial'); //search

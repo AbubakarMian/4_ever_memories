@@ -83,7 +83,7 @@ class TemplateSeeder extends Seeder
                                 <a href="' . $url_path . 'user/aboutus">ABOUT US</a>
                                 <a href="' . $url_path . 'user/contactus">CONTACT SUPPORT</a>
                                 <i class="fa signin" style="display: none;" aria-hidden="true" data-toggle="modal" data-target="#LoginModalCenter"> SIGNIN</i>
-                                <i class="fa fa-user-circle-o" style="display: none;" aria-hidden="true"><a href="' . $url_path . 'user/logout" > LogOut </a></i>
+                                <i class="fa logout_memorial" style="display: none;" aria-hidden="true"><a href="' . $url_path . 'user/logout" > LogOut </a></i>
                             </div>
                                 </div>
                             </div>
@@ -165,7 +165,7 @@ class TemplateSeeder extends Seeder
                                             </li>
                                             <li><i class="fa fa-user-plus" aria-hidden="true"></i></li>
                                         </ul>
-                                        <a  class="btn btn-primary btnInvite" data-toggle="modal" data-target="#inviteModal"><i class="fa fa-user-plus"
+                                        <a  class="btn btn-primary btnInvite" data-toggle="modal" data-target1="#inviteModal"><i class="fa fa-user-plus"
                                                 aria-hidden="true"></i> Invite Now</a>
                                     </div>
                                     <div class="face_share">
@@ -253,7 +253,7 @@ class TemplateSeeder extends Seeder
                 </a>
      
   <!-- The Modal -->
-  <div class="modal fade" id="inviteModal">
+  <div class="modal fade" id1="inviteModal">
     <div class="modal-dialog">
       <div class="modal-content">
       

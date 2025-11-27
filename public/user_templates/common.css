@@ -29,7 +29,25 @@
     top: -20px;
     right: -19px;
 }
-
+.nav_bar .signin {
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    margin-left: 30px;
+}
+.nav_bar .signin:hover {
+    text-decoration: underline; 
+    color: #235e5a;
+}
+.logout_memorial:hover{       
+    text-decoration: underline; 
+    color: #235e5a;
+}
+.alt_area {
+    position: absolute;
+    top: 0.1px;
+    width: -webkit-fill-available;
+}
 .col-md-4.pic_gal_vid {
     width: auto !important;
 }

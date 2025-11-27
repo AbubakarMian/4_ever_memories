@@ -9,6 +9,7 @@ use App\Models\Gallery;
 use App\Models\Life_Tab_Arr;
 use App\Models\Models\Template;
 use App\Http\Helpers\TemplateHelper;
+use App\Mail\ForgotPass;
 use App\Models\Story_Tab_Arr;
 use App\Models\Styling;
 use App\Models\Tributes_Arr;
@@ -188,6 +189,40 @@ class UserController extends Controller {
     public function memorialform() {
         return view('user.memorialform');
     }
+    
+    public function sendForgetEmail(Request $request)
+    {
+        try {
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                return back()->with('error', 'Email not found');
+            }
+            $new_password = rand(100000, 999999);
+            $user->password = Hash::make($new_password);
+            $user->save();
+            $details = [
+                'to' => $request->to_emails,
+                // 'to' => 'ameer.maavia@gmail.com',
+                'email' => $request->email,
+                'name' => $user->first_name,
+                'user_email' => $request->email,
+                'new_password' => $new_password,
+                'from' => 'info@4evermemorial.com',
+                'title' => '4evermemorial',
+                'subject' => 'Forgot Password ',
+                'base_url' => Config::get('app.url'),
+                "dated" => date('d F, Y (l)'),
+            ];
+            Mail::to($request->email)->send(new ForgotPass($details));
+            return back()->with('success', 'A new password has been sent to your email address.');
+        } catch (\Exception $e) {
+            return $this->sendResponse(
+                500,
+                null,
+                [$e->getMessage()]
+            );
+        }
+    }
     public function add_user(Request $request) {
         // $email = str_replace($request->email,'@4evermemorial.com','');
         $request_all = $request->all();
@@ -290,7 +325,7 @@ class UserController extends Controller {
         $web_variable['tributes_arr'] = $this->set_attribute_arr_pics($tributes); //$tributes;
 
         $tributes_side = Tributes_Arr::where('memorial_id', $user_website->id)->orderBy('created_at', 'ASC')->select('*')->get();
-        $trib_side = $tributes_side->count();
+        $trib_side_count = $tributes_side->count();
 
         $gal_side = Gallery::where('memorial_id', $user_website->id)->orderBy('created_at', 'ASC')->select('*')->get();
 
@@ -330,7 +365,7 @@ class UserController extends Controller {
         $template_helper = new TemplateHelper($user_website, $web_variable);
         $html = $template_helper->create_html();
 
-        return view('user/dynamic_template/user_page', compact('html', 'trib_side', 'gal_side', 'web_variable', 'user_website'));
+        return view('user/dynamic_template/user_page', compact('html', 'trib_side_count', 'gal_side', 'web_variable', 'user_website'));
     }
     public function storyform(Request $request) {
         $user = Auth::user();

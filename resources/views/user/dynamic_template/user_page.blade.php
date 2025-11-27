@@ -1,8 +1,30 @@
 <?php 
-// dd($user_website); 
+$success_message = Session::get('success');
+$error_msg = Session::get('error');
 ?>
 
+  
 {!! $html !!}
+  @if (isset($error_msg))
+    <div class="alert alert-danger alt_area">
+        <span style="float: right " onclick="$(this).parent().remove();">X</span>
+        <ul>
+            {{-- @foreach (Session::get('login_error')->all() as $error) --}}
+            <li>{{ $error_msg }}</li>
+            {{-- @endforeach --}}
+        </ul>
+    </div>
+    @endif
+    @if (isset($success_message))
+    <div class="alert alert-success alt_area">
+        <span style="float: right" onclick="$(this).parent().remove();">X</span>
+        <ul>
+            {{-- @foreach (Session::get('success')->all() as $success) --}}
+            <li>{{ $success_message }}</li>
+            {{-- @endforeach --}}
+        </ul>
+    </div>
+    @endif
 {{-- Sign in modal --}}
 <div class="modal fade" id="LoginModalCenter" tabindex="-1" role="dialog"
 aria-labelledby="LoginModalCenterTitle" aria-hidden="true">
@@ -27,7 +49,10 @@ aria-labelledby="LoginModalCenterTitle" aria-hidden="true">
                     </div>
                     
                     <div class="mb-3">
-                        <a class="forgot-password-link" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" data-bs-dismiss="modal">
+                        <!-- <a class="forgot-password-link" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" data-bs-dismiss="modal">
+                            Forgot Password?
+                        </a> -->
+                        <a class="forgot-password-link" data-toggle="modal" data-target="#forgotPasswordModal" data-dismiss="modal">
                             Forgot Password?
                         </a>
                     </div>
@@ -42,6 +67,7 @@ aria-labelledby="LoginModalCenterTitle" aria-hidden="true">
 </div>
 </div>
 {{-- End Sign in modal --}}
+
 
 {{-- Register in modal --}}
 <div class="modal fade" id="remodal" tabindex="-1" role="dialog" aria-labelledby="LoginModalCenterTitle"
@@ -99,7 +125,7 @@ aria-hidden="true">
                 <div class="modal-body">
                     <div class="forgotpasswordmodaldata">
                         <p>Enter your email address and we'll send you a link to reset your password.</p>
-                        <form action="{!! asset('api/forget_password') !!}" method="POST">
+                        <form action="{!! asset('user/forget_password') !!}" method="POST">
                             {{ csrf_field() }}
                             <div class="form-group mb-3">
                                 <label for="forgotEmail">Enter Your Email address:</label>
@@ -198,7 +224,20 @@ aria-hidden="true">
     // Global audio variables
     var backgroundAudio = null;
     var isAudioPlaying = false;
-    var audioInitialized = false;
+    var audioInitialized = false;    
+    var memorial_id = '{!! $user_website->id !!}';
+    var global_path = `{!! asset('/') !!}`;
+    var jsonString = `{!! json_encode($web_variable['gallery_photo_arr']) !!}`;
+    var jsonString_vid = `{!! json_encode($web_variable['gallery_video_arr']) !!}`;
+    var jsonString_aud = `{!! json_encode($web_variable['gallery_audio_arr']) !!}`;
+    var jsonString_recent = `{!! json_encode($web_variable['recent_updates_show_arr']) !!}`;
+    var gallery_images = JSON.parse(jsonString);
+    var gallery_video_ = JSON.parse(jsonString_vid);
+    var gallery_audio = JSON.parse(jsonString_aud);
+    var recent_show = JSON.parse(jsonString_recent);
+    var max_audio_size_mb = 3; // 3MB
+    var max_video_size_mb = 7; // 5MB
+
 
     // Initialize audio system
     function initAudioSystem() {
@@ -357,28 +396,18 @@ aria-hidden="true">
             .catch(() => alert("Copy failed"));
     });
     $(document).ready(function () {
-        var isAuthenticated = "{!! Auth::check() ? 'true' : 'false' !!}";
-
+        var isAuthenticated = "{!! Auth::check() ? true : false !!}";
+// console.log('isAuthenticated',isAuthenticated);
         if (isAuthenticated) {
             $('.signin').css('display', 'none');
-            $('.fa-user-circle-o').css('display', 'inline-flex');
+            $('.logout_memorial').css('display', 'inline-flex');
         } else {
-            $('.fa-user-circle-o').css('display', 'none');
+            $('.logout_memorial').css('display', 'none');
             $('.signin').css('display', 'inline-flex');
         }
     });
     
-    var memorial_id = '{!! $user_website->id !!}';
-    var global_path = `{!! asset('/') !!}`;
-    var jsonString = `{!! json_encode($web_variable['gallery_photo_arr']) !!}`;
-    var jsonString_vid = `{!! json_encode($web_variable['gallery_video_arr']) !!}`;
-    var jsonString_aud = `{!! json_encode($web_variable['gallery_audio_arr']) !!}`;
-    var jsonString_recent = `{!! json_encode($web_variable['recent_updates_show_arr']) !!}`;
-    var gallery_images = JSON.parse(jsonString);
-    var gallery_video_ = JSON.parse(jsonString_vid);
-    var gallery_audio = JSON.parse(jsonString_aud);
-    var recent_show = JSON.parse(jsonString_recent);
-    console.log('gallery_images',gallery_images);
+
 
     function hide_initially() {
         $('.face_share').hide();
@@ -395,6 +424,7 @@ aria-hidden="true">
 
         function share_memorial() {
 
+            
             // $('#inviteModal').modal('toggle');
             const shareData = {
                 title: document.title,
@@ -458,7 +488,7 @@ aria-hidden="true">
         });
 
         function initial_values() {
-            $('.contentLi').html('added {!! $trib_side !!} tribute(s)');
+            // $('.contentLi').html('added  $trib_side  tribute(s)');
             $('.viw_para').html('{!! $user_website->total_views !!} Views');
 
             $('.pht_para').html(`{!! count($web_variable['gallery_photo_arr']) !!}) Photos`);
@@ -468,7 +498,7 @@ aria-hidden="true">
             $('.recent_area').html(get_recent(recent_show));
             $('.profile_img').html(prof_img(`{!!$user_website->image_show_var!!}`));
   
-            $('.ban_img').css(' background-image',`{!!asset("public/user_templates/template_1/images/cover1.png")!!}`);
+            // $('.ban_img').css(' background-image',`{!!asset("public/user_templates/template_1/images/cover1.png")!!}`);
             $('.facebook-share').attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + window.location.href);
             
             var images = '';
@@ -523,7 +553,7 @@ aria-hidden="true">
             var images_html = '';
             images_html = images_html + `
                 <ul>
-                    <li class="no-img"><i class="fa fa-pencil-square" aria-hidden="true"></i></li><li class="contentLi trib_side_number"> {!! $trib_side !!} tribute{!! $trib_side > 1 ? 's' : '' !!} added </li>
+                    <li class="no-img"><i class="fa fa-pencil-square" aria-hidden="true"></i></li><li class="contentLi trib_side_number"> {!! $trib_side_count !!} tribute{!! $trib_side_count > 1 ? 's' : '' !!} added </li>
                 </ul>
                 <ul>
                     <li class="no-img"><i class="fa fa-video-camera" aria-hidden="true"></i></li><li class="contentLi video_count_number"> {!! $video_count !!} video{!! $video_count > 1 ? 's' : '' !!} added </li>
@@ -853,7 +883,12 @@ aria-hidden="true">
             if (aud == "") {
                 return;
             }
-            upload_file($('input[name="upld_aud"]')[0].files[0]);
+        var file = $('input[name="upld_aud"]')[0].files[0];
+            if (!validate_file_size(file, max_audio_size_mb)) {
+                show_error_modal_with_msg(null, 'File size exceeds the ' + max_audio_size_mb + 'MB limit. Please select a smaller file.');
+                return;
+            }
+            upload_file(file);
         });
 
         $('#save_media_image').on('click', function() {
@@ -865,12 +900,25 @@ aria-hidden="true">
         });
 
         $('#save_media_video').on('click', function() {
+            console.log('file vaild');
             var vid = $('.upld_video').val();
             if (vid == "") {
                 return;
             }
-            upload_file($('input[name="upld_vid"]')[0].files[0]);
+            console.log('file vaild 2');
+
+            var file = $('input[name="upld_vid"]')[0].files[0];
+            if (!validate_file_size(file, max_video_size_mb)) {
+            console.log('file size error 3');
+
+                show_error_modal_with_msg(null, 'File size exceeds the ' + max_video_size_mb + 'MB limit. Please select a smaller file.');
+                return;
+            }
+            console.log('file vaild4 ');
+            
+            upload_file(file);
         });
+
 
         $('#save_trib').on('click', function() {
             var msg = $('#add_tibs').val();
@@ -905,9 +953,10 @@ aria-hidden="true">
                     } else {
                         show_error_modal_with_msg(res);
                     }
-                    for (const value of formData.values()) {
-                        console.log(value);
-                    }
+                    // for (const value of formData.values()) {
+                    //     console.log(value);
+                    // }
+                    setTributeCount();
                     $('#loaderModal').modal('toggle');
                 },
                 error: function(err) {
@@ -920,19 +969,6 @@ aria-hidden="true">
 
     });
 
-    function show_error_modal_with_msg(res, custom_error) {
-        var error_msg = 'Can not submit now. Please Login again or try later';
-        if (!res) {
-            error_msg = custom_error;
-        } else {
-            if (res && res.hasOwnProperty('error') && res.error.hasOwnProperty('message') && res.error.message.length) {
-                error_msg = res.error.message[0];
-            }
-        }
-
-        $('#errorText').text(error_msg);
-        $('#errorModal').modal('show');
-    }
 
     function set_tribute(type_tribute, tribute_image, e) {
         console.log('type tribute', type_tribute);
@@ -1146,6 +1182,16 @@ aria-hidden="true">
         return videoCount;
     }
 
+    async function setTributeCount(){
+        var tributeCount = 0;
+        await setTimeout(() => {
+            tributeCount = $('.tribute_blk.add_tribute_append .reviewBox .reviewSection').length;
+            console.log('video count ',tributeCount);
+            $('.trib_side_number').text(tributeCount + ' tribute ' + (tributeCount > 1 ? 's' : '') + ' added ');
+        }, 1999);
+        return tributeCount;
+    }
+
     function removeCarouselItemBySrc(imageSrc) {
         // Find the first carousel item with matching image source
         console.log('carousal selector ',".carousel-inner .item img[src='" + imageSrc + "']");
@@ -1188,4 +1234,26 @@ aria-hidden="true">
             }, 1999);
             return total_pics;
         }
+        
+        function validate_file_size(file, maxSizeMB) {
+            var maxSize = maxSizeMB * 1024 * 1024; // Convert MB to bytes
+            return file.size <= maxSize;
+        }
+    function show_error_modal_with_msg(res, custom_error) {
+        var error_msg = 'Can not submit now. Please Login again or try later';
+        if (!res) {
+            error_msg = custom_error;
+        } else {
+            if (res && res.hasOwnProperty('error') && res.error.hasOwnProperty('message') && res.error.message.length) {
+                error_msg = res.error.message[0];
+            }
+        }
+        show_error_msg(error_msg)
+
+    }
+    function show_error_msg(error_msg) {
+        $('#errorText').text(error_msg);
+        $('#errorModal').modal('show');
+    }
+
 </script>
