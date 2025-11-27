@@ -543,6 +543,20 @@
             </div>
         </div>
     @include('user.partial.payment_modal')
+        {{-- Loader Modal --}}
+    <div class="modal fade" id="loaderModal" tabindex="-1" role="dialog" aria-labelledby="loaderModalLabel" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="background: transparent; border: none;">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <p class="text-white mt-2">Please Wait...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- End Loader Modal --}}
     </section>
 
 
@@ -622,7 +636,8 @@
             }
         }
 
-        function validate_submit_form(form_selector, sucess_function) {
+        async function validate_submit_form(form_selector, sucess_function) {
+            $('#loaderModal').modal('toggle');
             var valid_form = true;
             $(form_selector).find('input').each(function() {
                 if ($(this).prop('required') && $.trim($(this).val()).length === 0) {
@@ -634,8 +649,10 @@
                 }
             });
             if (valid_form) {
-                submit_form(form_selector, sucess_function);
+                await submit_form(form_selector, sucess_function);
             }
+            $('#loaderModal').modal('toggle');
+
         }
 
         function open_payment_plan_select() {
