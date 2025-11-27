@@ -1,11 +1,30 @@
 <?php 
-// dd($user_website); 
+$success_message = Session::get('success');
+$error_msg = Session::get('error');
 ?>
-<style>
-    
 
-</style>
+  
 {!! $html !!}
+  @if (isset($error_msg))
+    <div class="alert alert-danger alt_area">
+        <span style="float: right " onclick="$(this).parent().remove();">X</span>
+        <ul>
+            {{-- @foreach (Session::get('login_error')->all() as $error) --}}
+            <li>{{ $error_msg }}</li>
+            {{-- @endforeach --}}
+        </ul>
+    </div>
+    @endif
+    @if (isset($success_message))
+    <div class="alert alert-success alt_area">
+        <span style="float: right" onclick="$(this).parent().remove();">X</span>
+        <ul>
+            {{-- @foreach (Session::get('success')->all() as $success) --}}
+            <li>{{ $success_message }}</li>
+            {{-- @endforeach --}}
+        </ul>
+    </div>
+    @endif
 {{-- Sign in modal --}}
 <div class="modal fade" id="LoginModalCenter" tabindex="-1" role="dialog"
 aria-labelledby="LoginModalCenterTitle" aria-hidden="true">
@@ -30,7 +49,10 @@ aria-labelledby="LoginModalCenterTitle" aria-hidden="true">
                     </div>
                     
                     <div class="mb-3">
-                        <a class="forgot-password-link" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" data-bs-dismiss="modal">
+                        <!-- <a class="forgot-password-link" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" data-bs-dismiss="modal">
+                            Forgot Password?
+                        </a> -->
+                        <a class="forgot-password-link" data-toggle="modal" data-target="#forgotPasswordModal" data-dismiss="modal">
                             Forgot Password?
                         </a>
                     </div>
@@ -45,6 +67,7 @@ aria-labelledby="LoginModalCenterTitle" aria-hidden="true">
 </div>
 </div>
 {{-- End Sign in modal --}}
+
 
 {{-- Register in modal --}}
 <div class="modal fade" id="remodal" tabindex="-1" role="dialog" aria-labelledby="LoginModalCenterTitle"
@@ -102,7 +125,7 @@ aria-hidden="true">
                 <div class="modal-body">
                     <div class="forgotpasswordmodaldata">
                         <p>Enter your email address and we'll send you a link to reset your password.</p>
-                        <form action="{!! asset('forget_password') !!}" method="POST">
+                        <form action="{!! asset('user/forget_password') !!}" method="POST">
                             {{ csrf_field() }}
                             <div class="form-group mb-3">
                                 <label for="forgotEmail">Enter Your Email address:</label>

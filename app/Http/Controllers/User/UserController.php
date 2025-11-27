@@ -9,6 +9,7 @@ use App\Models\Gallery;
 use App\Models\Life_Tab_Arr;
 use App\Models\Models\Template;
 use App\Http\Helpers\TemplateHelper;
+use App\Mail\ForgotPass;
 use App\Models\Story_Tab_Arr;
 use App\Models\Styling;
 use App\Models\Tributes_Arr;
@@ -187,6 +188,41 @@ class UserController extends Controller {
     }
     public function memorialform() {
         return view('user.memorialform');
+    }
+    
+    public function sendForgetEmail(Request $request)
+    {
+        try {
+
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                return back()->with('error', 'Email not found');
+            }
+            $new_password = rand(100000, 999999);
+            $user->password = Hash::make($new_password);
+            $user->save();
+            $details = [
+                'to' => $request->to_emails,
+                // 'to' => 'ameer.maavia@gmail.com',
+
+                'name' => $user->first_name,
+                'user_email' => $request->email,
+                'new_password' => $new_password,
+                'from' => 'info@4evermemorial.com',
+                'title' => '4evermemorial',
+                'subject' => 'Forgot Password ',
+                'base_url' => Config::get('app.url'),
+                "dated" => date('d F, Y (l)'),
+            ];
+            Mail::to($request->email)->send(new ForgotPass($details));
+            return back()->with('success', 'A new password has been sent to your email address.');
+        } catch (\Exception $e) {
+            return $this->sendResponse(
+                500,
+                null,
+                [$e->getMessage()]
+            );
+        }
     }
     public function add_user(Request $request) {
         // $email = str_replace($request->email,'@4evermemorial.com','');
