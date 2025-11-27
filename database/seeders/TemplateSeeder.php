@@ -83,7 +83,7 @@ class TemplateSeeder extends Seeder
                                 <a href="' . $url_path . 'user/aboutus">ABOUT US</a>
                                 <a href="' . $url_path . 'user/contactus">CONTACT SUPPORT</a>
                                 <i class="fa signin" style="display: none;" aria-hidden="true" data-toggle="modal" data-target="#LoginModalCenter"> SIGNIN</i>
-                                <i class="fa fa-user-circle-o" style="display: none;" aria-hidden="true"><a href="' . $url_path . 'user/logout" > LogOut </a></i>
+                                <i class="fa logout_memorial" style="display: none;" aria-hidden="true"><a href="' . $url_path . 'user/logout" > LogOut </a></i>
                             </div>
                                 </div>
                             </div>

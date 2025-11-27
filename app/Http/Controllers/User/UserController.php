@@ -290,7 +290,7 @@ class UserController extends Controller {
         $web_variable['tributes_arr'] = $this->set_attribute_arr_pics($tributes); //$tributes;
 
         $tributes_side = Tributes_Arr::where('memorial_id', $user_website->id)->orderBy('created_at', 'ASC')->select('*')->get();
-        $trib_side = $tributes_side->count();
+        $trib_side_count = $tributes_side->count();
 
         $gal_side = Gallery::where('memorial_id', $user_website->id)->orderBy('created_at', 'ASC')->select('*')->get();
 
@@ -330,7 +330,7 @@ class UserController extends Controller {
         $template_helper = new TemplateHelper($user_website, $web_variable);
         $html = $template_helper->create_html();
 
-        return view('user/dynamic_template/user_page', compact('html', 'trib_side', 'gal_side', 'web_variable', 'user_website'));
+        return view('user/dynamic_template/user_page', compact('html', 'trib_side_count', 'gal_side', 'web_variable', 'user_website'));
     }
     public function storyform(Request $request) {
         $user = Auth::user();
