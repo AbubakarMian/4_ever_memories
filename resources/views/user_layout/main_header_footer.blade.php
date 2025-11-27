@@ -165,7 +165,7 @@ $error_msg = Session::get('error');
                 <div class="modal-body">
                     <div class="forgotpasswordmodaldata">
                         <p>Enter your email address and we'll send you a link to reset your password.</p>
-                        <form action="{!! asset('api/forget_password') !!}" method="POST">
+                        <form action="{!! asset('forget_password') !!}" method="POST">
                             {{ csrf_field() }}
                             <div class="form-group mb-3">
                                 <label for="forgotEmail">Enter Your Email address:</label>
