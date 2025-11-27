@@ -2101,6 +2101,8 @@ section.dash-tile.bg-warning.modules {
   background-color: #46586385;
   max-height: 105px;
   color:#fff;
+  border: solid 1px #beb28d88;
+  border-radius: 5px;
 }
 section.dash-tile.bg-success.modules:hover,
 section.dash-tile.bg-warning.modules:hover {

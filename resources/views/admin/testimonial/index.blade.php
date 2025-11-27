@@ -5,7 +5,7 @@ TESTIMONIALS
 
 @section('add_btn')
 {!! Form::open(['method' => 'get', 'url' => ['admin/testimonial/create'], 'files' => true]) !!}
-{!! Form::submit('Add testimonial', ['class' => 'btn btn-success pull-right']) !!}</span>
+{!! Form::submit('Add Testimonial', ['class' => 'btn btn-success pull-right']) !!}</span>
 {!! Form::close() !!}
 
 {!! Form::open(['method' => 'get', 'url' => ['admin/testimonial/result/update_testimonial_result'], 'files' => true]) !!}

@@ -77,12 +77,17 @@ class AdminController extends Controller
     }
     public function admin_dashboard()
     {
-        $modules[] = [
+         $modules[] = [
 
-            'url' => 'admin/user',
-            'title' => 'Users ',
-
+            'url' => 'admin/make_admin',
+            'title' => 'Users'
         ];
+        // $modules[] = [
+
+        //     'url' => 'admin/user',
+        //     'title' => 'Users ',
+
+        // ];
         $modules[] = [
 
             'url' => 'admin/template',
@@ -97,18 +102,14 @@ class AdminController extends Controller
         $modules[] = [
 
             'url' => 'admin/testimonial',
-            'title' => 'testimonials'
+            'title' => 'Testimonials'
         ];
         $modules[] = [
 
             'url' => 'admin/signin_as_user',
             'title' => 'SignIn As User'
         ];
-        $modules[] = [
-
-            'url' => 'admin/make_admin',
-            'title' => 'Make Admin'
-        ];
+       
         // $modules[] = [
 
         //     'url' => 'admin/category',
