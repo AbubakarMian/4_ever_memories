@@ -165,7 +165,7 @@ class TemplateSeeder extends Seeder
                                             </li>
                                             <li><i class="fa fa-user-plus" aria-hidden="true"></i></li>
                                         </ul>
-                                        <a  class="btn btn-primary btnInvite" data-toggle="modal" data-target="#inviteModal"><i class="fa fa-user-plus"
+                                        <a  class="btn btn-primary btnInvite" data-toggle="modal" data-target1="#inviteModal"><i class="fa fa-user-plus"
                                                 aria-hidden="true"></i> Invite Now</a>
                                     </div>
                                     <div class="face_share">
