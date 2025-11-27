@@ -193,7 +193,6 @@ class UserController extends Controller {
     public function sendForgetEmail(Request $request)
     {
         try {
-
             $user = User::where('email', $request->email)->first();
             if (!$user) {
                 return back()->with('error', 'Email not found');
@@ -204,7 +203,7 @@ class UserController extends Controller {
             $details = [
                 'to' => $request->to_emails,
                 // 'to' => 'ameer.maavia@gmail.com',
-
+                'email' => $request->email,
                 'name' => $user->first_name,
                 'user_email' => $request->email,
                 'new_password' => $new_password,
