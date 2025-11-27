@@ -101,7 +101,7 @@ Route::get('admin/stylings', [StylingsController::class, 'index']);
 // Route::get('admin/template/select_template',[TemplateController::class, 'select_template']); //testing
 Route::get('user/template/select_template', [TemplateController::class, 'select_template']); //testing
 Route::get('user/template/select_template/{user_website}', [TemplateController::class, 'select_template']); //testing
-
+Route::post('/user/view_as_user', [Admin_UserController::class, 'view_as_user'])->name('user.view_as_user');
 
 // Route::post('user/adduser', [User_UserController::class, 'add_user'])->name('admin.user.add_user');
 
