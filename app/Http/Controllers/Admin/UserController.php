@@ -14,26 +14,40 @@ use Illuminate\Support\Facades\Response;
 
 class UserController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('admin.user.index');
-
     }
-    public function getUsers($id = 0){
-        $user = User::orderby('id','asc')->select('*')->get();
+    public function getUsers($id = 0)
+    {
+        $user = User::orderby('id', 'asc')->select('*')->get();
         $userData['data'] = $user;
 
         echo json_encode($userData);
-
     }
-      public function signin_as_user(){
+    public function getOnlyUsers($id = 0)
+    {
+        $user = User::orderby('id', 'asc')->select('*')->where('role_id', '!=', 1)->get();
+        $userData['data'] = $user;
+
+        echo json_encode($userData);
+    }
+    public function getOnlyAdmin($id = 0)
+    {
+        $user = User::orderby('id', 'asc')->select('*')->where('role_id', 1)->get();
+        $userData['data'] = $user;
+
+        echo json_encode($userData);
+    }
+    public function signin_as_user()
+    {
         return view('admin.user_signin.index');
-
     }
-      public function make_admin(){
+    public function make_admin()
+    {
         return view('admin.make_admin.index');
-
     }
-     public function create()
+    public function create()
     {
         $control = 'create';
         // $courses = Courses::pluck('full_name','id');
@@ -41,52 +55,78 @@ class UserController extends Controller
         return view('admin.make_admin.create', compact(
             'control',
             //  'transport_type'
-            ));
+        ));
     }
 
     public function save(Request $request)
     {
         $make_admin = new User();
         return $this->add_or_update($request, $make_admin);
-
     }
     public function view_as_user(Request $request)
-{
-    // Validate the request with email instead of user_id
-    $request->validate([
-        'email' => 'required|email|exists:users,email'
-    ]);
+    {
+        // Validate the request with email instead of user_id
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ]);
 
-    // Find the user by email instead of ID
-    $user = User::where('email', $request->email)->first();
-    
-    if (!$user) {
+        // Find the user by email instead of ID
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // Login the user
+        Auth::login($user);
+
         return response()->json([
-            'success' => false,
-            'message' => 'User not found'
-        ], 404);
+            'success' => true,
+            'redirect_url' => route('user.profile')
+        ]);
+    }
+    public function view_memorials(Request $request)
+    {
+        // Validate the request with email instead of user_id
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        // Find the user by email instead of ID
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // Login the user
+        Auth::login($user);
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('user.my_memorials')
+        ]);
     }
 
-    // Login the user
-    Auth::login($user);
-    
-    return response()->json([
-        'success' => true,
-        'redirect_url' => route('user.my_memorials')
-    ]);
-}
-    
     public function edit($id)
     {
         $control = 'edit';
         $make_admin = User::find($id);
         // $transport_type = Transport_Type::pluck('name', 'id');
-        return view('admin.make_admin.create', compact(
-            'control',
-            'make_admin',
-            // 'transport_type',
+        return view(
+            'admin.make_admin.create',
+            compact(
+                'control',
+                'make_admin',
+                // 'transport_type',
 
-        )
+            )
         );
     }
 
@@ -98,21 +138,21 @@ class UserController extends Controller
     }
 
 
-   public function add_or_update(Request $request, $make_admin)
-{
-    $make_admin->first_name = $request->first_name;
-    $make_admin->middle_name = $request->middle_name;
-    $make_admin->last_name = $request->last_name;
-    $make_admin->email = $request->email;
-    $make_admin->gender = $request->gender;
-    $make_admin->adderss = $request->adderss;
-    $make_admin->password = $request-> password;
-    $make_admin->role_id = 1;
-    // dd($make_admin);
-    $make_admin->save();
+    public function add_or_update(Request $request, $make_admin)
+    {
+        $make_admin->first_name = $request->first_name;
+        $make_admin->middle_name = $request->middle_name;
+        $make_admin->last_name = $request->last_name;
+        $make_admin->email = $request->email;
+        $make_admin->gender = $request->gender;
+        $make_admin->adderss = $request->adderss;
+        $make_admin->password = $request->password;
+        $make_admin->role_id = 1;
+        // dd($make_admin);
+        $make_admin->save();
 
-    return redirect('admin/make_admin');
-}
+        return redirect('admin/make_admin');
+    }
 
     public function destroy_undestroy($id)
     {
@@ -131,5 +171,4 @@ class UserController extends Controller
         ]);
         return $response;
     }
-    
 }

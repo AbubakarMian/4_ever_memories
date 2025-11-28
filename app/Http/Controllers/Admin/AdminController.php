@@ -80,7 +80,7 @@ class AdminController extends Controller
          $modules[] = [
 
             'url' => 'admin/make_admin',
-            'title' => 'Users'
+            'title' => 'Admin'
         ];
         // $modules[] = [
 
@@ -107,7 +107,7 @@ class AdminController extends Controller
         $modules[] = [
 
             'url' => 'admin/signin_as_user',
-            'title' => 'SignIn As User'
+            'title' => 'Users'
         ];
        
         // $modules[] = [
