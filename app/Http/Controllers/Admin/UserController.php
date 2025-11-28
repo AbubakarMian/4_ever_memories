@@ -9,6 +9,7 @@ use App\Models\UserWebsite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 // use Illuminate\Support\Facades\Request ;
 
@@ -141,12 +142,12 @@ class UserController extends Controller
     public function add_or_update(Request $request, $make_admin)
     {
         $make_admin->first_name = $request->first_name;
-        $make_admin->middle_name = $request->middle_name;
+        $make_admin->middle_name = $request->middle_name??'';
         $make_admin->last_name = $request->last_name;
         $make_admin->email = $request->email;
         $make_admin->gender = $request->gender;
         $make_admin->adderss = $request->adderss;
-        $make_admin->password = $request->password;
+        $make_admin->password = Hash::make($request->password);
         $make_admin->role_id = 1;
         // dd($make_admin);
         $make_admin->save();
