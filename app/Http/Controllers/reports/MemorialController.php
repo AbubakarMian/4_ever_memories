@@ -18,16 +18,17 @@ class MemorialController extends Controller
 
     }
     public function getmemorials($id = 0){
-        $memorial = UserWebsite::withTrashed()->orderby('id','asc')->select('*')->get();
+        $memorial = UserWebsite::withTrashed()->whereHas('user')->orderby('id','asc')->select('*')->get();
         $memorialData['data'] = $memorial;
         // dd($memorialData);
         echo json_encode($memorialData);
                      
     }
     public function view_as_user($memorial_id){
-        $memorial = UserWebsite::with('user')->where('id',$memorial_id)->first()->memorial_id;
+        $memorial = UserWebsite::with('user')->where('id',$memorial_id)->first();
         Auth::login(User::find($memorial->user_id));
-        return view('admin.memorial_report.view_as_user',compact('memorial_id'));
+        $url = asset('user/get_memorial/').'/'.$memorial->email;
+        return redirect($url);
     }
     public function get_gallery($id = 0){
         $gallery = Gallery::withTrashed()->where('memorial_id',$id)->orderby('id','asc')->get();

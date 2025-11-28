@@ -122,7 +122,7 @@ width="100%" style="table-layout:fixed;"
             <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Role</th>
+                <!-- <th>Role</th> -->
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -140,7 +140,7 @@ width="100%" style="table-layout:fixed;"
 
         function fetchRecords() {
             $.ajax({
-                url: '{!!asset("admin/user/getUsers")!!}',
+                url: '{!!asset("admin/user/getOnlyAdmin")!!}',
                 type: 'get',
                 dataType: 'json',
                 success: function(response) {
@@ -155,9 +155,9 @@ width="100%" style="table-layout:fixed;"
                         var id = response['data'][i].id;
                         var first_name = response['data'][i].first_name;
                         var email = response['data'][i].email;
-                        var role_id = response['data'][i].role_id;
+                        // var role_id = response['data'][i].role_id;
                        if(response['data'][i].role_id == 1){
-                    user_type ='Super admin'
+                    user_type ='Admin'
                         }
                         else if (response['data'][i].role_id == 2){
                     user_type ='User'
@@ -188,7 +188,7 @@ width="100%" style="table-layout:fixed;"
                         var tr_str = "<tr id='row_" +response['data'][i].id + "'>" +
                             "<td title='" + first_name + "'>" + first_name + "</td>" +
                             "<td title='" + email + "'>" + email + "</td>" +
-                            "<td title='" + user_type + "'>" + user_type + "</td>" +
+                            // "<td title='" + user_type + "'>" + user_type + "</td>" +
                             "<td>" + edit + "</td>" +
                             "<td>" + delete_btn + "</td>" +
                             "</tr>";

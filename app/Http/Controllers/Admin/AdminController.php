@@ -28,7 +28,7 @@ class AdminController extends Controller
         $user_data = array(
             'email'  => $request->get('email'),
             'password' => $request->get('password'),
-            // 'role_id' => 1
+            'role_id' => 1
         );
 
         if (Auth::attempt($user_data)) {
@@ -80,7 +80,7 @@ class AdminController extends Controller
          $modules[] = [
 
             'url' => 'admin/make_admin',
-            'title' => 'Users'
+            'title' => 'Admin'
         ];
         // $modules[] = [
 
@@ -107,7 +107,7 @@ class AdminController extends Controller
         $modules[] = [
 
             'url' => 'admin/signin_as_user',
-            'title' => 'SignIn As User'
+            'title' => 'Users'
         ];
        
         // $modules[] = [

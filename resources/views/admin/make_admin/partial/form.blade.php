@@ -67,7 +67,7 @@
         ]) !!}
     </div>
 </div>
-<div class="form-group">
+<!-- <div class="form-group">
     {!! Form::label('middle_name', 'Middle Name') !!}
     <div>
         {!! Form::text('middle_name', null, [
@@ -79,7 +79,7 @@
             'maxlength' => '201',
         ]) !!}
     </div>
-</div>
+</div> -->
 <div class="form-group">
     {!! Form::label('last_name', 'Last Name') !!}
     <div>
@@ -139,7 +139,7 @@
 <div class="form-group">
     {!! Form::label('password', 'Password') !!}
     <div>
-        {!! Form::password('password', null, [
+        {!! Form::password('password', [
             'class' => 'form-control',
             'data-parsley-required' => 'true',
             'data-parsley-trigger' => 'change',
