@@ -46,6 +46,8 @@ Route::group(['middleware' => 'admin_auth'], function () { //,'prefix'=>'admin'
 
     Route::get('admin/user/', [Admin_UserController::class, 'index'])->name('admin.user.index');
     Route::get('admin/user/getUsers', [Admin_UserController::class, 'getUsers'])->name('admin.user.getUsers');
+    Route::get('admin/user/getOnlyUsers', [Admin_UserController::class, 'getOnlyUsers'])->name('admin.user.getOnlyUsers');
+    Route::get('admin/user/getOnlyAdmin', [Admin_UserController::class, 'getOnlyAdmin'])->name('admin.user.getOnlyAdmin');
     Route::get('template', [Admin_UserController::class, 'template']);
 
     Route::get('admin/memorials/', [MemorialController::class, 'index'])->name('admin.memorials.index');
@@ -102,6 +104,7 @@ Route::get('admin/stylings', [StylingsController::class, 'index']);
 Route::get('user/template/select_template', [TemplateController::class, 'select_template']); //testing
 Route::get('user/template/select_template/{user_website}', [TemplateController::class, 'select_template']); //testing
 Route::post('/user/view_as_user', [Admin_UserController::class, 'view_as_user'])->name('user.view_as_user');
+Route::post('/user/view_memorials', [Admin_UserController::class, 'view_memorials'])->name('user.view_memorials');
 
 // Route::post('user/adduser', [User_UserController::class, 'add_user'])->name('admin.user.add_user');
 

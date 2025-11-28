@@ -34,7 +34,7 @@ width="400px" style="table-layout:fixed;"
 
         <th>Name</th>
         <th>Email</th>
-        <th>Role</th>
+        <!-- <th>Role</th> -->
         <th>SingIn</th>
         <th>Memorials</th>
      
@@ -60,7 +60,7 @@ $(document).ready(function(){
     function fetchRecords(){
 
        $.ajax({
-        url: '{!!asset("admin/user/getUsers")!!}',
+        url: '{!!asset("admin/user/getOnlyUsers")!!}',
          type: 'get',
          dataType: 'json',
          success: function(response){
@@ -78,10 +78,10 @@ $(document).ready(function(){
                   
                   // Pass email instead of user ID
                   var signin = `<button class="btn btn-info" onclick="signInAsUser('${email}')">Sign As User</button>`;
-                  var memorials = `<a class="btn btn-info" href="{!!asset('/')!!}">Memorials</a>`;
+                  var memorials = `<button class="btn btn-info" onclick="viewMemorial('${email}')">Memorials</button>`;
                   
                   if(response['data'][i].role_id == 1){
-                    user_type ='Super admin'
+                    user_type ='Admin'
                         }
                         else if (response['data'][i].role_id == 2){
                     user_type ='User'
@@ -102,7 +102,7 @@ $(document).ready(function(){
                 var tr_str = "<tr>" +
                     "<td>" +name+ "</td>" +
                     "<td>" +email+ "</td>" +
-                    "<td>" +user_type+ "</td>" +
+                    // "<td>" +user_type+ "</td>" +
                     "<td>" +signin+ "</td>" +
                     "<td>" +memorials+ "</td>" +
                 "</tr>";
@@ -128,6 +128,29 @@ function signInAsUser(userEmail) {
     
     $.ajax({
         url: '{!!route("user.view_as_user")!!}',
+        type: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',
+            email: userEmail  // Changed from user_id to email
+        },
+        success: function(response) {
+            if (response.success) {
+                window.location.href = response.redirect_url;
+            } else {
+                alert('Error: ' + response.message);
+            }
+        },
+        error: function(xhr) {
+            console.log('Error response:', xhr.responseJSON);
+            alert('Error: User not found or authentication failed');
+        }
+    });
+}
+function viewMemorial(userEmail) {
+    console.log('Signing in as user with email:', userEmail);
+    
+    $.ajax({
+        url: '{!!route("user.view_memorials")!!}',
         type: 'POST',
         data: {
             _token: '{{ csrf_token() }}',
