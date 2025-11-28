@@ -546,6 +546,9 @@
     var gallery_audio = JSON.parse(jsonString_aud);
     var recent_show = JSON.parse(jsonString_recent);
 
+
+    
+    $(document).ready(function() {
         // $("#btn1").click(function() {
         //     $(".add_tribute_append").append(review);
         // });
