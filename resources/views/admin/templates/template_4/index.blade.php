@@ -28,11 +28,6 @@
 
             <body>
                 <section class="nav_back">
-                <style>
-                .nav_back {
-        background-image: url("{!!$base_url!!}/public/user_templates/template_1/images/cover.png");
-    }
-            </style>
                     <div class="nav_area">
                         <div class="container">
                             <div class="row">
@@ -126,7 +121,7 @@
                                             </li>
                                             <li><i class="fa fa-user-plus" aria-hidden="true"></i></li>
                                         </ul>
-                                        <a  class="btn btn-primary btnInvite" data-toggle="modal" data-target="#inviteModal"><i class="fa fa-user-plus"
+                                        <a  class="btn btn-primary btnInvite" data-toggle="modal" data-target1="#inviteModal"><i class="fa fa-user-plus"
                                                 aria-hidden="true"></i> Invite Now</a>
                                     </div>
                                     <div class="face_share">
@@ -564,6 +559,34 @@
         // $("#btn1").click(function() {
         //     $(".add_tribute_append").append(review);
         // });
+
+
+        function share_memorial() {
+            // $('#inviteModal').modal('toggle');
+            const shareData = {
+                title: document.title,
+                text: "Check this page",
+                url: window.location.href
+            };
+
+            // 👉 If browser supports native share:
+            if (navigator.share) {
+                navigator.share(shareData)
+                    .then(() => console.log("Shared"))
+                    .catch((err) => console.log("Share canceled", err));
+            }
+            else {
+                // 👉 Show fallback modal for desktop
+                $("#desktopShareModal").modal("show");
+            }
+        }
+
+        $(document).on("click", ".btn.btn-primary.btnInvite", function(){
+            share_memorial();
+        });
+        $(document).on("click", ".shr_btn_md", function(){
+            share_memorial();
+        });
 
         set_dynamic_values();
 

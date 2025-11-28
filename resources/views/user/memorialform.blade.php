@@ -650,9 +650,11 @@
             });
             if (valid_form) {
                 await submit_form(form_selector, sucess_function);
+                $('#loaderModal').modal('toggle');
             }
-            $('#loaderModal').modal('toggle');
-
+            else{
+                $('#loaderModal').modal('toggle');
+            }
         }
 
         function open_payment_plan_select() {
