@@ -107,9 +107,9 @@ class UserController extends Controller {
     public function profile_update(Request $request) {
         $user_auth = Auth::user();
         $user = User::find($user_auth->id);
-        if(!Hash::check($request->current_password, $user->password)) {
-            return back()->with('error', 'Incorrect Current Password!');
-        }
+        // if(!Hash::check($request->current_password, $user->password)) {
+        //     return back()->with('error', 'Incorrect Current Password!');
+        // }
         if($request->new_password != $request->confirm_password) {
             return back()->with('error', 'New Password and Confirm Password do not match!');
         }

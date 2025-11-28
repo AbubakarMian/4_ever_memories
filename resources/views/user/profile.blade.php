@@ -218,11 +218,11 @@
                             <input type="text" class="form-control" id="name" name="first_name" 
                                    placeholder="Enter your full name" value="{!!$user->first_name!!}" required>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="currentPassword">Current Password</label>
                             <input type="password" class="form-control" id="currentPassword" name="current_password"
                                    placeholder="Enter current password to make changes">
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label for="newPassword">New Password</label>
                             <input type="password" class="form-control" id="newPassword" name="new_password"
