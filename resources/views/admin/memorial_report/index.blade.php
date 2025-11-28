@@ -30,14 +30,14 @@ width="400px" style="table-layout:fixed;"
 </style>
 @section('table')
 
-    <table class="fhgyt" id="userTableAppend" style="opacity: 0">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Image</th>
-                <th>Gallery</th>
-                <th>Restore </th>
-                <th>View as user </th>
+<table class="fhgyt" id="userTableAppend" style="opacity: 0">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Gallery</th>
+            <th>Restore </th>
+            <th>View as user </th>
 
 
         </tr>
@@ -100,20 +100,6 @@ width="400px" style="table-layout:fixed;"
                                 `<a class="btn btn-info delete_btn_` + response['data'][i].id + `" data-toggle="modal" data-target="#` +
                                 'memorial_' + response['data'][i].id + `">Restore</a>`;
 
-                            }
-                            var view_as_user_btn = `<a class="btn btn-info" href="{!! asset('admin/memorial/view_as_user/') !!}/` + response['data'][i].id + `">View</a>`;
-                            
-                            var tr_str = `<tr id='row_` + response['data'][i].id + `'>` +
-                                "<td>" + name + "</td>" +
-                                "<td>" + image + "</td>" +
-                                "<td>" + gallery + "</td>" +
-                                "<td>" + delete_btn + "</td>" +
-                                "<td>" + view_as_user_btn + "</td>" +
-
-
-                                "</tr>";
-
-                            $("#userTableAppend tbody").append(tr_str);
                         }
                         // else{
                         //     var delete_btn =
@@ -121,12 +107,14 @@ width="400px" style="table-layout:fixed;"
                         //     'memorial_' + response['data'][i].id + `">Delete</a>`;
 
                         // }
+                         var view_as_user_btn = `<a class="btn btn-info" href="{!! asset('admin/memorial/view_as_user/') !!}/` + response['data'][i].id + `">View</a>`;
                         var tr_str = `<tr id='row_` + response['data'][i].id + `'>` +
                             "<td>" + name + "</td>" +
                             "<td>" + image + "</td>" +
                             "<td>" + gallery + "</td>" +
                             "<td>" + delete_btn + "</td>" +
-                            "<td>" + view + "</td>" +
+                            // "<td>" + view + "</td>" +
+                            "<td>" + view_as_user_btn + "</td>" +
 
 
                             "</tr>";
