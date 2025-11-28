@@ -28,11 +28,6 @@
 
             <body>
                 <section class="nav_back">
-                <style>
-                .nav_back {
-        background-image: url("{!!$base_url!!}/public/user_templates/template_1/images/cover.png");
-    }
-            </style>
                     <div class="nav_area">
                         <div class="container">
                             <div class="row">
@@ -92,7 +87,7 @@
 
 
 
-                                        <div id="Life" class="tabcontent"><div class="reviewBox"><ul class="reviewSection"><li><h3></h3></li></ul><div class="baby"><img src="{!!$base_url!!}/public/images/64e4e0c3d5168.png" alt="relative"></div> <p class="fdgsdf"><p>he was a very good person</p></p><div class="whole"><div class="flx"><div class="share"><i class="fa fa-share-alt-square" aria-hidden="true"></i></div><div class="chr_p">Share</div></div></div></div></div>
+                                        <div id="Life" class="tabcontent"><div class="reviewBox"><ul class="reviewSection"><li><h3></h3></li></ul><div class="baby"><img src="{!!$base_url!!}/public/user_templates/images/659eca82c6526.png" alt="relative"></div> <p class="fdgsdf"><p>he was a very good person</p></p><div class="whole"><div class="flx"><div class="share"><i class="fa fa-share-alt-square" aria-hidden="true"></i></div><div class="chr_p">Share</div></div></div></div></div>
 
 
                                         <div id="Gallary" class="tabcontent">
@@ -104,15 +99,15 @@
                                                     <button class="tab_gallinks audio_btn" onclick="openpic(event, 'Audio'); set_media('audio');">Audio</button>
                                                 </div>
                                                 <input type="hidden" id="media_type" name="media_type">
-                                                <div id="photo" class="tab_galcontent"> <div class="gall_top_bttn"> <div class="flx upld_file">  <div class="slidsho_txt" > <label for="file_upload" class="custom-file-upload">  Add a Photo </label><input type="file"  accept="image/*" id="file_upload" name="upld_file" class="upld_file crop_upload_image" image_width="378" image_height="226" aspect_ratio_width="16" aspect_ratio_height="9" upload_input_by_name="upld_file_hid" ></div><div class="publish_btn"><button id ="save_media_image"class="btn btn-danger">Publish</button></div> </div> </div> <div class="gallery_img"> <div class="row gall_row"><div class="col-md-4 pic_gal_img remove_imgae"><div class="image-area_pic"> <img src="{!!$base_url!!}/public/images/64e5ba4193a5f.png"   alt=""><a class="remove-image_pic" style="display: inline;">&#215;</a></div></div><div class="col-md-4 pic_gal_img remove_imgae"><div class="image-area_pic"> <img src="{!!$base_url!!}/public/images/64e4ebc21e275.png"   alt=""><a class="remove-image_pic"  style="display: inline;">&#215;</a></div></div></div></div></div>
-                                                <div id="Audio" class="tab_galcontent"><div class="uploaded_audio_area"><div class="uploaded_audio_box"><div class="image-area_pic"><p> 22nd  August 2023 .by adam</p><audio autostart="0" autostart="false" preload ="none" controls ><source src="{!!$base_url!!}/public/images/upload_file/1692724060.mp3" type="audio/mpeg" /></audio><a class="remove-image_pic" href="#" style="display: inline;">&#215;</a></div></div></div><div class="audio_icon"><i class="fa fa-microphone" aria-hidden="true"></i></div><div class="add_audio"> <div class="aud_head"> Add Audio </div><div class="aud_box"><label for="audio_upload" class="custom-file-upload"> <i class="fa fa-cloud-upload" aria-hidden="true"></i></label> <input type="file" accept="audio/*" id="file_upload" id="audio_upload" name="upld_aud" class="upld_audio" > <p>From Your Device</p> </div><div class="publishing_btn aud"><button id ="save_media_audio"class="btn btn-danger">Publish</button></div></div></div>
-                                                <div id="video" class="tab_galcontent"> <div class="gall_top_bttn"> <div class="flx upld_file">  <div class="slidsho_txt" > <label for="file_upload" class="custom-file-upload">  Add a Video </label><input type="file"  accept="video/*" id="file_upload"  id="vid_upload" name="upld_vid" class="upld_video" ></div> <div class="publish_btn"><button id ="save_media_video"class="btn btn-danger">Publish</button></div></div> </div><div class="gallery_video"><div class="row vid_row"><div class="col-md-4 pic_gal_vid remove_vid`+ user_id +`"><div class="image-area_pic"><video width="200" height="200" controls=""><source src="{!!$base_url!!}/public/images/upload_file/1692724078.mp4" alt=""></video><a class="remove-image_pic" onclick="delete_request_vid(`+user_id+`)"  style="display: inline;">&#215;</a></div></div><div class="col-md-4 pic_gal_vid remove_vid`+ user_id +`"><div class="image-area_pic"><video width="200" height="200" controls=""><source src="{!!$base_url!!}/public/images/upload_file/1692724050.mp4" alt=""></video><a class="remove-image_pic" onclick="delete_request_vid(`+user_id+`)"  style="display: inline;">&#215;</a></div></div> </div></div></div>
+                                                <div id="photo" class="tab_galcontent"> <div class="gall_top_bttn"> <div class="flx upld_file">  <div class="slidsho_txt" > <label for="file_upload" class="custom-file-upload">  Add a Photo </label><input type="file"  accept="image/*" id="file_upload" name="upld_file" class="upld_file crop_upload_image" image_width="378" image_height="226" aspect_ratio_width="16" aspect_ratio_height="9" upload_input_by_name="upld_file_hid" ></div><div class="publish_btn"><button id ="save_media_image"class="btn btn-danger">Publish</button></div> </div> </div> <div class="gallery_img"> <div class="row gall_row"><div class="col-md-4 pic_gal_img remove_imgae"><div class="image-area_pic"> <img src="{!!$base_url!!}/public/user_templates/images/65605145102f1.png"   alt=""><a class="remove-image_pic" style="display: inline;">&#215;</a></div></div><div class="col-md-4 pic_gal_img remove_imgae"><div class="image-area_pic"> <img src="{!!$base_url!!}/public/user_templates/images/6564470688cfe.png"   alt=""><a class="remove-image_pic"  style="display: inline;">&#215;</a></div></div></div></div></div>
+                                                <div id="Audio" class="tab_galcontent"><div class="uploaded_audio_area"><div class="uploaded_audio_box"><div class="image-area_pic"><p> 22nd  August 2023 .by adam</p><audio autostart="0" autostart="false" preload ="none" controls ><source src="{!!$base_url!!}/public/user_templates/images/1692724060.mp3" type="audio/mpeg" /></audio><a class="remove-image_pic" href="#" style="display: inline;">&#215;</a></div></div></div><div class="audio_icon"><i class="fa " aria-hidden="true"></i></div><div class="add_audio"> <div class="aud_head"> Add Audio </div><div class="aud_box"><label for="audio_upload" class="custom-file-upload"> <i class="fa fa-cloud-upload" aria-hidden="true"></i></label> <input type="file" accept="audio/*" id="file_upload" id="audio_upload" name="upld_aud" class="upld_audio" > <p>From Your Device</p> </div><div class="publishing_btn aud"><button id ="save_media_audio"class="btn btn-danger">Publish</button></div></div></div>
+                                                <div id="video" class="tab_galcontent"> <div class="gall_top_bttn"> <div class="flx upld_file">  <div class="slidsho_txt" > <label for="file_upload" class="custom-file-upload">  Add a Video </label><input type="file"  accept="video/*" id="file_upload"  id="vid_upload" name="upld_vid" class="upld_video" ></div> <div class="publish_btn"><button id ="save_media_video"class="btn btn-danger">Publish</button></div></div> </div><div class="gallery_video"><div class="row vid_row"><div class="col-md-4 pic_gal_vid remove_vid`+ user_id +`"><div class="image-area_pic"><video width="200" height="200" controls=""><source src="{!!$base_url!!}/public/user_templates/images/1692724078.mp4" alt=""></video><a class="remove-image_pic" onclick="delete_request_vid(`+user_id+`)"  style="display: inline;">&#215;</a></div></div><div class="col-md-4 pic_gal_vid remove_vid`+ user_id +`"><div class="image-area_pic"><video width="200" height="200" controls=""><source src="{!!$base_url!!}/public/user_templates/images/1692724078.mp4" alt=""></video><a class="remove-image_pic" onclick="delete_request_vid(`+user_id+`)"  style="display: inline;">&#215;</a></div></div> </div></div></div>
 
 
 
                                             </div>
                                         </div>
-                                        <div id="stories" class="tabcontent"> <div class="add_stor"> <div class="flx"><div class="container"> <div class="row"> <div class="col-md-8"><p>Share a special moment from adam ’s  life</p></div><div class="col-md-4"><a href="#story_title"><div class="stor_bttn"><i class="fa fa-pencil" aria-hidden="true"></i>_Write a story </div></a></div></div></div></div></div><div class="story_blk"> <div class="story_tab"><h3>he had a wonderful story</h3><p> 22nd  August 2023. byadam</p> <img src="{!!$base_url!!}/public/images/64e4e27d934e0.png" alt="relative"><div class="story_para"><p>he had a wonderful story</p><div class="whole"><div class="flx"><div class="share"><i class="fa fa-share-alt-square" aria-hidden="true"></i></div><div class="chr_p">Share</div></div></div></div></div> </div><section class="story_add"> <div class="contaiasner"> <div class="row"> <div class="share_story"> <div class="heddd"> <h2>Share a story</h2>  </div>  <div class="str_title"> <input type="text" class="form-control" name="story_title_n" id="story_title" placeholder="Title (Optional)">  </div>  <div class="str_textaea"> <textarea class="form-control" name="story_details_n" rows="5" id="story_details"></textarea> </div>  <div class="by"> <div class="dropdown"> by ameer maavia<button class="dpbtn dropdown-toggle" type="button"  data-toggle="dropdown">Change<span class=""></span></button> <ul class="dropdown-menu dp_menue"> <li><a href="#">I am the author </a></li> <li><a href="#">Posting on behalf of another person</a></li> </ul> </div> </div> <div class="attach"> <div class="attch_hed">  Attach a picture: </div><div class="attch_icon_area"><div class="attch_icon"><label for="upload-photo"><i class="fa fa-cloud-upload" aria-hidden="true"></i></label> <input type="file" id="upload-photo" class="up_ld_file crop_upload_image" image_width="378" image_height="226" aspect_ratio_width="16" aspect_ratio_height="9" upload_input_by_name="story_image"><p>Upload From Your Device</p></div>  </div> </div> <div class="publ_btn"> <button id="save_story" class="btn btn-danger">Publish</button> </div></div></div></div></section></div>
+                                        <div id="stories" class="tabcontent"> <div class="add_stor"> <div class="flx"><div class="container"> <div class="row"> <div class="col-md-8"><p>Share a special moment from adam ’s  life</p></div><div class="col-md-4"><a href="#story_title"><div class="stor_bttn"><i class="fa fa-pencil" aria-hidden="true"></i>_Write a story </div></a></div></div></div></div></div><div class="story_blk"> <div class="story_tab"><h3>he had a wonderful story</h3><p> 22nd  August 2023. byadam</p> <img src="{!!$base_url!!}/public/user_templates/images/659eca82c6526.png" alt="relative"><div class="story_para"><p>he had a wonderful story</p><div class="whole"><div class="flx"><div class="share"><i class="fa fa-share-alt-square" aria-hidden="true"></i></div><div class="chr_p">Share</div></div></div></div></div> </div><section class="story_add"> <div class="contaiasner"> <div class="row"> <div class="share_story"> <div class="heddd"> <h2>Share a story</h2>  </div>  <div class="str_title"> <input type="text" class="form-control" name="story_title_n" id="story_title" placeholder="Title (Optional)">  </div>  <div class="str_textaea"> <textarea class="form-control" name="story_details_n" rows="5" id="story_details"></textarea> </div>  <div class="by"> <div class="dropdown"> by ameer maavia<button class="dpbtn dropdown-toggle" type="button"  data-toggle="dropdown">Change<span class=""></span></button> <ul class="dropdown-menu dp_menue"> <li><a href="#">I am the author </a></li> <li><a href="#">Posting on behalf of another person</a></li> </ul> </div> </div> <div class="attach"> <div class="attch_hed">  Attach a picture: </div><div class="attch_icon_area"><div class="attch_icon"><label for="upload-photo"><i class="fa fa-cloud-upload" aria-hidden="true"></i></label> <input type="file" id="upload-photo" class="up_ld_file crop_upload_image" image_width="378" image_height="226" aspect_ratio_width="16" aspect_ratio_height="9" upload_input_by_name="story_image"><p>Upload From Your Device</p></div>  </div> </div> <div class="publ_btn"> <button id="save_story" class="btn btn-danger">Publish</button> </div></div></div></div></section></div>
 
 
 
@@ -126,19 +121,9 @@
                                             </li>
                                             <li><i class="fa fa-user-plus" aria-hidden="true"></i></li>
                                         </ul>
-                                        <a  class="btn btn-primary btnInvite" data-toggle="modal" data-target="#inviteModal"><i class="fa fa-user-plus"
+                                        <a  class="btn btn-primary btnInvite" data-toggle="modal" data-target1="#inviteModal"><i class="fa fa-user-plus"
                                                 aria-hidden="true"></i> Invite Now</a>
-                                    </div>
-                                    <div class="face_share">
-                                    <div class="fb_icon">
-                                        <i class="fa fa-facebook-square" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="fb_share_par">
-                                        <?php $url = "{!!$base_url!!}/public//user/get_memorial/asdsadsad@forevermemorial.com"; ?>
-                                        <a class="facebook-share" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $url ?>">Share on Facebook</a>
-                                    </div>
-                                </div>
-                                
+                                    </div>                                
                                     <div class="phots">
                                         <p class="pht_para">137 Photos</p>
                                         <div class="imag_sec">
@@ -550,20 +535,48 @@
 </script>
 
 <script>
+
     var memorial_id = '39';
-    var jsonString = '[{"id":72,"memorial_id":39,"image_url":null,"type":"photo","user_id":11,"deleted_at":null,"created_at":"2023-08-23T07:50:32.000000Z","updated_at":"2023-08-23T07:50:32.000000Z","name_show_var":"adam","date_show_var":" 23rd  August 2023","image_show_var":"https:\/\/stagging.hatinco.com\/4_ever_memories\/public\/images\/64e5ba4193a5f.png"},{"id":71,"memorial_id":39,"image_url":null,"type":"photo","user_id":11,"deleted_at":null,"created_at":"2023-08-22T17:09:24.000000Z","updated_at":"2023-08-22T17:09:24.000000Z","name_show_var":"adam","date_show_var":" 22nd  August 2023","image_show_var":"https:\/\/stagging.hatinco.com\/4_ever_memories\/public\/images\/64e4ebc21e275.png"}]';
-    var jsonString_vid = '[{"id":70,"memorial_id":39,"image_url":null,"type":"video","user_id":11,"deleted_at":null,"created_at":"2023-08-22T17:07:58.000000Z","updated_at":"2023-08-22T17:07:58.000000Z","name_show_var":"adam","date_show_var":" 22nd  August 2023","image_show_var":"https:\/\/stagging.hatinco.com\/4_ever_memories\/public\/images\/upload_file\/1692724078.mp4"},{"id":68,"memorial_id":39,"image_url":null,"type":"video","user_id":11,"deleted_at":null,"created_at":"2023-08-22T17:07:30.000000Z","updated_at":"2023-08-22T17:07:30.000000Z","name_show_var":"adam","date_show_var":" 22nd  August 2023","image_show_var":"https:\/\/stagging.hatinco.com\/4_ever_memories\/public\/images\/upload_file\/1692724050.mp4"}]';
-    var jsonString_aud = '[{"id":69,"memorial_id":39,"image_url":null,"type":"audio","user_id":11,"deleted_at":null,"created_at":"2023-08-22T17:07:40.000000Z","updated_at":"2023-08-22T17:07:40.000000Z","name_show_var":"adam","date_show_var":" 22nd  August 2023","image_show_var":"https:\/\/stagging.hatinco.com\/4_ever_memories\/public\/images\/upload_file\/1692724060.mp3"}]';
+    var jsonString = '[{"id":72,"memorial_id":39,"image_url":null,"type":"photo","user_id":11,"deleted_at":null,"created_at":"2023-08-23T07:50:32.000000Z","updated_at":"2023-08-23T07:50:32.000000Z","name_show_var":"adam","date_show_var":" 23rd  August 2023","image_show_var":"https://4evermemorial.com\/public\/user_templates\/images\/65605145102f1.png"},{"id":71,"memorial_id":39,"image_url":null,"type":"photo","user_id":11,"deleted_at":null,"created_at":"2023-08-22T17:09:24.000000Z","updated_at":"2023-08-22T17:09:24.000000Z","name_show_var":"adam","date_show_var":" 22nd  August 2023","image_show_var":"https:\/\/4evermemorial.com\/public\/user_templates\/images\/6564470688cfe.png"}]';
+    var jsonString_vid = '[{"id":70,"memorial_id":39,"image_url":null,"type":"video","user_id":11,"deleted_at":null,"created_at":"2023-08-22T17:07:58.000000Z","updated_at":"2023-08-22T17:07:58.000000Z","name_show_var":"adam","date_show_var":" 22nd  August 2023","image_show_var":"https:\/\/4evermemorial.com\/public\/user_templates\/images\/1692724078.mp4"},{"id":68,"memorial_id":39,"image_url":null,"type":"video","user_id":11,"deleted_at":null,"created_at":"2023-08-22T17:07:30.000000Z","updated_at":"2023-08-22T17:07:30.000000Z","name_show_var":"adam","date_show_var":" 22nd  August 2023","image_show_var":"https:\/\/4evermemorial.com\/public\/user_templates\/images\/1692724078.mp4"}]';
+    var jsonString_aud = '[{"id":69,"memorial_id":39,"image_url":null,"type":"audio","user_id":11,"deleted_at":null,"created_at":"2023-08-22T17:07:40.000000Z","updated_at":"2023-08-22T17:07:40.000000Z","name_show_var":"adam","date_show_var":" 22nd  August 2023","image_show_var":"https:\/\/4evermemorial.com\/public\/user_templates\/images\/\/1692724060.mp3"}]';
     var jsonString_recent = '[{"date_var":"2023-08-22","type_var":"audio","message_var":" audio added"},{"date_var":"2023-08-22","type_var":"photo","message_var":" photo added"},{"date_var":"2023-08-22","type_var":"video","message_var":" video added"},{"date_var":"2023-08-23","type_var":null,"message_var":"  added"},{"date_var":"2023-08-23","type_var":"photo","message_var":" photo added"}]';
     var gallery_images = JSON.parse(jsonString);
     var gallery_video_ = JSON.parse(jsonString_vid);
     var gallery_audio = JSON.parse(jsonString_aud);
     var recent_show = JSON.parse(jsonString_recent);
-    console.log(gallery_images);
-    $(document).ready(function() {
+
         // $("#btn1").click(function() {
         //     $(".add_tribute_append").append(review);
         // });
+
+
+        function share_memorial() {
+            // $('#inviteModal').modal('toggle');
+            const shareData = {
+                title: document.title,
+                text: "Check this page",
+                url: window.location.href
+            };
+
+            // 👉 If browser supports native share:
+            if (navigator.share) {
+                navigator.share(shareData)
+                    .then(() => console.log("Shared"))
+                    .catch((err) => console.log("Share canceled", err));
+            }
+            else {
+                // 👉 Show fallback modal for desktop
+                $("#desktopShareModal").modal("show");
+            }
+        }
+
+        $(document).on("click", ".btn.btn-primary.btnInvite", function(){
+            share_memorial();
+        });
+        $(document).on("click", ".shr_btn_md", function(){
+            share_memorial();
+        });
 
         set_dynamic_values();
 
