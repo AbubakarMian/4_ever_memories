@@ -139,7 +139,7 @@
 <div class="form-group">
     {!! Form::label('password', 'Password') !!}
     <div>
-        {!! Form::password('password', null, [
+        {!! Form::password('password', [
             'class' => 'form-control',
             'data-parsley-required' => 'true',
             'data-parsley-trigger' => 'change',
