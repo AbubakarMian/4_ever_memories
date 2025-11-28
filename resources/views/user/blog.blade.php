@@ -44,7 +44,7 @@
                                             <h5>{{ $post->subject ?? 'Blog Subject' }}</h5>
                                             <h2>{{ $post->title ?? 'Blog Title' }}</h2>
                                             <h3>
-                                                {{ Str::limit(strip_tags($post->description), 1000) ?? 'Blog description...' }}
+                                                {{ ($post->description) ?? 'Blog description...' }}
                                             </h3>
                                         </div>
                                     </div>
@@ -63,7 +63,7 @@
                                                     <h5>{{ $post->subject ?? 'Blog Subject' }}</h5>
                                                     <h2>{{ $post->title ?? 'Blog Title' }}</h2>
                                                     <h3>
-                                                       aaa {{ strip_tags($post->description) ?? 'Blog description...' }}
+                                                       {{($post->description) ?? 'Blog description...' }}
                                                     </h3>
                                                 </div>
                                             </div>

@@ -120,9 +120,9 @@ width="100%" style="table-layout:fixed;"
     <table class="fhgyt" id="userTableAppend" style="opacity: 0">
         <thead>
             <tr>
-                <th>first_name</th>
-                <th>email</th>
-                <th>role_id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>

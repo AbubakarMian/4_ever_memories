@@ -50,6 +50,32 @@ class UserController extends Controller
         return $this->add_or_update($request, $make_admin);
 
     }
+    public function view_as_user(Request $request)
+{
+    // Validate the request with email instead of user_id
+    $request->validate([
+        'email' => 'required|email|exists:users,email'
+    ]);
+
+    // Find the user by email instead of ID
+    $user = User::where('email', $request->email)->first();
+    
+    if (!$user) {
+        return response()->json([
+            'success' => false,
+            'message' => 'User not found'
+        ], 404);
+    }
+
+    // Login the user
+    Auth::login($user);
+    
+    return response()->json([
+        'success' => true,
+        'redirect_url' => route('user.my_memorials')
+    ]);
+}
+    
     public function edit($id)
     {
         $control = 'edit';

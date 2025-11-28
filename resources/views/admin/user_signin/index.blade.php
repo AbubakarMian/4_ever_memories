@@ -53,7 +53,6 @@ width="400px" style="table-layout:fixed;"
 @section('app_jquery')
 
 <script>
-
 $(document).ready(function(){
 
     fetchRecords();
@@ -71,13 +70,14 @@ $(document).ready(function(){
 
            console.log(response);
 
-
               for(var i=0; i<len; i++){
                   var id =  response['data'][i].id;
                   var name =  response['data'][i].first_name;
                   var email =  response['data'][i].email;
                   var role_id =  response['data'][i].role_id;
-                  var signin = `<a class="btn btn-info" href="{!!asset('/')!!}">Sign As User</a>`;
+                  
+                  // Pass email instead of user ID
+                  var signin = `<button class="btn btn-info" onclick="signInAsUser('${email}')">Sign As User</button>`;
                   var memorials = `<a class="btn btn-info" href="{!!asset('/')!!}">Memorials</a>`;
                   
                   if(response['data'][i].role_id == 1){
@@ -90,26 +90,14 @@ $(document).ready(function(){
                     user_type ='Teacher'
                         }
                         else if (response['data'][i].role_id == 4){
-                    user_type ='Emploee'
+                    user_type ='Employee'
                         }
                   var image  = response['data'][i].image;
-                //   var deleted_at   = response['data'][i].deleted_at;
 
                 if(!image){
                     image = "{!!asset('public/images/logo.png')!!}"
                     console.log('no image');
                 }
-
-                // users    role ids
-                // 'admin'    => '1',
-                // 'user'   => '2',
-                // 'teacher'   => '3',
-                // 'employee'   => '4',
-
-
-
-
-		        var image_col = `<img width="100px" src="`+image+`" class="show-product-img imgshow">`
 
                 var tr_str = "<tr>" +
                     "<td>" +name+ "</td>" +
@@ -117,12 +105,11 @@ $(document).ready(function(){
                     "<td>" +user_type+ "</td>" +
                     "<td>" +signin+ "</td>" +
                     "<td>" +memorials+ "</td>" +
-
                 "</tr>";
 
                 $("#userTableAppend tbody").append(tr_str);
                 }
-console.log('sadasdasdad');
+                
                 $('#userTableAppend').DataTable({
                     dom: '<"top_datatable"B>lftipr',
                         buttons: [
@@ -135,10 +122,34 @@ console.log('sadasdasdad');
 
 });
 
-function set_msg_modal(msg){
-        $('.set_msg_modal').html(msg);
-    }
+// Updated function to accept email
+function signInAsUser(userEmail) {
+    console.log('Signing in as user with email:', userEmail);
+    
+    $.ajax({
+        url: '{!!route("user.view_as_user")!!}',
+        type: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',
+            email: userEmail  // Changed from user_id to email
+        },
+        success: function(response) {
+            if (response.success) {
+                window.location.href = response.redirect_url;
+            } else {
+                alert('Error: ' + response.message);
+            }
+        },
+        error: function(xhr) {
+            console.log('Error response:', xhr.responseJSON);
+            alert('Error: User not found or authentication failed');
+        }
+    });
+}
 
+function set_msg_modal(msg){
+    $('.set_msg_modal').html(msg);
+}
 </script>
 @endsection
 

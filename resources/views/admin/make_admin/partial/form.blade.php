@@ -55,39 +55,39 @@
 
 
 <div class="form-group">
-    {!! Form::label('first_name', 'first_name') !!}
+    {!! Form::label('first_name', 'First Name') !!}
     <div>
         {!! Form::text('first_name', null, [
             'class' => 'form-control',
             'data-parsley-required' => 'true',
             'data-parsley-trigger' => 'change',
-            'placeholder' => 'Enter  first_name',
+            'placeholder' => 'Enter First Name',
             'required',
             'maxlength' => '201',
         ]) !!}
     </div>
 </div>
 <div class="form-group">
-    {!! Form::label('middle_name', 'middle_name') !!}
+    {!! Form::label('middle_name', 'Middle Name') !!}
     <div>
         {!! Form::text('middle_name', null, [
             'class' => 'form-control',
             'data-parsley-required' => 'true',
             'data-parsley-trigger' => 'change',
-            'placeholder' => 'Enter  middle_name',
+            'placeholder' => 'Enter Middle Name',
             'required',
             'maxlength' => '201',
         ]) !!}
     </div>
 </div>
 <div class="form-group">
-    {!! Form::label('last_name', 'last_name') !!}
+    {!! Form::label('last_name', 'Last Name') !!}
     <div>
         {!! Form::text('last_name', null, [
             'class' => 'form-control',
             'data-parsley-required' => 'true',
             'data-parsley-trigger' => 'change',
-            'placeholder' => 'Enter  last_name',
+            'placeholder' => 'Enter last Name',
             'required',
             'maxlength' => '201',
         ]) !!}
@@ -95,13 +95,13 @@
 </div>
 
 <div class="form-group">
-    {!! Form::label('email', 'email') !!}
+    {!! Form::label('email', 'Email') !!}
     <div>
         {!! Form::text('email', null, [
             'class' => 'form-control',
             'data-parsley-required' => 'true',
             'data-parsley-trigger' => 'change',
-            'placeholder' => 'Enter  email',
+            'placeholder' => 'Enter Email',
             'required',
             'maxlength' => '201',
         ]) !!}
@@ -124,26 +124,26 @@
     </div>
 </div>
 <div class="form-group">
-    {!! Form::label('adderss', 'adderss') !!}
+    {!! Form::label('adderss', 'Adderss') !!}
     <div>
         {!! Form::text('adderss', null, [
             'class' => 'form-control',
             'data-parsley-required' => 'true',
             'data-parsley-trigger' => 'change',
-            'placeholder' => 'Enter  adderss',
+            'placeholder' => 'Enter Adderss',
             'required',
             'maxlength' => '201',
         ]) !!}
     </div>
 </div>
 <div class="form-group">
-    {!! Form::label('password', 'password') !!}
+    {!! Form::label('password', 'Password') !!}
     <div>
         {!! Form::password('password', null, [
             'class' => 'form-control',
             'data-parsley-required' => 'true',
             'data-parsley-trigger' => 'change',
-            'placeholder' => 'Enter password',
+            'placeholder' => 'Enter Password',
             'required',
             'maxlength' => '201',
         ]) !!}
