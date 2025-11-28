@@ -110,11 +110,13 @@ class UserController extends Controller {
         // if(!Hash::check($request->current_password, $user->password)) {
         //     return back()->with('error', 'Incorrect Current Password!');
         // }
-        if($request->new_password != $request->confirm_password) {
-            return back()->with('error', 'New Password and Confirm Password do not match!');
+        if($request->new_password){
+            if($request->new_password != $request->confirm_password) {
+                return back()->with('error', 'New Password and Confirm Password do not match!');
+            }
+            
+            $user->password = Hash::make($request->new_password);
         }
-        
-        $user->password = Hash::make($request->new_password);
             
         $user->first_name = $request->first_name;
         if($request->hasFile('avatar')) {
