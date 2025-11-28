@@ -4,10 +4,12 @@ namespace App\Http\Controllers\reports;
 
 use App\Http\Controllers\Controller;
 use App\Models\Gallery;
+use App\Models\User;
 use App\Models\UserWebsite;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MemorialController extends Controller
 {
@@ -21,6 +23,11 @@ class MemorialController extends Controller
         // dd($memorialData);
         echo json_encode($memorialData);
                      
+    }
+    public function view_as_user($memorial_id){
+        $memorial = UserWebsite::with('user')->where('id',$memorial_id)->first()->memorial_id;
+        Auth::login(User::find($memorial->user_id));
+        return view('admin.memorial_report.view_as_user',compact('memorial_id'));
     }
     public function get_gallery($id = 0){
         $gallery = Gallery::withTrashed()->where('memorial_id',$id)->orderby('id','asc')->get();

@@ -37,6 +37,7 @@ MEMORIALS
                 <th>Image</th>
                 <th>Gallery</th>
                 <th>Restore </th>
+                <th>View as user </th>
 
 
             </tr>
@@ -97,17 +98,14 @@ MEMORIALS
                                 'memorial_' + response['data'][i].id + `">Restore</a>`;
 
                             }
-                            // else{
-                            //     var delete_btn =
-                            //     `<a class="btn btn-info" data-toggle="modal" data-target="#` +
-                            //     'memorial_' + response['data'][i].id + `">Delete</a>`;
-
-                            // }
+                            var view_as_user_btn = `<a class="btn btn-info" href="{!! asset('admin/memorial/view_as_user/') !!}/` + response['data'][i].id + `">View</a>`;
+                            
                             var tr_str = `<tr id='row_` + response['data'][i].id + `'>` +
                                 "<td>" + name + "</td>" +
                                 "<td>" + image + "</td>" +
                                 "<td>" + gallery + "</td>" +
                                 "<td>" + delete_btn + "</td>" +
+                                "<td>" + view_as_user_btn + "</td>" +
 
 
                                 "</tr>";

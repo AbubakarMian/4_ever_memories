@@ -79,6 +79,7 @@ Route::get('template', [Admin_UserController::class, 'template']);
 
 Route::get('admin/memorials/', [MemorialController::class, 'index'])->name('admin.memorials.index');
 Route::get('admin/memorials/getmemorials', [MemorialController::class, 'getmemorials'])->name('admin.memorials.getmemorials');
+Route::get('admin/memorial/view_as_user/{memorial_id}', [MemorialController::class, 'view_as_user'])->name('admin.memorials.getmemorials');
 Route::get('admin/memorials/get_gallery/{memorial_id}', [MemorialController::class, 'get_gallery'])->name('admin.memorials.get_gallery');
 Route::get('admin/memoraials/gallery/{memorial_id}', [MemorialController::class, 'gallery'])->name('admin.memorials.gallery');
 Route::post('admin/memorial/delete', [MemorialController::class, 'destroy_undestroy'])->name('admin.memorials.delete');
