@@ -35,7 +35,7 @@ width="400px" style="table-layout:fixed;"
         <th>Name</th>
         <th>Email</th>
         <!-- <th>Role</th> -->
-        <th>SingIn</th>
+        <th>SignIn as User</th>
         <th>Memorials</th>
      
         
@@ -77,7 +77,7 @@ $(document).ready(function(){
                   var role_id =  response['data'][i].role_id;
                   
                   // Pass email instead of user ID
-                  var signin = `<button class="btn btn-info" onclick="signInAsUser('${email}')">Sign As User</button>`;
+                  var signin = `<button class="btn btn-info" onclick="signInAsUser('${email}')">SignIn</button>`;
                   var memorials = `<button class="btn btn-info" onclick="viewMemorial('${email}')">Memorials</button>`;
                   
                   if(response['data'][i].role_id == 1){
@@ -135,6 +135,7 @@ function signInAsUser(userEmail) {
         },
         success: function(response) {
             if (response.success) {
+                history.replaceState(null, "", "/admin/login");
                 window.location.href = response.redirect_url;
             } else {
                 alert('Error: ' + response.message);
@@ -158,6 +159,7 @@ function viewMemorial(userEmail) {
         },
         success: function(response) {
             if (response.success) {
+                history.replaceState(null, "", "/admin/login");
                 window.location.href = response.redirect_url;
             } else {
                 alert('Error: ' + response.message);
