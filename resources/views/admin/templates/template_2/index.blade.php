@@ -87,7 +87,7 @@
 
 
 
-                                        <div id="Life" class="tabcontent"><div class="reviewBox"><ul class="reviewSection"><li><h3></h3></li></ul><div class="baby"><img src="{!!$base_url!!}/public/images/64e4e0c3d5168.png" alt="relative"></div> <p class="fdgsdf"><p>he was a very good person</p></p><div class="whole"><div class="flx"><div class="share"><i class="fa fa-share-alt-square" aria-hidden="true"></i></div><div class="chr_p">Share</div></div></div></div></div>
+                                        <div id="Life" class="tabcontent"><div class="reviewBox"><ul class="reviewSection"><li><h3></h3></li></ul><div class="baby"><img src="{!!$base_url!!}/public/user_templates/images/659eca82c6526.png" alt="relative"></div> <p class="fdgsdf"><p>he was a very good person</p></p><div class="whole"><div class="flx"><div class="share"><i class="fa fa-share-alt-square" aria-hidden="true"></i></div><div class="chr_p">Share</div></div></div></div></div>
 
 
                                         <div id="Gallary" class="tabcontent">
@@ -107,7 +107,7 @@
 
                                             </div>
                                         </div>
-                                        <div id="stories" class="tabcontent"> <div class="add_stor"> <div class="flx"><div class="container"> <div class="row"> <div class="col-md-8"><p>Share a special moment from adam ’s  life</p></div><div class="col-md-4"><a href="#story_title"><div class="stor_bttn"><i class="fa fa-pencil" aria-hidden="true"></i>_Write a story </div></a></div></div></div></div></div><div class="story_blk"> <div class="story_tab"><h3>he had a wonderful story</h3><p> 22nd  August 2023. byadam</p> <img src="{!!$base_url!!}/public/images/64e4e27d934e0.png" alt="relative"><div class="story_para"><p>he had a wonderful story</p><div class="whole"><div class="flx"><div class="share"><i class="fa fa-share-alt-square" aria-hidden="true"></i></div><div class="chr_p">Share</div></div></div></div></div> </div><section class="story_add"> <div class="contaiasner"> <div class="row"> <div class="share_story"> <div class="heddd"> <h2>Share a story</h2>  </div>  <div class="str_title"> <input type="text" class="form-control" name="story_title_n" id="story_title" placeholder="Title (Optional)">  </div>  <div class="str_textaea"> <textarea class="form-control" name="story_details_n" rows="5" id="story_details"></textarea> </div>  <div class="by"> <div class="dropdown"> by ameer maavia<button class="dpbtn dropdown-toggle" type="button"  data-toggle="dropdown">Change<span class=""></span></button> <ul class="dropdown-menu dp_menue"> <li><a href="#">I am the author </a></li> <li><a href="#">Posting on behalf of another person</a></li> </ul> </div> </div> <div class="attach"> <div class="attch_hed">  Attach a picture: </div><div class="attch_icon_area"><div class="attch_icon"><label for="upload-photo"><i class="fa fa-cloud-upload" aria-hidden="true"></i></label> <input type="file" id="upload-photo" class="up_ld_file crop_upload_image" image_width="378" image_height="226" aspect_ratio_width="16" aspect_ratio_height="9" upload_input_by_name="story_image"><p>Upload From Your Device</p></div>  </div> </div> <div class="publ_btn"> <button id="save_story" class="btn btn-danger">Publish</button> </div></div></div></div></section></div>
+                                        <div id="stories" class="tabcontent"> <div class="add_stor"> <div class="flx"><div class="container"> <div class="row"> <div class="col-md-8"><p>Share a special moment from adam ’s  life</p></div><div class="col-md-4"><a href="#story_title"><div class="stor_bttn"><i class="fa fa-pencil" aria-hidden="true"></i>_Write a story </div></a></div></div></div></div></div><div class="story_blk"> <div class="story_tab"><h3>he had a wonderful story</h3><p> 22nd  August 2023. byadam</p> <img src="{!!$base_url!!}/public/user_templates/images/659eca82c6526.png" alt="relative"><div class="story_para"><p>he had a wonderful story</p><div class="whole"><div class="flx"><div class="share"><i class="fa fa-share-alt-square" aria-hidden="true"></i></div><div class="chr_p">Share</div></div></div></div></div> </div><section class="story_add"> <div class="contaiasner"> <div class="row"> <div class="share_story"> <div class="heddd"> <h2>Share a story</h2>  </div>  <div class="str_title"> <input type="text" class="form-control" name="story_title_n" id="story_title" placeholder="Title (Optional)">  </div>  <div class="str_textaea"> <textarea class="form-control" name="story_details_n" rows="5" id="story_details"></textarea> </div>  <div class="by"> <div class="dropdown"> by ameer maavia<button class="dpbtn dropdown-toggle" type="button"  data-toggle="dropdown">Change<span class=""></span></button> <ul class="dropdown-menu dp_menue"> <li><a href="#">I am the author </a></li> <li><a href="#">Posting on behalf of another person</a></li> </ul> </div> </div> <div class="attach"> <div class="attch_hed">  Attach a picture: </div><div class="attch_icon_area"><div class="attch_icon"><label for="upload-photo"><i class="fa fa-cloud-upload" aria-hidden="true"></i></label> <input type="file" id="upload-photo" class="up_ld_file crop_upload_image" image_width="378" image_height="226" aspect_ratio_width="16" aspect_ratio_height="9" upload_input_by_name="story_image"><p>Upload From Your Device</p></div>  </div> </div> <div class="publ_btn"> <button id="save_story" class="btn btn-danger">Publish</button> </div></div></div></div></section></div>
 
 
 
@@ -124,16 +124,6 @@
                                         <a  class="btn btn-primary btnInvite" data-toggle="modal" data-target1="#inviteModal"><i class="fa fa-user-plus"
                                                 aria-hidden="true"></i> Invite Now</a>
                                     </div>
-                                    <div class="face_share">
-                                    <div class="fb_icon">
-                                        <i class="fa fa-facebook-square" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="fb_share_par">
-                                        <?php $url = "{!!$base_url!!}/public//user/get_memorial/asdsadsad@forevermemorial.com"; ?>
-                                        <a class="facebook-share" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $url ?>">Share on Facebook</a>
-                                    </div>
-                                </div>
-                                
                                     <div class="phots">
                                         <p class="pht_para">137 Photos</p>
                                         <div class="imag_sec">
