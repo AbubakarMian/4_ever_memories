@@ -186,7 +186,7 @@ class UserController extends Controller {
     }
     function logout() {
         Auth::logout();
-        return redirect()->back();
+        return redirect('/');
     }
     public function memorialform() {
         return view('user.memorialform');
