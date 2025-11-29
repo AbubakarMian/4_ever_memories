@@ -28,7 +28,17 @@ class BlogController extends Controller
         ->values()
         ->toArray();
         if($category){
-            $blog = Blog::where('tags', 'LIKE', '%' . $category . '%')->get();
+            
+        $blog = Blog::all()->filter(function ($blogItem) use ($category) {
+            $tags = explode(',', $blogItem->tags);
+            foreach ($tags as $tag) {
+                $tagSlug = strtolower(str_replace(' ', '-', trim($tag)));
+                if ($tagSlug === $category) {
+                    return true;
+                }
+            }
+            return false;
+        });
         }
         else{
             $blog = Blog::get();
