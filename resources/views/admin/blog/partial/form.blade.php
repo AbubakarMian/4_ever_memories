@@ -94,13 +94,13 @@
     </div>
 </div>
 <div class="form-group">
-    {!! Form::label('tags', 'Tags') !!}
+    {!! Form::label('category', 'Categories') !!}
     <div>
         {!! Form::text('tags', null, [
             'class' => 'form-control',
             'data-parsley-required' => 'true',
             'data-parsley-trigger' => 'change',
-            'placeholder' => 'Enter Comma Seperates Tags',
+            'placeholder' => 'Enter Comma Categories Tags',
             'required',
             'maxlength' => '201',
         ]) !!}

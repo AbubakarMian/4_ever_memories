@@ -122,50 +122,13 @@
                                 <h3>Categories</h3>
                                 <div class="catclicks">
                                     {{-- You might want to generate these dynamically from your blog tags --}}
-                                    @if(isset($blog) && count($blog) > 0)
-                                        @php
-                                            $categories = [];
-                                            foreach($blog as $post) {
-                                                if($post->tags) {
-                                                    $postCategories = explode(',', $post->tags);
-                                                    foreach($postCategories as $cat) {
-                                                        $trimmedCat = trim($cat);
-                                                        if(!empty($trimmedCat) && !in_array($trimmedCat, $categories)) {
-                                                            $categories[] = $trimmedCat;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        @endphp
+
                                         
                                         @if(count($categories) > 0)
                                             @foreach($categories as $category)
-                                                <a href="{{ url('user/blog/category/' . Str::slug($category)) }}" class="btn btn-primary catclick">{{ $category }}</a>
+                                                <a href="{{ url('user/blog/' . Str::slug($category)) }}" class="btn btn-primary catclick">{{ $category }}</a>
                                             @endforeach
-                                        @else
-                                            {{-- Fallback categories --}}
-                                            <a href="{!! asset('user/blog/child_loss')!!}" class="btn btn-primary catclick">Child Loss</a>
-                                            <a href="{!! asset('user/blog/child_loss')!!}" class="btn btn-primary catclick">Coping With Grief</a>
-                                            <a href="{!! asset('user/blog/death')!!}" class="btn btn-primary catclick">End-of-life</a>
-                                            <a href="{!! asset('user/blog/death')!!}" class="btn btn-primary catclick">Funeral Planning</a>
-                                            <a href="{!! asset('user/blog/child_loss')!!}" class="btn btn-primary catclick">Grief Counseling</a>
-                                            <a href="{!! asset('user/blog/child_loss')!!}" class="btn btn-primary catclick">Grief Experience</a>
-                                            <a href="{!! asset('user/blog/our_story')!!}" class="btn btn-primary catclick">It Is Interesting</a>
-                                            <a href="{!! asset('user/testing')!!}" class="btn btn-primary catclick">Online Memorials</a>
-                                            <a href="{!! asset('user/blog/death')!!}" class="btn btn-primary catclick">Phenomenon Of Death</a>
                                         @endif
-                                    @else
-                                        {{-- Fallback categories if no blog posts --}}
-                                        <a href="{!! asset('user/blog/child_loss')!!}" class="btn btn-primary catclick">Child Loss</a>
-                                        <a href="{!! asset('user/blog/child_loss')!!}" class="btn btn-primary catclick">Coping With Grief</a>
-                                        <a href="{!! asset('user/blog/death')!!}" class="btn btn-primary catclick">End-of-life</a>
-                                        <a href="{!! asset('user/blog/death')!!}" class="btn btn-primary catclick">Funeral Planning</a>
-                                        <a href="{!! asset('user/blog/child_loss')!!}" class="btn btn-primary catclick">Grief Counseling</a>
-                                        <a href="{!! asset('user/blog/child_loss')!!}" class="btn btn-primary catclick">Grief Experience</a>
-                                        <a href="{!! asset('user/blog/our_story')!!}" class="btn btn-primary catclick">It Is Interesting</a>
-                                        <a href="{!! asset('user/testing')!!}" class="btn btn-primary catclick">Online Memorials</a>
-                                        <a href="{!! asset('user/blog/death')!!}" class="btn btn-primary catclick">Phenomenon Of Death</a>
-                                    @endif
                                 </div>
                             </div>
                         </div>

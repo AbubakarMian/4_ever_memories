@@ -128,9 +128,7 @@ class UserController extends Controller {
         
         return back()->with('success', 'Profile updated successfully!');
     }
-    public function blog() {
-        return view('user.blog');
-    }
+    
     public function child_loss() {
         return view('user.child_loss');
     }
