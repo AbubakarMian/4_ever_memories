@@ -30,10 +30,12 @@ Route::get('/user/plans', [User_UserController::class, 'plans'])->name('user.pla
 Route::get('/user/contactus', [User_UserController::class, 'contactus'])->name('user.contactus');
 Route::get('/user/blog', [BlogController::class, 'compact_blog'])->name('user.get_blog');
 Route::get('/user/aboutus', [AboutUsController::class, 'compact_about_us'])->name('user.aboutus');
+// Route::get('/user/blog', [App\Http\Controllers\Admin\BlogController::class, 'compact_blog'])->name('user.get_blog');
+Route::get('/user/blog/{category?}', [App\Http\Controllers\Admin\BlogController::class, 'compact_blog'])->name('user.get_blog');
 Route::post('/user/contactus/submit', [User_UserController::class, 'contactus_update'])->name('user.contactus_update');
 Route::get('/user/profile', [User_UserController::class, 'profile'])->name('user.profile');
 Route::post('/user/profile/update', [User_UserController::class, 'profile_update'])->name('user.profile_update');
-Route::get('/user/blog', [User_UserController::class, 'blog'])->name('user.blog');
+// Route::get('/user/blog', [App\Http\Controllers\Admin\BlogController::class, 'compact_blog'])->name('user.blog');
 Route::get('/user/forgetpassword', [UserController::class, 'sendForgetEmail'])->name('user.forgetpassword');
 Route::get('/user/my_memorials', [User_UserController::class, 'my_memorials'])->name('user.my_memorials');
 Route::get('template', [Admin_UserController::class, 'template']);
@@ -143,9 +145,9 @@ Route::group(['middleware' => 'login.access_token'], function () { //,'prefix'=>
 Route::post('search/memorial', [User_UserController::class, 'search_memorial'])->name('user.search_memorial'); //search
 Route::get('search/memorialss', [User_UserController::class, 'search_memorial'])->name('user.search_memorial'); //search
 
-Route::get('user/blog/child_loss', [User_UserController::class, 'child_loss'])->name('user.child_loss');
-Route::get('user/blog/death', [User_UserController::class, 'death'])->name('user.death');
-Route::get('user/blog/our_story', [User_UserController::class, 'our_story'])->name('user.our_story');
+// Route::get('user/blog/child_loss', [User_UserController::class, 'child_loss'])->name('user.child_loss');
+// Route::get('user/blog/death', [User_UserController::class, 'death'])->name('user.death');
+// Route::get('user/blog/our_story', [User_UserController::class, 'our_story'])->name('user.our_story');
 
 
 Route::post('/subscribe/{planId}', [Admin_PaymentController::class, 'createYearlySubscription'])->name('subscribe');

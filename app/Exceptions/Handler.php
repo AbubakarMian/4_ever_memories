@@ -65,31 +65,22 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof NotFoundHttpException) {
             return response()->view('error.error_404', [], 404);
-        } 
-        else {
+        }
+
+        if ($exception instanceof TokenMismatchException) {
             if (str_contains($request->url(), '/admin/')) {
-                return redirect('admin/login');            
+                return redirect('admin/login')->with('error','Try again.');            
             }
             else{
-                return redirect('/')->with('error','Please Login');            
+                return redirect('/')->with('error','Try again.');            
             }
-        } 
-
-        // if ($exception instanceof TokenMismatchException) {
-        //     if (str_contains($request->url(), '/admin/')) {
-        //         return redirect('admin/login');            
-        //     }
-        //     else{
-        //         return redirect('/');            
-        //     }
-        // } else if ($exception instanceof NotFoundHttpException) {
-        //     return response()->view('error.error_404', [], 404);
-        // } else {
-        //     // return response()->view('error.error_500', [], 500);
-        //     return redirect('/');
-
-        //     // return redirect('error/500');
-        // }
+        }
+                // General exception handling - redirect based on URL
+        if (str_contains($request->url(), '/admin/')) {
+            return redirect('admin/login')->with('error', 'An error occurred. Please login again.');            
+        } else {
+            return redirect('/')->with('error','An error occurred. Please login.');            
+        }
 
         return parent::render($request, $exception);
     }

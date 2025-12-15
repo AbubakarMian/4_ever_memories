@@ -19,20 +19,38 @@ class BlogController extends Controller
         $blog = Blog::get();
         return $this->sendResponse(200,$blog);
     }
-     function compact_blog(Request $request)
+     function compact_blog(Request $request, $category = null)
     {
-        $blog = Blog::get();
-        return view('user/blog', compact('blog'));
+        $categories = Blog::distinct()->pluck('tags')
+        ->flatMap(fn($tags) => explode(',', $tags))
+        ->map(fn($tag) => trim($tag))
+        ->unique()
+        ->values()
+        ->toArray();
+        if($category){
+            
+        $blog = Blog::all()->filter(function ($blogItem) use ($category) {
+            $tags = explode(',', $blogItem->tags);
+            foreach ($tags as $tag) {
+                $tagSlug = strtolower(str_replace(' ', '-', trim($tag)));
+                if ($tagSlug === $category) {
+                    return true;
+                }
+            }
+            return false;
+        });
+        }
+        else{
+            $blog = Blog::get();
+        }
+        return view('user/blog', compact('blog','categories'));
     }
     
     public function create()
     {
         $control = 'create';
-        // $courses = Courses::pluck('full_name','id');
-        // $transport_type = Transport_Type::pluck('name', 'id');
         return view('admin.blog.create', compact(
             'control',
-            //  'transport_type'
             ));
     }
 
@@ -46,12 +64,9 @@ class BlogController extends Controller
     {
         $control = 'edit';
         $blog = Blog::find($id);
-        // $transport_type = Transport_Type::pluck('name', 'id');
         return view('admin.blog.create', compact(
             'control',
             'blog',
-            // 'transport_type',
-
         )
         );
     }
@@ -59,7 +74,6 @@ class BlogController extends Controller
     public function update(Request $request, $id)
     {
         $blog = Blog::find($id);
-        // dd('sdas',$blog);
         return $this->add_or_update($request, $blog);
     }
 
@@ -72,8 +86,6 @@ class BlogController extends Controller
     $blog->tags = $request->tags;
 
     if ($request->hasFile('image_url')) {
-
-        // Correct parameter order
         $blog->image = $this->move_img_get_path(
             $request->file('image_url'),
             url('/'),

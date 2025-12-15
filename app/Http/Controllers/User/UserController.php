@@ -107,14 +107,16 @@ class UserController extends Controller {
     public function profile_update(Request $request) {
         $user_auth = Auth::user();
         $user = User::find($user_auth->id);
-        if(!Hash::check($request->current_password, $user->password)) {
-            return back()->with('error', 'Incorrect Current Password!');
+        // if(!Hash::check($request->current_password, $user->password)) {
+        //     return back()->with('error', 'Incorrect Current Password!');
+        // }
+        if($request->new_password){
+            if($request->new_password != $request->confirm_password) {
+                return back()->with('error', 'New Password and Confirm Password do not match!');
+            }
+            
+            $user->password = Hash::make($request->new_password);
         }
-        if($request->new_password != $request->confirm_password) {
-            return back()->with('error', 'New Password and Confirm Password do not match!');
-        }
-        
-        $user->password = Hash::make($request->new_password);
             
         $user->first_name = $request->first_name;
         if($request->hasFile('avatar')) {
@@ -126,9 +128,7 @@ class UserController extends Controller {
         
         return back()->with('success', 'Profile updated successfully!');
     }
-    public function blog() {
-        return view('user.blog');
-    }
+    
     public function child_loss() {
         return view('user.child_loss');
     }
@@ -184,7 +184,7 @@ class UserController extends Controller {
     }
     function logout() {
         Auth::logout();
-        return redirect()->back();
+        return redirect('/');
     }
     public function memorialform() {
         return view('user.memorialform');

@@ -116,7 +116,7 @@ width="100%" style="table-layout:fixed;"
                 <th>Subject</th>
                 <th>Title</th>
                 <th>Description</th>
-                <th>Tags</th>
+                <th>Categories</th>
                 <th>Image</th>
                 <th>Edit</th>
                 <th>Delete</th>
