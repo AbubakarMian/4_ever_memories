@@ -29,17 +29,13 @@
                     <div class="col-sm-7">
                         <div class="aboutdata">
                             <h2>ABOUT US</h2>
-                            <p>4Ever Memorials is a website that provides an online platform for families and friends to commemorate the lives of their loved ones in a respectful and meaningful way. Our website allows users to create virtual memorials with detailed tribute pages, share photos and videos, light digital candles, and more. It serves as a place for people to come together to console one another, pay respects, remember fondly, offer condolences, and celebrate life. We are committed to providing an accessible space for those who have been affected by loss or grief, allowing them to honor the memory of their loved ones as they move forward in their healing process. Forever Memorial strives to be a source of comfort through difficult times and bring peace of mind during challenging circumstances. Our site will remain a constant reminder of the beauty that exists despite loss and provide a safe haven for ongoing reflection. Through Forever Memorial, we seek to make a lasting impact on our community by providing an easy way to create meaningful tributes in memory of those who left us too soon. We hope you will join us in honoring their memories. 
-
-                                    At 4Eever Memorial, we understand that grief is personal and unique for everyone, so we strive to offer customizable memorials tailored to each individual’s needs.
-
-                                </p>
+                            <p>{!!$about_us[0]->description_first!!} </p>
                             
                         </div>
                     </div>
                     <div class="col-sm-5">
                         <div class="aboutimg">
-                            <img src="{!!asset('public/theme/user_theme/images/jacob.png')!!}" class="img-responsive">
+                            <img src="{!!$about_us[0]->image!!}" class="img-responsive">
                         </div>
                     </div>
                 </div>
@@ -47,14 +43,7 @@
                 <div class="aboutdata">
 
                     <p>
-                    With this in mind, users are able to customize their own memorial pages with photos, videos, music, or writings of their choice. Additionally, users can add interactive features such as stories about the deceased, condolence cards, and support messages from visitors. Our virtual memorials are carefully designed to help family and friends honor the lives of their loved ones in a respectful and meaningful way. 
-
-Our website also offers several ways for people to stay connected with those they have lost, even after death. Through our memorial pages, users can post messages on the page’s message boards, comment on shared photos and videos, light digital candles and even create virtual flower tributes. We strive to make Forever Memorial easily accessible so that anyone affected by grief or loss can join in honoring the memories of their beloved family members or friends. 
-
-4Ever Memorial is dedicated to providing a comfortable space for people suffering from grief or loss. Our team works relentlessly to ensure that this website continues to be a source of comfort and healing for all of its users. We would be honored if you choose to join us in honoring the memories of those we have lost. Thank you for taking the time to visit our website, and we hope it brings peace and comfort during this difficult time. 
-
-4Ever Memorial: a safe haven for ongoing reflection. An everlasting tribute to lost loved ones. A place to remember and keep their memories alive. Always by your side, even after death. Come pay tribute to us today at 4Ever Memorial.
-</p>
+                    {!!$about_us[0]->description_second!!}</p>
 <img src="{!!asset('public/theme/user_theme/images/signature.png')!!}" class="img-responsive">
                 </div>
                 </div>

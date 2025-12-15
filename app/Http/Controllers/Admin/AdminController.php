@@ -109,6 +109,11 @@ class AdminController extends Controller
             'url' => 'admin/signin_as_user',
             'title' => 'Users'
         ];
+        $modules[] = [
+
+            'url' => 'admin/about_us',
+            'title' => 'About Us'
+        ];
        
         // $modules[] = [
 
