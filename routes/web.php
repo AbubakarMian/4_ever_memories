@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\BlogController;
@@ -22,13 +23,13 @@ Route::post('user/login', [User_UserController::class, 'login'])->name('user.log
 Route::get('user/logout', [User_UserController::class, 'logout'])->name('user.logout');
 
 Route::get('/', [User_UserController::class, 'index'])->name('user.index');
-Route::get('/user/aboutus', [User_UserController::class, 'aboutus'])->name('user.aboutus');
 Route::get('/user/privacy_policy', [User_UserController::class, 'privacy_policy'])->name('user.privacy_policy');
 Route::get('/user/service_term', [User_UserController::class, 'service_term'])->name('user.service_term');
 Route::get('/user/testimonials', [TestimaonialController::class, 'compact_testimonial'])->name('user.compact_testimonial');
 Route::get('/user/plans', [User_UserController::class, 'plans'])->name('user.plans');
 Route::get('/user/contactus', [User_UserController::class, 'contactus'])->name('user.contactus');
 Route::get('/user/blog', [BlogController::class, 'compact_blog'])->name('user.get_blog');
+Route::get('/user/aboutus', [AboutUsController::class, 'compact_about_us'])->name('user.aboutus');
 Route::post('/user/contactus/submit', [User_UserController::class, 'contactus_update'])->name('user.contactus_update');
 Route::get('/user/profile', [User_UserController::class, 'profile'])->name('user.profile');
 Route::post('/user/profile/update', [User_UserController::class, 'profile_update'])->name('user.profile_update');
@@ -161,6 +162,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function () {
         Route::get('edit/{id}', [BlogController::class, 'edit'])->name('blog.edit');
         Route::post('update/{id}', [BlogController::class, 'update'])->name('blog.update');
         Route::post('delete/{id}', [BlogController::class, 'destroy_undestroy'])->name('blog.delete');
+    });
+
+
+        //  =================================  about_us ==========================
+    Route::group(['prefix' => 'about_us'], function () {
+        Route::get('/', [AboutUsController::class, 'index'])->name('about_us.index');
+        Route::get('get_about_us', [AboutUsController::class, 'get_about_us'])->name('about_us.index');
+        Route::get('create', [AboutUsController::class, 'create'])->name('about_us.create'); //add
+        Route::post('save', [AboutUsController::class, 'save'])->name('about_us.save');
+        Route::get('edit/{id}', [AboutUsController::class, 'edit'])->name('about_us.edit');
+        Route::post('update/{id}', [AboutUsController::class, 'update'])->name('about_us.update');
+        Route::post('delete/{id}', [AboutUsController::class, 'destroy_undestroy'])->name('about_us.delete');
     });
      //  =================================  testimonial ==========================
     Route::group(['prefix' => 'testimonial'], function () {
