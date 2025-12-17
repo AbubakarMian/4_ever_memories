@@ -16,7 +16,7 @@ class BlogController extends Controller
     }
     function get_blog(Request $request)
     {
-        $blog = Blog::get();
+        $blog = Blog::orderBy('created_at', 'desc')->get();
         return $this->sendResponse(200,$blog);
     }
      function compact_blog(Request $request, $category = null)
