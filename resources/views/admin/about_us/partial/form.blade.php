@@ -55,25 +55,13 @@
 
 
 <div class="form-group">
-    {!! Form::label('description_first', 'First Description') !!}
+    {!! Form::label('description_first', 'AboutUs') !!}
     <div>
         {!! Form::textarea('description_first', null, [
             'class' => 'form-control',
             'data-parsley-required' => 'true',
             'data-parsley-trigger' => 'change',
-            'placeholder' => 'Enter First description',
-            'required',
-        ]) !!}
-    </div>
-</div>
-<div class="form-group">
-    {!! Form::label('description_second', 'Second Description') !!}
-    <div>
-        {!! Form::textarea('description_second', null, [
-            'class' => 'form-control',
-            'data-parsley-required' => 'true',
-            'data-parsley-trigger' => 'change',
-            'placeholder' => 'Enter Second description',
+            'placeholder' => 'Enter Text...',
             'required',
         ]) !!}
     </div>

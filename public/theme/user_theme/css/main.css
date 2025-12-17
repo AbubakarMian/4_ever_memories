@@ -147,9 +147,9 @@ h4 {
 .aboutdata p {
     color: #465863;
     font-size: 20px;
-    margin-bottom: 27px;
+    /* margin-bottom: 27px; */
     font-weight: 400;
-    text-indent: 90px;
+    /* text-indent: 90px; */
 }
 
 .aboutimg img {

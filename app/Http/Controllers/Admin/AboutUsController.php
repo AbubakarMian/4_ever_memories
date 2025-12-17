@@ -19,10 +19,34 @@ function index(Request $request)
         $about_us = About_us::get();
         return $this->sendResponse(200,$about_us);
     }
-     function compact_about_us(Request $request)
+    function compact_about_us(Request $request)
     {
-        $about_us = About_us::get();
-        return view('user/aboutus', compact('about_us'));
+        $about_us = About_us::first();
+        $limit = 1025;
+
+        $text = trim($about_us->description_first);
+        $text = str_replace(["\r\n", "\r"], "\n", $text);
+        if (mb_strlen($text) > $limit) {
+            $firstText = mb_substr($text, 0, $limit);
+            $firstText = preg_replace('/\s+\S*$/', '', $firstText);
+            $secondText = mb_substr($text, mb_strlen($firstText));
+        } else {
+            $firstText  = $text;
+            $secondText = '';
+        }
+        $paragraphs_first = array_filter(
+            array_map('trim', explode("\n", $firstText))
+        );
+
+        $paragraphs_two = array_filter(
+            array_map('trim', explode("\n", $secondText))
+        );
+
+        return view('user/aboutus', compact(
+            'about_us',
+            'paragraphs_first',
+            'paragraphs_two'
+        ));
     }
     
     public function create()
@@ -42,19 +66,20 @@ function index(Request $request)
         return $this->add_or_update($request, $about_us);
 
     }
-    public function edit($id)
-    {
-        $control = 'edit';
-        $about_us = About_us::find($id);
-        // $transport_type = Transport_Type::pluck('name', 'id');
-        return view('admin.about_us.create', compact(
-            'control',
-            'about_us',
-            // 'transport_type',
+    public function edit($id = null){
+    $control = 'edit';
 
-        )
-        );
+    if ($id) {
+        $about_us = About_us::findOrFail($id);
+    } else {
+        $about_us = About_us::first();
     }
+
+    return view('admin.about_us.create', compact(
+        'control',
+        'about_us'
+    ));
+}
 
     public function update(Request $request, $id)
     {
@@ -66,9 +91,7 @@ function index(Request $request)
 
    public function add_or_update(Request $request, $about_us)
 {
-    $about_us->description_first = $request->description_first;
-    $about_us->description_second = $request->description_second;
-   
+    $about_us->description_first = $request->description_first;   
 
     if ($request->hasFile('image_url')) {
 

@@ -169,11 +169,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function () {
 
         //  =================================  about_us ==========================
     Route::group(['prefix' => 'about_us'], function () {
-        Route::get('/', [AboutUsController::class, 'index'])->name('about_us.index');
+        Route::get('/', [AboutUsController::class, 'edit'])->name('about_us.index');
         Route::get('get_about_us', [AboutUsController::class, 'get_about_us'])->name('about_us.index');
         Route::get('create', [AboutUsController::class, 'create'])->name('about_us.create'); //add
         Route::post('save', [AboutUsController::class, 'save'])->name('about_us.save');
-        Route::get('edit/{id}', [AboutUsController::class, 'edit'])->name('about_us.edit');
+        Route::get('edit/{id?}', [AboutUsController::class, 'edit'])->name('about_us.edit');
         Route::post('update/{id}', [AboutUsController::class, 'update'])->name('about_us.update');
         Route::post('delete/{id}', [AboutUsController::class, 'destroy_undestroy'])->name('about_us.delete');
     });

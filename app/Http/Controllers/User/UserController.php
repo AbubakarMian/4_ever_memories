@@ -36,7 +36,22 @@ class UserController extends Controller {
     public function index() {
         $memorials = UserWebsite::latest()->limit(20)->get();
         $about_us = About_us::first();
-        return view('user.index', compact('memorials', 'about_us'));
+        $limit = 1025;
+
+        $text = trim($about_us->description_first);
+        $text = str_replace(["\r\n", "\r"], "\n", $text);
+        if (mb_strlen($text) > $limit) {
+            $firstText = mb_substr($text, 0, $limit);
+            $firstText = preg_replace('/\s+\S*$/', '', $firstText);
+            $secondText = mb_substr($text, mb_strlen($firstText));
+        } else {
+            $firstText  = $text;
+            $secondText = '';
+        }
+        $paragraphs_first = array_filter(
+            array_map('trim', explode("\n", $firstText))
+        );
+        return view('user.index', compact('memorials', 'paragraphs_first'));
     }
 
     

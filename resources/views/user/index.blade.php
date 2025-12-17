@@ -138,12 +138,10 @@
                 <div class="row">
                     <div class="col-sm-7">
                         <div class="aboutdata">
-                            <h2>ABOUT US</h2>
-                            <p>We Provide an interacting platform with pictures,
-                                videos, audio, music, poems and all that will make their
-                                visit to the ancestorial site a good experience.</p>
-                            <p>A Place where parents will send their children to go and
-                                research the Grand Parent.</p>
+                            <h2>ABOUT US</h2>                            
+                            @foreach($paragraphs_first as $paragraph)
+                                <p>{{ $paragraph }}</p>
+                            @endforeach
                             <a href="{!! asset('/user/aboutus') !!}"><button type="submit"
                                     class="btn btn-primary aboutclick">Learn More</button></a>
                         </div>

@@ -29,21 +29,23 @@
                     <div class="col-sm-7">
                         <div class="aboutdata">
                             <h2>ABOUT US</h2>
-                            <p>{!!$about_us[0]->description_first!!} </p>
+                            @foreach($paragraphs_first as $paragraph)
+                                <p>{{ $paragraph }}</p>
+                            @endforeach
                             
                         </div>
                     </div>
                     <div class="col-sm-5">
                         <div class="aboutimg">
-                            <img src="{!!$about_us[0]->image!!}" class="img-responsive">
+                            <img src="{!!$about_us->image!!}" class="img-responsive">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                 <div class="aboutdata">
-
-                    <p>
-                    {!!$about_us[0]->description_second!!}</p>
+                    @foreach($paragraphs_two as $paragraph)
+                        <p>{{ $paragraph }}</p>
+                    @endforeach
 <img src="{!!asset('public/theme/user_theme/images/signature.png')!!}" class="img-responsive">
                 </div>
                 </div>
