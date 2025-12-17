@@ -16,7 +16,7 @@ function index(Request $request)
     }
     function get_about_us(Request $request)
     {
-        $about_us = About_us::get();
+        $about_us = About_us::orderBy('created_at', 'desc')->get();
         return $this->sendResponse(200,$about_us);
     }
     function compact_about_us(Request $request)

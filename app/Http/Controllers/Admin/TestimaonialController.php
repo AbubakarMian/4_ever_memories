@@ -17,12 +17,12 @@ class TestimaonialController extends Controller
     }
     function get_testimonial(Request $request)
     {
-        $testimonial = Testimaonial::get();
+        $testimonial = Testimaonial::orderBy('created_at', 'desc')->get();
         return $this->sendResponse(200,$testimonial);
     }
      function compact_testimonial(Request $request)
     {
-        $testimonial = Testimaonial::get();
+        $testimonial = Testimaonial::orderBy('created_at', 'desc')->get();
         return view('user/testimonials', compact('testimonial'));
     }
     

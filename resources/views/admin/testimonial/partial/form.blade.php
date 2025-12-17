@@ -81,13 +81,13 @@
     </div>
 </div>
 <div class="form-group">
-    {!! Form::label('description', 'description') !!}
+    {!! Form::label('description', 'Testimonial') !!}
     <div>
         {!! Form::textarea('description', null, [
             'class' => 'form-control',
             'data-parsley-required' => 'true',
             'data-parsley-trigger' => 'change',
-            'placeholder' => 'Enter testimonial description',
+            'placeholder' => 'Enter Testimonial...',
             'required',
             'maxlength' => '1000',
         ]) !!}

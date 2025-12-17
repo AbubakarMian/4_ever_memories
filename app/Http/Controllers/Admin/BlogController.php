@@ -29,7 +29,7 @@ class BlogController extends Controller
         ->toArray();
         if($category){
             
-        $blog = Blog::all()->filter(function ($blogItem) use ($category) {
+        $blog = Blog::orderBy('created_at', 'desc')->all()->filter(function ($blogItem) use ($category) {
             $tags = explode(',', $blogItem->tags);
             foreach ($tags as $tag) {
                 $tagSlug = strtolower(str_replace(' ', '-', trim($tag)));
