@@ -139,13 +139,6 @@
                     <div class="col-sm-7">
                         <div class="aboutdata">
                             <h2>ABOUT US</h2>
-                            <p>We do not want to scare the custoners with graveyard,
-                                We want to show how they can share postive Memory
-                                with families and friends.</p>
-                            <p>We want to create a story that parents can
-                                Tell-Grand children about Grandparent ancestorial.</p>
-                            <p>We are online (Virtual Site that will tell their past to the
-                                present, and the future.)</p>
                             <p>We Provide an interacting platform with pictures,
                                 videos, audio, music, poems and all that will make their
                                 visit to the ancestorial site a good experience.</p>

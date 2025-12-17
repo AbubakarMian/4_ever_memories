@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\InviteEmail;
 use App\Mail\GeneralEmail;
+use App\Models\About_us;
 use DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
@@ -34,7 +35,8 @@ use Illuminate\Support\Facades\Redirect;
 class UserController extends Controller {
     public function index() {
         $memorials = UserWebsite::latest()->limit(20)->get();
-        return view('user.index', compact('memorials'));
+        $about_us = About_us::first();
+        return view('user.index', compact('memorials', 'about_us'));
     }
 
     
